@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Excel temp files
+~$*.xlsx
+~$*.xls
+
+# Database files
+*.db
+*.sqlite
+
+# Vector DB storage
+vector_store/
+chroma_db/
+
+# Logs
+logs/
+*.log
+
+# OS specific files
+.DS_Store
