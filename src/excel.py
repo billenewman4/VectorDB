@@ -6,8 +6,8 @@ from typing import Dict, List, Tuple, Optional, Union
 
 # Define file paths
 BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-TRANSACTION_FILE = BASE_DIR / 'Transactions' / 'product_transactions_semantic.xlsx'
-MAPPING_FILE = BASE_DIR / 'CorrectMapping' / 'product_mapping_semantic.xlsx'
+TRANSACTION_FILE = Path(__file__).parent.parent / "data" / "Transactions" / "product_transactions_semantic.xlsx"
+MAPPING_FILE = Path(__file__).parent.parent / "data" / "CorrectMapping" / "product_mapping_semantic.xlsx"
 
 
 def load_transaction_data(file_path: Optional[Path] = None) -> pd.DataFrame:

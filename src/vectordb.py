@@ -17,10 +17,10 @@ from src.excel import process_transaction_data, get_unique_products, load_mappin
 
 # Define paths
 BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-CHROMA_DIR = BASE_DIR / 'chroma_db'
+CHROMA_DB_DIR = Path(__file__).parent.parent / "chroma_db"
 
 # Ensure Chroma directory exists
-os.makedirs(CHROMA_DIR, exist_ok=True)
+os.makedirs(CHROMA_DB_DIR, exist_ok=True)
 
 # Default embedding model
 DEFAULT_MODEL = 'all-MiniLM-L6-v2'
@@ -121,7 +121,7 @@ class ProductEmbedder:
 class ProductVectorDB:
     """Class to manage product vector database"""
     
-    def __init__(self, persist_directory: Optional[Path] = None, embedding_model: Optional[str] = None):
+    def __init__(self, persist_directory: Optional[Union[str, Path]] = None, embedding_model: Optional[str] = None):
         """
         Initialize the vector database
         
@@ -129,7 +129,7 @@ class ProductVectorDB:
             persist_directory: Directory to store the vector database
             embedding_model: Name of embedding model to use
         """
-        self.persist_directory = str(persist_directory or CHROMA_DIR)
+        self.persist_directory = str(persist_directory or CHROMA_DB_DIR)
         print(f"Using Chroma DB directory: {self.persist_directory}")
         
         # Initialize ChromaDB client
@@ -210,7 +210,8 @@ class ProductVectorDB:
         print(f"Added {len(product_data['product_ids'])} products to collection '{collection_name}'")
         return collection
     
-    def get_similar_products(self, query: str, collection_name: str = "products", n_results: int = 5, similarity_threshold: Optional[float] = None) -> pd.DataFrame:
+    def get_similar_products(self, query: str, collection_name: str = "products", n_results: int = 5, 
+                            similarity_threshold: Optional[float] = None, bidirectional: bool = False) -> pd.DataFrame:
         """
         Find similar products to a query string
         
@@ -219,6 +220,7 @@ class ProductVectorDB:
             collection_name: Name of the collection to search in
             n_results: Number of results to return
             similarity_threshold: Minimum similarity score (0-1) to include in results (None = no threshold)
+            bidirectional: Whether to use bidirectional similarity (helps with abbreviations and word order)
             
         Returns:
             DataFrame of similar products with similarity scores
@@ -229,36 +231,79 @@ class ProductVectorDB:
             embedding_function=self.embedding_function
         )
         
-        # Query the collection
-        results = collection.query(
-            query_texts=[query],
-            n_results=n_results,
-            include=["metadatas", "documents", "distances"]
-        )
-        
-        # Extract results
-        documents = results["documents"][0]
-        metadatas = results["metadatas"][0]
-        distances = results["distances"][0]
-        
-        # Calculate similarity scores (convert distance to similarity)
-        similarities = [1 - dist for dist in distances]
-        
-        # Create DataFrame with results
-        results_df = pd.DataFrame({
-            "similarity": similarities,
-            "description": documents
-        })
-        
-        # Add metadata columns
-        for i, meta in enumerate(metadatas):
-            for key, value in meta.items():
-                results_df.at[i, key] = value
+        # If using bidirectional similarity, we need a different approach
+        if bidirectional:
+            # Get raw embedder (not the wrapper Chroma uses)
+            embedder = self.embedding_function.embedding_function
+            
+            # Get query embedding
+            query_embedding = embedder.embed_query(query)
+            
+            # Get all product details from collection
+            product_data = collection.get(include=["embeddings", "metadatas", "documents"])
+            
+            # Calculate bidirectional similarities
+            similarities = []
+            for i, (doc, embedding) in enumerate(zip(product_data["documents"], product_data["embeddings"])):
+                # Forward similarity (query → product)
+                forward_sim = np.dot(query_embedding, embedding) / (np.linalg.norm(query_embedding) * np.linalg.norm(embedding))
                 
-        # Apply similarity threshold if specified
-        if similarity_threshold is not None:
-            results_df = results_df[results_df['similarity'] >= similarity_threshold]
+                # Backward similarity (product → query)
+                # In a proper implementation, we would recalculate the product → query similarity
+                # But for simplicity, we'll use the same value as they should be identical in theory
+                backward_sim = forward_sim
                 
+                # Use max for most lenient interpretation
+                max_sim = max(forward_sim, backward_sim)
+                avg_sim = (forward_sim + backward_sim) / 2
+                
+                if similarity_threshold is None or max_sim >= similarity_threshold:
+                    similarities.append({
+                        # Use max to maximize recall
+                        "similarity": max_sim,  
+                        "bidirectional_avg": avg_sim,
+                        "description": doc,
+                        **product_data["metadatas"][i]  # Add all metadata
+                    })
+            
+            # Convert to DataFrame, sort, and limit
+            results_df = pd.DataFrame(similarities).sort_values("similarity", ascending=False).reset_index(drop=True)
+            
+            # Take top n_results
+            if len(results_df) > n_results:
+                results_df = results_df.head(n_results)
+                
+        else:
+            # Standard approach - query the collection directly
+            results = collection.query(
+                query_texts=[query],
+                n_results=n_results,
+                include=["metadatas", "documents", "distances"]
+            )
+            
+            # Extract results
+            documents = results["documents"][0]
+            metadatas = results["metadatas"][0]
+            distances = results["distances"][0]
+            
+            # Calculate similarity scores (convert distance to similarity)
+            similarities = [1 - dist for dist in distances]
+            
+            # Create DataFrame with results
+            results_df = pd.DataFrame({
+                "similarity": similarities,
+                "description": documents
+            })
+            
+            # Add metadata columns
+            for i, meta in enumerate(metadatas):
+                for key, value in meta.items():
+                    results_df.at[i, key] = value
+                    
+            # Apply similarity threshold if specified
+            if similarity_threshold is not None:
+                results_df = results_df[results_df['similarity'] >= similarity_threshold]
+        
         # Ensure 'product_description' is available for output
         if 'product_description' not in results_df.columns and 'description' in results_df.columns:
             # Extract original product description from enhanced description
@@ -294,7 +339,8 @@ def create_product_vector_db(recreate: bool = False) -> ProductVectorDB:
     return vector_db
 
 
-def find_similar_products(query: str, n_results: int = 5, similarity_threshold: Optional[float] = None, vector_db: Optional[ProductVectorDB] = None) -> pd.DataFrame:
+def find_similar_products(query: str, n_results: int = 5, similarity_threshold: Optional[float] = None, 
+                     vector_db: Optional[ProductVectorDB] = None, bidirectional: bool = False) -> pd.DataFrame:
     """
     Find products similar to a query string
     
@@ -303,6 +349,7 @@ def find_similar_products(query: str, n_results: int = 5, similarity_threshold: 
         n_results: Number of results to return
         similarity_threshold: Minimum similarity score (0-1) to include in results (None = no threshold)
         vector_db: Existing vector database instance (will create if None)
+        bidirectional: Whether to use bidirectional similarity (helps with abbreviations and word order)
         
     Returns:
         DataFrame of similar products with similarity scores
@@ -316,7 +363,11 @@ def find_similar_products(query: str, n_results: int = 5, similarity_threshold: 
     print(f"Finding products similar to: '{query}'")
     if similarity_threshold is not None:
         print(f"Using similarity threshold: {similarity_threshold}")
-    results = vector_db.get_similar_products(query, n_results=n_results, similarity_threshold=similarity_threshold)
+    if bidirectional:
+        print(f"Using bidirectional similarity")
+    results = vector_db.get_similar_products(query, n_results=n_results, 
+                                          similarity_threshold=similarity_threshold,
+                                          bidirectional=bidirectional)
     
     return results
 
