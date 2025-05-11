@@ -1,11 +1,10 @@
-[ ] Create github repository for this project
-[ ] Connect excel trasnsaction file to python script
-[ ] Clean and preprocess data (handle missing values, standardize text, etc.)
-[ ] Filter for unique product descriptions
-[ ] Select appropriate embedding model (e.g., sentence-transformers)
-[ ] Create vector embeddings for product descriptions based on description, average price, and average quantity
-[ ] Create vector database using Chroma (balances ease of use with functionality)
-[ ] Use vector database to match products based on similarity
+[X] Create github repository for this project
+[X] Connect excel trasnsaction file to python script
+[X] Clean and preprocess data (handle missing values, standardize text, etc.)
+[X] Filter for unique product descriptions
+[X] Select appropriate embedding model (e.g., sentence-transformers)
+[X] Create vector embeddings for product descriptions based on description, average price, and average quantity
+[X] Create vector database using Chroma (balances ease of use with functionality)
+[X] Use vector database to match products based on similarity
 [ ] Define and calculate evaluation metrics for similarity matching performance
 [ ] Check vector mapping versus excel file in CorrectMapping/product_mapping_semantic.xlsx
-
