@@ -1,0 +1,601 @@
+query_description,query_code,true_usda_code,candidate_description,candidate_code,candidate_usda_code,forward_similarity,backward_similarity,is_correct_match
+6oz cho ny strip stk spec trim,144142,175 3 Loin strip loin 1x1_Choice,choice ny strip stk cc 8/24oz,143005,NOT_FOUND,0.7437830567359924,0.7437826898195522,False
+6oz cho ny strip stk spec trim,144142,175 3 Loin strip loin 1x1_Choice,"strip steak ny, spec trim, ch, 8oz",144083,NOT_FOUND,0.6959982514381409,0.6959980752327413,False
+6oz cho ny strip stk spec trim,144142,175 3 Loin strip loin 1x1_Choice,"strip steak ny, spec trim, ch, 12oz",144123,NOT_FOUND,0.6937820315361023,0.6937823102483518,False
+6oz cho ny strip stk spec trim,144142,175 3 Loin strip loin 1x1_Choice,bf trim spec->cubed stk-00-oz 10#,10510,NOT_FOUND,0.6929222941398621,0.6929220968888496,False
+6oz cho ny strip stk spec trim,144142,175 3 Loin strip loin 1x1_Choice,"strip steak ny, spec trim, ch, 14oz",144143,NOT_FOUND,0.6926606297492981,0.6926608829062783,False
+"ball tip, ch, 2up, cs lo",144021,185b Ball Tip,"ball tip, ch, 2up",144022,NOT_FOUND,0.9074634313583374,0.9074634934492756,False
+"ball tip, ch, 2up, cs lo",144021,185b Ball Tip,"ball tip, no roll, 2up, cs lot",146020,NOT_FOUND,0.7841843366622925,0.7841839105728676,False
+"ball tip, ch, 2up, cs lo",144021,185b Ball Tip,"ball-tip bnls, national (ch)",15191024,NOT_FOUND,0.6598788499832153,0.6598788816611325,False
+"ball tip, ch, 2up, cs lo",144021,185b Ball Tip,"sirloin ball tip, diced, ch, 1.5"" 2/5#pk",144024,NOT_FOUND,0.6238663196563721,0.6238662725559689,False
+"ball tip, ch, 2up, cs lo",144021,185b Ball Tip,"ball-tip bnls, greateromaha (ch)",15191004,NOT_FOUND,0.617680013179779,0.6176800244737193,False
+"ball-tip bnls, ibp (ch)",15191014,185 1 Ball tips,"ball-tip bnls, ibp (cangus)",15191012,NOT_FOUND,0.874596118927002,0.8745957220331918,False
+"ball-tip bnls, ibp (ch)",15191014,185 1 Ball tips,"ball-tip bnls, national (ch)",15191024,NOT_FOUND,0.8348863124847412,0.8348858064737453,False
+"ball-tip bnls, ibp (ch)",15191014,185 1 Ball tips,"ball-tip bnls, swift (ch)",15193354,NOT_FOUND,0.7989457249641418,0.7989456701577256,False
+"ball-tip bnls, ibp (ch)",15191014,185 1 Ball tips,"ball-tip bnls, greateromaha (ch)",15191004,NOT_FOUND,0.7819989919662476,0.7819984977483594,False
+"ball-tip bnls, ibp (ch)",15191014,185 1 Ball tips,"ball-tip bnls, national (cangus)",15191022,NOT_FOUND,0.7327061295509338,0.7327056623029136,False
+beef ball tips ibp ch,44300,185b Ball Tip,beef ball tips 2 up,44002,NOT_FOUND,0.8930023908615112,0.8930025040252079,False
+beef ball tips ibp ch,44300,185b Ball Tip,beef ball tip 2 up,13800102,NOT_FOUND,0.8187072277069092,0.8187074860814323,False
+beef ball tips ibp ch,44300,185b Ball Tip,beef loin ball tip choice-2 up,13800403,185b Ball Tip,0.8067882657051086,0.8067880106487242,True
+beef ball tips ibp ch,44300,185b Ball Tip,beef loin ball tip choice pinned,13800405,NOT_FOUND,0.8065146803855896,0.8065141757769594,False
+beef ball tips ibp ch,44300,185b Ball Tip,beef ball tip steak,13802713,NOT_FOUND,0.805188000202179,0.8051879507720823,False
+beef boneless rib lifter meat choice,12400400,Cap & Wedge,beef lifter meat choice,43725,NOT_FOUND,0.8230380415916443,0.8230380460643283,False
+beef boneless rib lifter meat choice,12400400,Cap & Wedge,beef ribeye steak boneless choice,12131415,NOT_FOUND,0.8030936121940613,0.803093713695056,False
+beef boneless rib lifter meat choice,12400400,Cap & Wedge,beef plate short ribs boneless choice,16312400,NOT_FOUND,0.7738138437271118,0.7738136551433948,False
+beef boneless rib lifter meat choice,12400400,Cap & Wedge,beef chuck short ribs choice boneless,11321440,NOT_FOUND,0.771740734577179,0.7717406596851468,False
+beef boneless rib lifter meat choice,12400400,Cap & Wedge,"beef ground 1"" lifter meat-choice",18200015,NOT_FOUND,0.7572300434112549,0.7572301159833015,False
+beef bottom round flat,43330,171 B 3 Round outside round flat,beef flat round choice,43330,171 B 3 Round outside round flat,0.860426127910614,0.8604262792435078,True
+beef bottom round flat,43330,171 B 3 Round outside round flat,beef bottom round flat ibp,43331,NOT_FOUND,0.8553597927093506,0.8553600019690625,False
+beef bottom round flat,43330,171 B 3 Round outside round flat,beef bottom round flat ch gop,30371,NOT_FOUND,0.8326134085655212,0.8326131792996463,False
+beef bottom round flat,43330,171 B 3 Round outside round flat,beef round flats,14450400,NOT_FOUND,0.8016580939292908,0.80165835582831,False
+beef bottom round flat,43330,171 B 3 Round outside round flat,"flat bottom round, diamond beef (aaa)",11303344,NOT_FOUND,0.7816445827484131,0.7816445343252005,False
+beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,beef brisket 120 choice-ibp,15000400,NOT_FOUND,0.8640846610069275,0.8640844205553622,False
+beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,beef brisket choice*,SP121,NOT_FOUND,0.8217036724090576,0.8217035846603027,False
+beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,beef brisket 120 choice angus,15000590,NOT_FOUND,0.8051341772079468,0.8051344219825689,False
+beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,beef brisket 120 choice light,15000910,NOT_FOUND,0.7727201581001282,0.7727198844376659,False
+beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,beef brisket 120 prime,15000600,NOT_FOUND,0.7368341684341431,0.7368342832092809,False
+beef brisket ad code,40367,120 1 brisket deckle off,beef brisket 120 choice (ui),15000500,120 1 brisket deckle off,0.6543470621109009,0.6543468646558616,True
+beef brisket ad code,40367,120 1 brisket deckle off,"brisket beef, ch",114000,NOT_FOUND,0.6088208556175232,0.6088208841483784,False
+beef brisket ad code,40367,120 1 brisket deckle off,"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,0.5990469455718994,0.5990470532843852,True
+beef brisket ad code,40367,120 1 brisket deckle off,beef brisket 120 prime,15000600,NOT_FOUND,0.5964230895042419,0.596422733564982,False
+beef brisket ad code,40367,120 1 brisket deckle off,beef ch brisket,40367,120 1 brisket deckle off,0.5955731868743896,0.5955731730871173,True
+beef brisket creekstone angus,40367,120 1 brisket deckle off,"brisket beef, creekstone angus",113000,NOT_FOUND,0.9722431302070618,0.9722431937719078,False
+beef brisket creekstone angus,40367,120 1 brisket deckle off,beef brisket waygu creekstone,40368,NOT_FOUND,0.8467704057693481,0.8467702995149758,False
+beef brisket creekstone angus,40367,120 1 brisket deckle off,beef brisket 120 choice angus,15000590,NOT_FOUND,0.8035860061645508,0.803585834250615,False
+beef brisket creekstone angus,40367,120 1 brisket deckle off,beef brisket flat angus choice,15100500,NOT_FOUND,0.7685992121696472,0.7685992097945837,False
+beef brisket creekstone angus,40367,120 1 brisket deckle off,"brisket bnls, upper iowa (ch_angus)",12013333,NOT_FOUND,0.7479696869850159,0.7479699113568722,False
+beef ch brisket,40367,120 1 brisket deckle off,"brisket beef, ch",114000,NOT_FOUND,0.9682468771934509,0.9682467808641282,False
+beef ch brisket,40367,120 1 brisket deckle off,"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,0.856955349445343,0.8569552881347251,True
+beef ch brisket,40367,120 1 brisket deckle off,beef brisket choice*,SP121,NOT_FOUND,0.8291090130805969,0.8291094384270999,False
+beef ch brisket,40367,120 1 brisket deckle off,beef sel brisket,40366,NOT_FOUND,0.8231077194213867,0.823107365772727,False
+beef ch brisket,40367,120 1 brisket deckle off,bf brisket bnl ch str,1004A2I1,NOT_FOUND,0.8002404570579529,0.8002402200811513,False
+beef ch xt top butt,44200,184 3 Top butt bnls,beef sel xt top butt,44260,NOT_FOUND,0.9229761958122253,0.9229765898914515,False
+beef ch xt top butt,44200,184 3 Top butt bnls,beef ch xt top butt cc gop,37584,NOT_FOUND,0.9074715971946716,0.9074714146966305,False
+beef ch xt top butt,44200,184 3 Top butt bnls,beef top sirloin butt xt choice,13600410,NOT_FOUND,0.8437061905860901,0.8437056715783594,False
+beef ch xt top butt,44200,184 3 Top butt bnls,beef top butt xt pr gop,54184,NOT_FOUND,0.8317272067070007,0.831727240529406,False
+beef ch xt top butt,44200,184 3 Top butt bnls,"top sirloin butt xt, nebraska beef (ch)",15101874,NOT_FOUND,0.7861083149909973,0.7861082309484841,False
+beef chuck clod choice xt hearts,11100500,114 A 3 shoulder clod,beef chuck clod nr xt,11100201,NOT_FOUND,0.8313896059989929,0.8313896242560834,False
+beef chuck clod choice xt hearts,11100500,114 A 3 shoulder clod,beef chuck clod select,11100300,NOT_FOUND,0.77320796251297,0.7732079842984685,False
+beef chuck clod choice xt hearts,11100500,114 A 3 shoulder clod,beef chuck clod tender choice,11400400,114f Clod Tender (teres major),0.7384045124053955,0.7384045383640843,False
+beef chuck clod choice xt hearts,11100500,114 A 3 shoulder clod,beef chuck clod tender nr,11400200,NOT_FOUND,0.7285977602005005,0.7285979035356017,False
+beef chuck clod choice xt hearts,11100500,114 A 3 shoulder clod,beef chuck clod prime,11100600,NOT_FOUND,0.6872051358222961,0.6872051256691072,False
+beef chuck clod tender choice,11400400,114f Clod Tender (teres major),beef chuck clod tender nr,11400200,NOT_FOUND,0.9090253114700317,0.9090256675829047,False
+beef chuck clod tender choice,11400400,114f Clod Tender (teres major),beef chuck clod select,11100300,NOT_FOUND,0.8511461019515991,0.8511461244529988,False
+beef chuck clod tender choice,11400400,114f Clod Tender (teres major),beef chuck tenderloin choice,11403400,NOT_FOUND,0.824206531047821,0.8242067848970145,False
+beef chuck clod tender choice,11400400,114f Clod Tender (teres major),beef chuck tender,48500,NOT_FOUND,0.8067317605018616,0.8067322747213953,False
+beef chuck clod tender choice,11400400,114f Clod Tender (teres major),beef chuck clod prime,11100600,NOT_FOUND,0.7659784555435181,0.7659784383426174,False
+beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,beef chuck flap tail choice,11320400,NOT_FOUND,0.8451378345489502,0.8451379466967095,False
+beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,beef chuck 2pc angus,11000502,NOT_FOUND,0.7718130946159363,0.7718129801171729,False
+beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,0.7591524720191956,0.7591523252945507,False
+beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,beef angus gold chuckroll,42603,NOT_FOUND,0.753803014755249,0.7538031436108349,False
+beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,beef chuck flap tail 5oz,11300005,NOT_FOUND,0.7328806519508362,0.7328810515371826,False
+beef chuck pectoral meat choice,11910000,Pectoral,beef pectoral meat,41950,Pectoral,0.8161120414733887,0.8161118096005666,True
+beef chuck pectoral meat choice,11910000,Pectoral,beef choice chuck blade,48310,NOT_FOUND,0.8052133917808533,0.805212949748696,False
+beef chuck pectoral meat choice,11910000,Pectoral,pectoral meat,120006,Pectoral,0.7676808834075928,0.7676805022139099,True
+beef chuck pectoral meat choice,11910000,Pectoral,beef chuck tenderloin choice,11403400,NOT_FOUND,0.764000654220581,0.7639999851326287,False
+beef chuck pectoral meat choice,11910000,Pectoral,beef chuck clod tender choice,11400400,114f Clod Tender (teres major),0.7602059245109558,0.7602056124106954,False
+"beef chuck roll choice 1/4"" n\off",42600,116 A 3 chuck roll,"beef chuck roll select 1/4"" n\off",42602,NOT_FOUND,0.9695080518722534,0.9695081737512822,False
+"beef chuck roll choice 1/4"" n\off",42600,116 A 3 chuck roll,"beef chuck roll 1/4"" n\off ibp choice",42601,NOT_FOUND,0.9301670789718628,0.9301665289751464,False
+"beef chuck roll choice 1/4"" n\off",42600,116 A 3 chuck roll,"beef chuck roll ch gop 1/4"" n\off",33116,NOT_FOUND,0.873965322971344,0.8739653812243622,False
+"beef chuck roll choice 1/4"" n\off",42600,116 A 3 chuck roll,"beef chuck roll-neckoff sliced 1/8 """,11202018,NOT_FOUND,0.8356850743293762,0.8356846604947153,False
+"beef chuck roll choice 1/4"" n\off",42600,116 A 3 chuck roll,"beef chuck roll cab gop 1/4"" n\off",13116,NOT_FOUND,0.8165261149406433,0.8165260620049193,False
+beef chuck roll-neckoff choice (ui),11200500,116 A 3 chuck roll,beef chuck roll-neckoff nr,112002JB,NOT_FOUND,0.8465095162391663,0.8465097784824467,False
+beef chuck roll-neckoff choice (ui),11200500,116 A 3 chuck roll,beef chuck top blade choice (ui),11101300,NOT_FOUND,0.7656736969947815,0.7656738838484749,False
+beef chuck roll-neckoff choice (ui),11200500,116 A 3 chuck roll,beef chuck tenderloin choice,11403400,NOT_FOUND,0.7568138241767883,0.7568140577966346,False
+beef chuck roll-neckoff choice (ui),11200500,116 A 3 chuck roll,"beef chuck roll-neckoff sliced 1/8 """,11202018,NOT_FOUND,0.7392348051071167,0.7392345291330858,False
+beef chuck roll-neckoff choice (ui),11200500,116 A 3 chuck roll,beef choice chuck blade,48310,NOT_FOUND,0.7356927394866943,0.735692751897368,False
+beef chuck short ribs (ui),11310500,130 4 chuck short rib,beef chuck short ribs (ui)-pack 1per,11310510,NOT_FOUND,0.8354604244232178,0.8354607791596327,False
+beef chuck short ribs (ui),11310500,130 4 chuck short rib,beef chuck short ribs- bone in,11321441,NOT_FOUND,0.8087939620018005,0.8087941010791139,False
+beef chuck short ribs (ui),11310500,130 4 chuck short rib,beef chuck short ribs boneless,11321000,NOT_FOUND,0.7957149147987366,0.7957151900378729,False
+beef chuck short ribs (ui),11310500,130 4 chuck short rib,beef chuck short ribs bone in,11310400,NOT_FOUND,0.7896591424942017,0.7896592558135154,False
+beef chuck short ribs (ui),11310500,130 4 chuck short rib,beef short rib tips (ui),11912393,NOT_FOUND,0.7885859608650208,0.7885858190444106,False
+beef chuck shortrib (4 bone),41500,130 4 chuck short rib,beef chuck short ribs- bone in,11321441,NOT_FOUND,0.819026529788971,0.8190260760449743,False
+beef chuck shortrib (4 bone),41500,130 4 chuck short rib,beef chuck short ribs bone in,11310400,NOT_FOUND,0.8095473051071167,0.8095471579365172,False
+beef chuck shortrib (4 bone),41500,130 4 chuck short rib,beef chuck short ribs boneless 4oz,11321404,NOT_FOUND,0.8080825209617615,0.8080822186891972,False
+beef chuck shortrib (4 bone),41500,130 4 chuck short rib,beef boneless chuck 2pc,11000001,NOT_FOUND,0.8079535365104675,0.8079529350790153,False
+beef chuck shortrib (4 bone),41500,130 4 chuck short rib,beef chuck short ribs 14 oz long bone,11311414,NOT_FOUND,0.7997531890869141,0.7997531227456447,False
+beef eye of round choice,45300,171 C 3 Eye of round,beef round eyes choice,14300420,NOT_FOUND,0.95258629322052,0.9525864638113752,False
+beef eye of round choice,45300,171 C 3 Eye of round,"eye of round, corned beef",170005,NOT_FOUND,0.8701179027557373,0.8701178751864858,False
+beef eye of round choice,45300,171 C 3 Eye of round,beef eye of round ibp choice,45301,NOT_FOUND,0.8465633392333984,0.8465634467357855,False
+beef eye of round choice,45300,171 C 3 Eye of round,"eye of round, ckd corned beef",170004,NOT_FOUND,0.8337815403938293,0.8337817172336768,False
+beef eye of round choice,45300,171 C 3 Eye of round,beef round whole choice,14000400,NOT_FOUND,0.8327903747558594,0.8327903870907372,False
+beef flank steak,40820,193 Flank,beef flank steak choice,17101412,NOT_FOUND,0.9482590556144714,0.9482589366842986,False
+beef flank steak,40820,193 Flank,beef flank steak utility,17100200,NOT_FOUND,0.9269097447395325,0.9269099735284343,False
+beef flank steak,40820,193 Flank,beef flank steak select,41940,NOT_FOUND,0.9133872985839844,0.9133871053746201,False
+beef flank steak,40820,193 Flank,beef flank steak choice (ui),17100500,193 Flank,0.8946987986564636,0.8946991197826661,True
+beef flank steak,40820,193 Flank,"flank steak, (ch)",13199984,NOT_FOUND,0.8875625729560852,0.8875621520235211,False
+beef flank steak choice (ui),17100500,193 Flank,beef flank steak choice,17101412,NOT_FOUND,0.9296969175338745,0.9296968497800068,False
+beef flank steak choice (ui),17100500,193 Flank,beef flank steak select,41940,NOT_FOUND,0.9087738990783691,0.9087739127313252,False
+beef flank steak choice (ui),17100500,193 Flank,beef flank steak,40820,193 Flank,0.8946988582611084,0.8946990512975441,True
+beef flank steak choice (ui),17100500,193 Flank,beef flank steak utility,17100200,NOT_FOUND,0.8810790181159973,0.8810791223630254,False
+beef flank steak choice (ui),17100500,193 Flank,beef flank steak choice 5oz,17101405,NOT_FOUND,0.8236029148101807,0.8236031580055376,False
+beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,beef flap meat choice,41211,NOT_FOUND,0.9346281886100769,0.934628456439367,False
+beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,chuck flap meat beef,120005,116g Chuck Flap,0.7764687538146973,0.7764690792781781,False
+beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,0.735579788684845,0.7355796960337639,True
+beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,beef lifter meat choice,43725,NOT_FOUND,0.7101632952690125,0.7101629532847898,False
+beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,beef round inside choice,14500401,NOT_FOUND,0.6962055563926697,0.696205358100839,False
+beef flat round choice,43330,171 B 3 Round outside round flat,beef round whole choice,14000400,NOT_FOUND,0.910771369934082,0.9107714969769398,False
+beef flat round choice,43330,171 B 3 Round outside round flat,beef round flats choice,14401414,NOT_FOUND,0.9086352586746216,0.908635338707549,False
+beef flat round choice,43330,171 B 3 Round outside round flat,beef round flat choice (ui),14400500,171 B 3 Round outside round flat,0.8920914530754089,0.8920918146798547,True
+beef flat round choice,43330,171 B 3 Round outside round flat,beef bottom round flat,43330,171 B 3 Round outside round flat,0.8604259490966797,0.8604262570468811,True
+beef flat round choice,43330,171 B 3 Round outside round flat,beef round flats,14450400,NOT_FOUND,0.8569254875183105,0.8569253736506335,False
+"beef flats, ch, cs, 8-12#avg",154080,171 B 3 Round outside round flat,"beef flats, ch, 8-12#avg",154120,NOT_FOUND,0.9694901704788208,0.9694905672199007,False
+"beef flats, ch, cs, 8-12#avg",154080,171 B 3 Round outside round flat,beef round flats choice,14401414,NOT_FOUND,0.6719235777854919,0.6719237154214501,False
+"beef flats, ch, cs, 8-12#avg",154080,171 B 3 Round outside round flat,"beef tenderloin, ss, 4up, cs lot",140049,NOT_FOUND,0.6648285388946533,0.6648283278586767,False
+"beef flats, ch, cs, 8-12#avg",154080,171 B 3 Round outside round flat,"ground beef, 73%, afg (8/10#)",19241050,NOT_FOUND,0.663466215133667,0.6634665072486077,False
+"beef flats, ch, cs, 8-12#avg",154080,171 B 3 Round outside round flat,"ground beef, 81%, afg (8/10#)",19001050,NOT_FOUND,0.6621764302253723,0.6621767535636829,False
+beef ground 81/19 60 lb cs go,18260001,Ground beef 81%,ground beef 81/19 60#,42302,NOT_FOUND,0.8411781191825867,0.8411777936554582,False
+beef ground 81/19 60 lb cs go,18260001,Ground beef 81%,"beef ground 80/20, 10lb",190801,NOT_FOUND,0.819546103477478,0.8195457949104537,False
+beef ground 81/19 60 lb cs go,18260001,Ground beef 81%,ground beef 81% fine cs beef (40#),19111070,NOT_FOUND,0.8143089413642883,0.8143084350727537,False
+beef ground 81/19 60 lb cs go,18260001,Ground beef 81%,ground beef 73% fine 8-10lb caviness,19163660,NOT_FOUND,0.8104548454284668,0.8104543920024183,False
+beef ground 81/19 60 lb cs go,18260001,Ground beef 81%,"beef ground, 90/10, 10lb",190901,NOT_FOUND,0.8103755712509155,0.8103752483659694,False
+"beef ground, 75/25, 5lb",190750,Ground beef 73%,"beef ground, 80/20, 5lb",190805,Ground beef 81%,0.9487137794494629,0.948713790996196,False
+"beef ground, 75/25, 5lb",190750,Ground beef 73%,"beef ground, 85/15, 5lb",190855,NOT_FOUND,0.943294882774353,0.9432947956629509,False
+"beef ground, 75/25, 5lb",190750,Ground beef 73%,"beef ground, 90/10, 5lb",190900,NOT_FOUND,0.9423044919967651,0.9423041552516143,False
+"beef ground, 75/25, 5lb",190750,Ground beef 73%,"beef ground 80/20, 10lb",190801,NOT_FOUND,0.9021986126899719,0.9021991764656426,False
+"beef ground, 75/25, 5lb",190750,Ground beef 73%,"beef ground, 90/10, 10lb",190901,NOT_FOUND,0.9018388390541077,0.901838912397561,False
+"beef ground, 80/20, 5lb",190805,Ground beef 81%,"beef ground 80/20, 10lb",190801,NOT_FOUND,0.9658756256103516,0.965875675704155,False
+"beef ground, 80/20, 5lb",190805,Ground beef 81%,"beef ground, 85/15, 5lb",190855,NOT_FOUND,0.9577885866165161,0.9577882014789294,False
+"beef ground, 80/20, 5lb",190805,Ground beef 81%,"beef ground, 90/10, 5lb",190900,NOT_FOUND,0.957337498664856,0.9573375027051896,False
+"beef ground, 80/20, 5lb",190805,Ground beef 81%,"beef ground, 75/25, 5lb",190750,Ground beef 73%,0.9487140774726868,0.9487138168360967,False
+"beef ground, 80/20, 5lb",190805,Ground beef 81%,"beef ground, 90/10, 10lb",190901,NOT_FOUND,0.9306017756462097,0.9306017727943371,False
+"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,"beef inside round ch gop xt 1/4""",32168,NOT_FOUND,0.875053346157074,0.875053507963953,False
+"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,beef inside round choice,14500800,NOT_FOUND,0.8275481462478638,0.8275482420416465,False
+"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,"beef inside round cab gop xt 1/4""",12168,NOT_FOUND,0.8222165703773499,0.8222168936610861,False
+"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,beef round inside choice,14500401,NOT_FOUND,0.8098506927490234,0.809850939460351,False
+"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,beef round inside choice xt (ui),14500500,168 3 top round inside XT,0.7930616736412048,0.7930619069274509,True
+beef inside skirt,46610,121 D 4 Inside skirt,beef inside skirt choice,46670,NOT_FOUND,0.9541353583335876,0.9541359111753664,False
+beef inside skirt,46610,121 D 4 Inside skirt,beef outside skirt choice,16240000,NOT_FOUND,0.9203277230262756,0.9203279399446735,False
+beef inside skirt,46610,121 D 4 Inside skirt,beef outside skirt pieces,16290100,NOT_FOUND,0.9081334471702576,0.9081332323203202,False
+beef inside skirt,46610,121 D 4 Inside skirt,beef inner skirts,16140001,NOT_FOUND,0.8903003931045532,0.8903002524241344,False
+beef inside skirt,46610,121 D 4 Inside skirt,beef inside skirt angus,46600,NOT_FOUND,0.8847925662994385,0.8847923398966488,False
+beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,beef peeled knuckle choice,41600,167 A 4 knuckles,0.927786111831665,0.9277860869460292,True
+beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,beef knuckle peeled choice sliced,14240503,NOT_FOUND,0.8846482038497925,0.8846480798110841,False
+beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,beef peeled knuckle ibp choice,41601,NOT_FOUND,0.8508159518241882,0.8508157840895032,False
+beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,beef bell knuckle choice (ui),14240502,NOT_FOUND,0.8263561725616455,0.8263557029725526,False
+beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,beef knuckle peeled halal,14240400,NOT_FOUND,0.7933950424194336,0.7933947565551869,False
+"beef knuckle, peeled, ch, 8/13#cas",194830,167 A 4 knuckles,"beef knuckle, peeled, ch, 8/13#",194813,NOT_FOUND,0.9328208565711975,0.9328206757135614,False
+"beef knuckle, peeled, ch, 8/13#cas",194830,167 A 4 knuckles,beef peeled knuckle choice,41600,167 A 4 knuckles,0.743097186088562,0.7430970722465188,True
+"beef knuckle, peeled, ch, 8/13#cas",194830,167 A 4 knuckles,"knuckle pld, diamond beef (aaa)",11123344,NOT_FOUND,0.7250131964683533,0.7250132164206915,False
+"beef knuckle, peeled, ch, 8/13#cas",194830,167 A 4 knuckles,"beef tenderloin, peeled, angus, ch, 5up",142050,NOT_FOUND,0.7201025485992432,0.7201026365203246,False
+"beef knuckle, peeled, ch, 8/13#cas",194830,167 A 4 knuckles,"knuckle pld, nebraska beef (ch_angus)",11121873,NOT_FOUND,0.7072694897651672,0.7072693731063548,False
+beef lipon choice frozen,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef lipon select up,43711,NOT_FOUND,0.7613467574119568,0.7613466968780205,False
+beef lipon choice frozen,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef lipon choice dn gop,32212,NOT_FOUND,0.7364406585693359,0.7364408426785489,False
+beef lipon choice frozen,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef lipon select down,43710,NOT_FOUND,0.7335233092308044,0.7335232665563701,False
+beef lipon choice frozen,43720,109E 1 Rib ribeye lip-on bn-in_Choice,"beef ground frozen, 54/10oz",190033,NOT_FOUND,0.674448549747467,0.6744483956067854,False
+beef lipon choice frozen,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ground frozen,SP100,NOT_FOUND,0.6723468899726868,0.6723467296721168,False
+beef loin ball tip choice-2 up,13800403,185b Ball Tip,beef ball tips 2 up,44002,NOT_FOUND,0.8922898173332214,0.8922899955429632,False
+beef loin ball tip choice-2 up,13800403,185b Ball Tip,beef ball tip 2 up,13800102,NOT_FOUND,0.8795819878578186,0.8795815655656681,False
+beef loin ball tip choice-2 up,13800403,185b Ball Tip,beef loin ball tip choice pinned,13800405,NOT_FOUND,0.8540200591087341,0.8540197871552997,False
+beef loin ball tip choice-2 up,13800403,185b Ball Tip,beef loin ball tip boneless choice 8oz,13800408,NOT_FOUND,0.8145241141319275,0.814523908175266,False
+beef loin ball tip choice-2 up,13800403,185b Ball Tip,beef ball tips ibp ch,44300,185b Ball Tip,0.8067883253097534,0.8067879561925297,True
+beef ny strip steaks ch 8/9oz*,SP131,175 3 Loin strip loin 1x1_Choice,beef strip loin steak 8oz,13410080,NOT_FOUND,0.8751363754272461,0.8751360040673324,False
+beef ny strip steaks ch 8/9oz*,SP131,175 3 Loin strip loin 1x1_Choice,"strip steak ny, ch, 12oz",144124,NOT_FOUND,0.8701465129852295,0.8701460521045851,False
+beef ny strip steaks ch 8/9oz*,SP131,175 3 Loin strip loin 1x1_Choice,beef strip loin steak choice 9oz,13420409,NOT_FOUND,0.862850546836853,0.8628507648119602,False
+beef ny strip steaks ch 8/9oz*,SP131,175 3 Loin strip loin 1x1_Choice,"strip steak ny, angus, ch, 12/14oz",142110,NOT_FOUND,0.8605733513832092,0.8605732227906892,False
+beef ny strip steaks ch 8/9oz*,SP131,175 3 Loin strip loin 1x1_Choice,beef strip loin steak 10oz,13410010,NOT_FOUND,0.8595465421676636,0.8595466322506733,False
+beef outside skirt choice (ui),16280500,121 C 4 Outside skirt,beef outside skirt choice,16240000,NOT_FOUND,0.9342897534370422,0.9342898964118345,False
+beef outside skirt choice (ui),16280500,121 C 4 Outside skirt,beef inner skirts choice (ui),16180500,NOT_FOUND,0.9288017153739929,0.9288016463673496,False
+beef outside skirt choice (ui),16280500,121 C 4 Outside skirt,beef inside skirt choice,46670,NOT_FOUND,0.9261438250541687,0.9261437720297383,False
+beef outside skirt choice (ui),16280500,121 C 4 Outside skirt,beef outside skirt peeled choice (ui),16210500,NOT_FOUND,0.9183656573295593,0.9183656862374475,False
+beef outside skirt choice (ui),16280500,121 C 4 Outside skirt,beef inner skirts choice,16180300,NOT_FOUND,0.8753095269203186,0.8753093763802129,False
+beef outside skirt pld,46671,121 C 4 Outside skirt,beef outside skirt choice,16240000,NOT_FOUND,0.8925644755363464,0.8925641854869704,False
+beef outside skirt pld,46671,121 C 4 Outside skirt,beef inside skirt,46610,121 D 4 Inside skirt,0.8826801776885986,0.8826801559698998,False
+beef outside skirt pld,46671,121 C 4 Outside skirt,beef outside skirt pieces,16290100,NOT_FOUND,0.8715175986289978,0.8715176249021445,False
+beef outside skirt pld,46671,121 C 4 Outside skirt,beef outside skirt prime,16200600,NOT_FOUND,0.8643538951873779,0.8643539293539877,False
+beef outside skirt pld,46671,121 C 4 Outside skirt,beef outside skirt peeled- nr,16210410,NOT_FOUND,0.8489054441452026,0.8489052638863992,False
+beef pectoral meat,41950,Pectoral,pectoral meat,120006,Pectoral,0.936280369758606,0.9362805040040904,True
+beef pectoral meat,41950,Pectoral,"pectoral meat, national (ch)",13071024,NOT_FOUND,0.8526017665863037,0.8526018787361933,False
+beef pectoral meat,41950,Pectoral,beef chuck pectoral meat choice,11910000,Pectoral,0.81611168384552,0.8161118029307993,True
+beef pectoral meat,41950,Pectoral,beef pectoral meat chunks 3oz,11910404,NOT_FOUND,0.8034706711769104,0.8034706535312525,False
+beef pectoral meat,41950,Pectoral,bf pectoral meat pr oma,1016313,NOT_FOUND,0.7953968048095703,0.7953967509098077,False
+beef peeled knuckle choice,41600,167 A 4 knuckles,beef knuckle peeled choice (ui),14240500,167 A 4 knuckles,0.9277862310409546,0.9277860274499952,True
+beef peeled knuckle choice,41600,167 A 4 knuckles,beef knuckle peeled choice sliced,14240503,NOT_FOUND,0.9178003668785095,0.9178002919398277,False
+beef peeled knuckle choice,41600,167 A 4 knuckles,beef peeled knuckle ibp choice,41601,NOT_FOUND,0.8710038065910339,0.8710035074931846,False
+beef peeled knuckle choice,41600,167 A 4 knuckles,beef knuckle peeled halal,14240400,NOT_FOUND,0.8583031296730042,0.8583033186439739,False
+beef peeled knuckle choice,41600,167 A 4 knuckles,beef knuckle peeled no roll,14240000,NOT_FOUND,0.8179066181182861,0.8179060672122556,False
+beef plate short ribs whole 3 bone (ui),16300500,123 A 3 short rib choice,beef plate short ribs 3 bone,16300514,NOT_FOUND,0.9130386710166931,0.9130384338778907,False
+beef plate short ribs whole 3 bone (ui),16300500,123 A 3 short rib choice,beef plate short ribs-bone- in,16300012,NOT_FOUND,0.8776320219039917,0.8776317874286115,False
+beef plate short ribs whole 3 bone (ui),16300500,123 A 3 short rib choice,beef plate short ribs bone in,16310001,NOT_FOUND,0.8706215620040894,0.870621556640186,False
+beef plate short ribs whole 3 bone (ui),16300500,123 A 3 short rib choice,beef plate short ribs boneless,16311090,NOT_FOUND,0.8689221143722534,0.8689222520232067,False
+beef plate short ribs whole 3 bone (ui),16300500,123 A 3 short rib choice,beef plate short ribs whole,16300000,NOT_FOUND,0.8612447381019592,0.8612445758106255,False
+beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,0.85680091381073,0.8568015524120387,True
+beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice dwn,12100414,NOT_FOUND,0.8498985171318054,0.849898526569014,False
+beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice up,12100700,NOT_FOUND,0.8496670722961426,0.8496674389540955,False
+beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on no roll,12100200,NOT_FOUND,0.8311826586723328,0.8311826287539126,False
+beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,0.8240843415260315,0.8240846809397704,False
+beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,beef ribeye boneless lip on choice up,12100700,NOT_FOUND,0.9501428604125977,0.950142952394444,False
+beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,0.9321753978729248,0.9321751376637837,False
+beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,beef ribeye boneless lip on choice dwn,12100414,NOT_FOUND,0.9193121194839478,0.9193124155197214,False
+beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,beef ribeye boneless lip on select,12100300,NOT_FOUND,0.9092070460319519,0.9092070996663126,False
+beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,beef ribeye boneless lip on no roll,12100200,NOT_FOUND,0.8413688540458679,0.841368755086289,False
+beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice up,12100700,NOT_FOUND,0.9453785419464111,0.9453784627696253,False
+beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice (ui),12100514,112a HVY Lipon Ribeye,0.93217533826828,0.9321751309269741,False
+beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice dwn,12100414,NOT_FOUND,0.9226149320602417,0.9226147377706879,False
+beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on select,12100300,NOT_FOUND,0.8763557076454163,0.8763555967094578,False
+beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,0.8568015098571777,0.8568016567752874,True
+beef round flat choice (ui),14400500,171 B 3 Round outside round flat,beef flat round choice,43330,171 B 3 Round outside round flat,0.8920915722846985,0.8920918235495657,True
+beef round flat choice (ui),14400500,171 B 3 Round outside round flat,beef round inside choice,14500401,NOT_FOUND,0.831953227519989,0.8319533006936648,False
+beef round flat choice (ui),14400500,171 B 3 Round outside round flat,beef round whole choice,14000400,NOT_FOUND,0.8290839791297913,0.8290839557465772,False
+beef round flat choice (ui),14400500,171 B 3 Round outside round flat,beef round inside choice xt (ui),14500500,168 3 top round inside XT,0.8270785212516785,0.8270785957714721,False
+beef round flat choice (ui),14400500,171 B 3 Round outside round flat,beef inside round choice,14500800,NOT_FOUND,0.8201988935470581,0.8201984180309725,False
+beef round inside cap-off choice,14510100,168 1 top round inside,beef round inside cap off choice,14510418,NOT_FOUND,0.9592559933662415,0.959255495812277,False
+beef round inside cap-off choice,14510100,168 1 top round inside,beef round inside cap-off no roll,14510200,NOT_FOUND,0.8727411031723022,0.8727409136017501,False
+beef round inside cap-off choice,14510100,168 1 top round inside,beef round inside choice,14500401,NOT_FOUND,0.8138025403022766,0.8138022102304405,False
+beef round inside cap-off choice,14510100,168 1 top round inside,beef inside round choice,14500800,NOT_FOUND,0.8109280467033386,0.8109277621317401,False
+beef round inside cap-off choice,14510100,168 1 top round inside,beef round whole choice,14000400,NOT_FOUND,0.7941325306892395,0.7941325409045878,False
+beef round inside choice xt (ui),14500500,168 3 top round inside XT,beef round flat choice (ui),14400500,171 B 3 Round outside round flat,0.8270789384841919,0.827078578845367,False
+beef round inside choice xt (ui),14500500,168 3 top round inside XT,beef round inside choice,14500401,NOT_FOUND,0.8037206530570984,0.803720372931481,False
+beef round inside choice xt (ui),14500500,168 3 top round inside XT,"beef inside round choice xt 1/4""",41300,168 3 top round inside XT,0.7930619120597839,0.7930618858782701,True
+beef round inside choice xt (ui),14500500,168 3 top round inside XT,beef inside round choice,14500800,NOT_FOUND,0.7885929346084595,0.7885925263006781,False
+beef round inside choice xt (ui),14500500,168 3 top round inside XT,beef xt inside ibp choice,40301,NOT_FOUND,0.7508994340896606,0.750899574562887,False
+beef short loin 0x1 choice,46020,174 3 Short loin Choice,beef short loin choice 0x1,13301501,174 3 Short loin Choice,0.987301230430603,0.9873011646586782,True
+beef short loin 0x1 choice,46020,174 3 Short loin Choice,beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,0.9285123944282532,0.928512258000866,False
+beef short loin 0x1 choice,46020,174 3 Short loin Choice,beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,0.8718596696853638,0.8718597784752078,False
+beef short loin 0x1 choice,46020,174 3 Short loin Choice,beef short loin,13301900,NOT_FOUND,0.8237609267234802,0.8237607658190698,False
+beef short loin 0x1 choice,46020,174 3 Short loin Choice,beef short loin 0x1 ch gop,35174,NOT_FOUND,0.8089325428009033,0.8089326222483362,False
+beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,beef short loin choice 0x1,13301501,174 3 Short loin Choice,0.8808340430259705,0.8808333073130132,False
+beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,beef short loin 0x1 choice,46020,174 3 Short loin Choice,0.8718599081039429,0.8718597525816403,False
+beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,0.8339362740516663,0.8339362097968019,True
+beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,0.8257766962051392,0.8257762689504673,False
+beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,beef strip loin 0x1 #ii select,40450,NOT_FOUND,0.8183504343032837,0.8183504155646815,False
+beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,0.8339362144470215,0.833936297742089,True
+beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,beef short loin choice 0x1,13301501,174 3 Short loin Choice,0.7646286487579346,0.7646284593076116,False
+beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,beef short loin 0x1 choice,46020,174 3 Short loin Choice,0.7571190595626831,0.7571188758930896,False
+beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,beef teres major frozen,46450,114f Clod Tender (teres major),0.7251513004302979,0.7251512999941692,False
+beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,0.7145835161209106,0.7145836646924513,False
+beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,beef short loin 0x1 choice,46020,174 3 Short loin Choice,0.928512454032898,0.9285121804972002,False
+beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,beef short loin choice 0x1,13301501,174 3 Short loin Choice,0.927613377571106,0.9276129616546248,False
+beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,beef short loin,13301900,NOT_FOUND,0.8960140347480774,0.8960135639962202,False
+beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,0.8146624565124512,0.814662160933552,False
+beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,beef short loin 0x1 ch gop,35174,NOT_FOUND,0.7901433110237122,0.7901430833772751,False
+beef short loin choice 0x1,13301501,174 3 Short loin Choice,beef short loin 0x1 choice,46020,174 3 Short loin Choice,0.9873014092445374,0.9873011936954406,True
+beef short loin choice 0x1,13301501,174 3 Short loin Choice,beef short loin choice,13305416,174 3 Loin short loin 0x1_Choice,0.9276134967803955,0.9276129583438709,False
+beef short loin choice 0x1,13301501,174 3 Short loin Choice,beef short loin 0x1 select,46000,174 3 Loin short loin 0x1_Select,0.880833625793457,0.8808333529672313,False
+beef short loin choice 0x1,13301501,174 3 Short loin Choice,beef short loin 0x1 ch gop,35174,NOT_FOUND,0.8073115944862366,0.8073114362697982,False
+beef short loin choice 0x1,13301501,174 3 Short loin Choice,beef short loin,13301900,NOT_FOUND,0.8028603196144104,0.802860162556106,False
+beef short ribs choice 3 bone,41501,123 A 3 short rib choice,"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,0.8874209523200989,0.8874209573004501,True
+beef short ribs choice 3 bone,41501,123 A 3 short rib choice,beef plate short ribs 3 bone,16300514,NOT_FOUND,0.8728693723678589,0.8728691545666282,False
+beef short ribs choice 3 bone,41501,123 A 3 short rib choice,beef plate short ribs boneless choice,16312400,NOT_FOUND,0.8709173798561096,0.8709169757594548,False
+beef short ribs choice 3 bone,41501,123 A 3 short rib choice,beef plate short ribs choice,16311400,NOT_FOUND,0.858065664768219,0.8580655624607649,False
+beef short ribs choice 3 bone,41501,123 A 3 short rib choice,beef chuck short ribs choice boneless,11321440,NOT_FOUND,0.8511902093887329,0.851190659853241,False
+"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,0.9394401907920837,0.9394402330509353,False
+"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,beef plate short ribs 3 bone,16300514,NOT_FOUND,0.9132339358329773,0.9132337964708694,False
+"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,beef plate short ribs-bone- in,16300012,NOT_FOUND,0.8993598818778992,0.8993596610561436,False
+"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,beef short ribs choice 3 bone,41501,123 A 3 short rib choice,0.8874210119247437,0.8874209614351609,True
+"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,"beef short ribs, bone-in sliced",160007,NOT_FOUND,0.87750643491745,0.87750611638939,False
+"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,"beef short ribs, bone-in, 3 bone",160003,123 A 3 short rib choice,0.9394401907920837,0.9394402850304847,False
+"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,beef plate short ribs-bone- in,16300012,NOT_FOUND,0.8819856643676758,0.8819853161462603,False
+"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,"beef short ribs, bone-in sliced",160007,NOT_FOUND,0.8798812627792358,0.8798813542779613,False
+"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,beef plate short ribs 3 bone,16300514,NOT_FOUND,0.863976001739502,0.8639760550310217,False
+"beef short ribs, bone-in, 4rib",160004,130 4 chuck short rib,beef chuck short ribs- bone in,11321441,NOT_FOUND,0.8550735116004944,0.8550736232540542,False
+"beef shoulder clod 1/4"" choice",46700,114 A 3 shoulder clod,"beef angus gold xt clod 1/4""",46703,NOT_FOUND,0.7492089867591858,0.7492090140460438,False
+"beef shoulder clod 1/4"" choice",46700,114 A 3 shoulder clod,"beef angus gold xt clod 1/4"" halal",46704,NOT_FOUND,0.7137259244918823,0.7137260392459361,False
+"beef shoulder clod 1/4"" choice",46700,114 A 3 shoulder clod,beef shoulder clod xt star ranch angus,46720,NOT_FOUND,0.6966783404350281,0.6966785303316545,False
+"beef shoulder clod 1/4"" choice",46700,114 A 3 shoulder clod,beef clod choice (flat iron out),42608,NOT_FOUND,0.6858745217323303,0.6858745432838829,False
+"beef shoulder clod 1/4"" choice",46700,114 A 3 shoulder clod,beef chuck clods choice cut 1/2 inch,11110401,NOT_FOUND,0.683097779750824,0.6830977105871529,False
+beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,beef btm sirl flap meat star ranch angus,41220,NOT_FOUND,0.7877291440963745,0.7877292662310131,False
+beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,beef flap meat choice,41211,NOT_FOUND,0.7609046101570129,0.760904446771929,False
+beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,beef chuck flap tail choice (ui)angus,11300490,116g Chuck Flap,0.7591524720191956,0.7591523412615717,False
+beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,beef top sirloin butts angus,44210,NOT_FOUND,0.7443138360977173,0.7443137197952754,False
+beef sirloin flap meat choice angus ui,13808000,185 A 4 Bottom sirloin or “flap meat”,beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,0.7355796694755554,0.7355796482757482,True
+"beef special trim, pritzlaff, 50#cs",190050,Cap & Wedge,beef trimmings 50/50,SP125,NOT_FOUND,0.7637699842453003,0.7637701430028294,False
+"beef special trim, pritzlaff, 50#cs",190050,Cap & Wedge,beef special trim 93-95%,41951,NOT_FOUND,0.762922465801239,0.7629222093638945,False
+"beef special trim, pritzlaff, 50#cs",190050,Cap & Wedge,beef trimmings 50% -,19990040,NOT_FOUND,0.7294405698776245,0.7294402537782618,False
+"beef special trim, pritzlaff, 50#cs",190050,Cap & Wedge,beef 90% trim,190038,NOT_FOUND,0.720270037651062,0.7202700830605308,False
+"beef special trim, pritzlaff, 50#cs",190050,Cap & Wedge,"chicken breast trim, pritzlaff",310846,NOT_FOUND,0.7116891741752625,0.7116891030490272,False
+beef strip loin 0x1 choice,40460,180 3 Strip loin,beef strip loin 0x1 choice-1/2,13400401,NOT_FOUND,0.9524407386779785,0.9524403719689847,False
+beef strip loin 0x1 choice,40460,180 3 Strip loin,beef strip loin boneless choice 0x1,13400701,NOT_FOUND,0.9452090859413147,0.9452088011871937,False
+beef strip loin 0x1 choice,40460,180 3 Strip loin,beef strip loin boneless choice 1x1,13400421,NOT_FOUND,0.9268164038658142,0.9268164485429261,False
+beef strip loin 0x1 choice,40460,180 3 Strip loin,beef strip loin #2 choice,46061,NOT_FOUND,0.9198528528213501,0.9198532098070802,False
+beef strip loin 0x1 choice,40460,180 3 Strip loin,beef strip loin boneles choice 0x0,13400499,NOT_FOUND,0.9114460349082947,0.9114457220510457,False
+beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,beef strip loin 0x1 #ii select,40450,NOT_FOUND,0.9869678020477295,0.9869675552240385,False
+beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,beef strip loin 0x1 ~select~,40401,NOT_FOUND,0.9515063762664795,0.9515061801639166,False
+beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,beef strip loin boneless select 0x0,13400300,NOT_FOUND,0.9110197424888611,0.9110198106575029,False
+beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,beef strip loin 0x1 choice,40460,180 3 Strip loin,0.8773016333580017,0.8773015864529146,False
+beef strip loin 0x1 select,40410,180 3 Loin strip bnls 0x1_Choice,beef strip loin 0x1 choice-1/2,13400401,NOT_FOUND,0.8657482266426086,0.8657479793359711,False
+beef strip loin boneless choice 0x1 (ui),13400501,180 3 Strip loin,beef strip loin boneless choice 0x1,13400701,NOT_FOUND,0.9326738119125366,0.932674055323569,False
+beef strip loin boneless choice 0x1 (ui),13400501,180 3 Strip loin,beef strip loin boneless select 0x0,13400300,NOT_FOUND,0.9191107153892517,0.9191109437381761,False
+beef strip loin boneless choice 0x1 (ui),13400501,180 3 Strip loin,beef strip loin boneless choice 1x1,13400421,NOT_FOUND,0.8954534530639648,0.8954536333184937,False
+beef strip loin boneless choice 0x1 (ui),13400501,180 3 Strip loin,beef strip loin 0x1 bone in choice,40461,NOT_FOUND,0.8899571895599365,0.8899569482906753,False
+beef strip loin boneless choice 0x1 (ui),13400501,180 3 Strip loin,beef strip loin boneles choice 0x0,13400499,NOT_FOUND,0.8885813355445862,0.8885815476186447,False
+beef strip loin boneless n/r 0x1,13400201,180 3 Loin strip bnls 0x1_Choice,beef strip loin boneless n/r 1x1,13400322,NOT_FOUND,0.9912150502204895,0.9912149610480587,False
+beef strip loin boneless n/r 0x1,13400201,180 3 Loin strip bnls 0x1_Choice,beef strip loin 1x1 boneless,40510,NOT_FOUND,0.9183838963508606,0.9183835773890636,False
+beef strip loin boneless n/r 0x1,13400201,180 3 Loin strip bnls 0x1_Choice,beef strip loin 0x1 evp n/r,1568413,NOT_FOUND,0.9096111059188843,0.909611326463073,False
+beef strip loin boneless n/r 0x1,13400201,180 3 Loin strip bnls 0x1_Choice,beef strip loin boneless choice 0x1,13400701,NOT_FOUND,0.9026713371276855,0.9026709608872092,False
+beef strip loin boneless n/r 0x1,13400201,180 3 Loin strip bnls 0x1_Choice,beef strip loin boneless choice 1x1,13400421,NOT_FOUND,0.8738000392913818,0.8738004155171126,False
+beef tenderloin psmo 5up choice,40010,189a Psmo tenderloin,beef tenderloin psmo choice 5 up,13000905,NOT_FOUND,0.9717522859573364,0.9717519487529633,False
+beef tenderloin psmo 5up choice,40010,189a Psmo tenderloin,beef tenderloin psmo 5up select,40012,NOT_FOUND,0.9387100338935852,0.9387100812296937,False
+beef tenderloin psmo 5up choice,40010,189a Psmo tenderloin,beef tenderloin psmo choice 5 down,13000415,NOT_FOUND,0.9382669925689697,0.9382670691316447,False
+beef tenderloin psmo 5up choice,40010,189a Psmo tenderloin,beef tenderloin psmo 5up ii,40070,NOT_FOUND,0.9307337403297424,0.9307337937563003,False
+beef tenderloin psmo 5up choice,40010,189a Psmo tenderloin,beef tenderloin psmo 5up prime,40011,NOT_FOUND,0.8840100169181824,0.8840101974252533,False
+"beef tenderloin, psmo, ch, 5up, cs lo",144053,189a Psmo tenderloin,"beef tenderloin, psmo, ch, 5up",144051,NOT_FOUND,0.9444044828414917,0.9444041639382218,False
+"beef tenderloin, psmo, ch, 5up, cs lo",144053,189a Psmo tenderloin,"beef tenderloin, psmo, ch, 5up, pc",144054,NOT_FOUND,0.906682550907135,0.9066827214970062,False
+"beef tenderloin, psmo, ch, 5up, cs lo",144053,189a Psmo tenderloin,"beef tenderloin, psmo, #2, ch",140021,NOT_FOUND,0.8908997178077698,0.8908993504014739,False
+"beef tenderloin, psmo, ch, 5up, cs lo",144053,189a Psmo tenderloin,"beef tenderloin, psmo, 5up, prime",141050,NOT_FOUND,0.8403418660163879,0.8403419065528268,False
+"beef tenderloin, psmo, ch, 5up, cs lo",144053,189a Psmo tenderloin,"beef tenderloin, psmo, diamond cut, 5up",140054,NOT_FOUND,0.809027910232544,0.8090276050610784,False
+beef teres major choice,46450,114f Clod Tender (teres major),beef teres major frozen,46450,114f Clod Tender (teres major),0.7432473301887512,0.7432474066543131,True
+beef teres major choice,46450,114f Clod Tender (teres major),beef round whole choice,14000400,NOT_FOUND,0.741621196269989,0.741621517823172,False
+beef teres major choice,46450,114f Clod Tender (teres major),beef inside round choice,14500800,NOT_FOUND,0.7297487258911133,0.7297487348711226,False
+beef teres major choice,46450,114f Clod Tender (teres major),beef round inside choice,14500401,NOT_FOUND,0.7242705225944519,0.7242705652326571,False
+beef teres major choice,46450,114f Clod Tender (teres major),choice beef hindshank,190003,NOT_FOUND,0.7229028344154358,0.7229030922276496,False
+beef teres major frozen,46450,114f Clod Tender (teres major),beef teres major *ibp* frozen,46420,NOT_FOUND,0.8791890740394592,0.879189101928112,False
+beef teres major frozen,46450,114f Clod Tender (teres major),beef ground frozen,SP100,NOT_FOUND,0.7679679989814758,0.7679680023416099,False
+beef teres major frozen,46450,114f Clod Tender (teres major),beef teres major choice,46450,114f Clod Tender (teres major),0.743247389793396,0.7432474158869216,True
+beef teres major frozen,46450,114f Clod Tender (teres major),"beef ground frozen, 54/10oz",190033,NOT_FOUND,0.7373005151748657,0.7373003154687549,False
+beef teres major frozen,46450,114f Clod Tender (teres major),beef short loin 0x1 select frozen,46000,174 3 Loin short loin 0x1_Select,0.7251511216163635,0.7251514036377945,False
+beef top sirloin butt choice (ui),13600513,184 3 Top butt bnls,beef top sirloin butt choice,13630400,NOT_FOUND,0.9349576234817505,0.934957682806631,False
+beef top sirloin butt choice (ui),13600513,184 3 Top butt bnls,beef top sirloin butt select,13630200,NOT_FOUND,0.9262070655822754,0.9262065637173197,False
+beef top sirloin butt choice (ui),13600513,184 3 Top butt bnls,beef top sirloin butt xt choice,13600410,NOT_FOUND,0.8985374569892883,0.8985370162076864,False
+beef top sirloin butt choice (ui),13600513,184 3 Top butt bnls,beef top sirloin butt choice 13 up,13600713,NOT_FOUND,0.8599122762680054,0.8599119332737939,False
+beef top sirloin butt choice (ui),13600513,184 3 Top butt bnls,beef sirloin top butt american foods,13600210,NOT_FOUND,0.8016605973243713,0.8016605096826424,False
+"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,"brisket beef, ch",114000,NOT_FOUND,0.8818289637565613,0.8818289047703769,False
+"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,beef ch brisket,40367,120 1 brisket deckle off,0.8569554686546326,0.8569553231681798,True
+"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,beef brisket choice*,SP121,NOT_FOUND,0.7748942971229553,0.7748940024883288,False
+"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,beef brisket wagyu 4/5,15000800,NOT_FOUND,0.7714353203773499,0.7714350873017863,False
+"brisket beef, ch, 9-11a",114001,120 1 brisket deckle off,"brisket beef, whole, ch, 120 dekl, 4/9lb",114490,NOT_FOUND,0.767507016658783,0.7675068217165018,False
+"brisket bnls, ibp (ch)",12011014,120 1 brisket deckle off,"brisket bnls, tdo ibp (sel)",12013575,NOT_FOUND,0.9088213443756104,0.9088213337336596,False
+"brisket bnls, ibp (ch)",12011014,120 1 brisket deckle off,"brisket bnls, national (ch)",12011024,NOT_FOUND,0.8771228790283203,0.8771224878294666,False
+"brisket bnls, ibp (ch)",12011014,120 1 brisket deckle off,"brisket bnls, greateromaha (ch)",12011004,NOT_FOUND,0.835242509841919,0.8352423201899893,False
+"brisket bnls, ibp (ch)",12011014,120 1 brisket deckle off,"brisket bnls, ibp star ranch (ch_angus)",12013563,NOT_FOUND,0.8310392498970032,0.8310391313019996,False
+"brisket bnls, ibp (ch)",12011014,120 1 brisket deckle off,"brisket bnls, creekstone (ch)",12011204,NOT_FOUND,0.8286933302879333,0.8286934294518704,False
+"butt boneless vp, pork, ibp",46091010,1/4 trim boneless Pork butt VAC,pork c.t. butts boneless //ibp//,20050,NOT_FOUND,0.8508027791976929,0.8508030881505055,False
+"butt boneless vp, pork, ibp",46091010,1/4 trim boneless Pork butt VAC,"loin boneless supreme, pork ibp",44201010,NOT_FOUND,0.7860515117645264,0.786051229788626,False
+"butt boneless vp, pork, ibp",46091010,1/4 trim boneless Pork butt VAC,"butt boneless 1/4 vp, pork, seaboard",46091150,NOT_FOUND,0.782206654548645,0.7822066573761424,False
+"butt boneless vp, pork, ibp",46091010,1/4 trim boneless Pork butt VAC,"sirloin roast boneless vp, pork, ibp",44271010,NOT_FOUND,0.7639454007148743,0.7639453671944518,False
+"butt boneless vp, pork, ibp",46091010,1/4 trim boneless Pork butt VAC,pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,0.7469828128814697,0.7469828302748907,True
+"chuck eyeroll, ch",124002,116 A 3 chuck roll,"chuck eyeroll, sliced thin",120001,NOT_FOUND,0.7257577776908875,0.7257578024723883,False
+"chuck eyeroll, ch",124002,116 A 3 chuck roll,"chuck roll block ready, ch,",13069980,NOT_FOUND,0.6957293152809143,0.6957291818262248,False
+"chuck eyeroll, ch",124002,116 A 3 chuck roll,"chuck tender, ch",120089,NOT_FOUND,0.6892305016517639,0.6892303194034073,False
+"chuck eyeroll, ch",124002,116 A 3 chuck roll,"chuck roll n/off, national (ch)",13081024,NOT_FOUND,0.6764202117919922,0.6764203085179582,False
+"chuck eyeroll, ch",124002,116 A 3 chuck roll,"chuck roll n/off, creekstone (ch)",13081204,NOT_FOUND,0.6628458499908447,0.6628458835616751,False
+chuck flap meat beef,120005,116g Chuck Flap,beef chuck flap tail choice,11320400,NOT_FOUND,0.8058221340179443,0.8058220754457017,False
+chuck flap meat beef,120005,116g Chuck Flap,beef flap meat choice,41211,NOT_FOUND,0.8016422986984253,0.8016418323516258,False
+chuck flap meat beef,120005,116g Chuck Flap,beef chuck tender,48500,NOT_FOUND,0.7875322699546814,0.787532081011624,False
+chuck flap meat beef,120005,116g Chuck Flap,beef chuck flap tail 4oz,11300004,NOT_FOUND,0.7812872529029846,0.781287197399307,False
+chuck flap meat beef,120005,116g Chuck Flap,beef flap meat select,41210,185 A 4 Bottom sirloin or “flap meat”,0.7764686942100525,0.7764690638047126,False
+"chuck roll n/off, ibp (ch)",13081014,116 A 3 chuck roll,"chuck roll n/off, ibp (nr)",13081016,NOT_FOUND,0.9694929718971252,0.9694924859613234,False
+"chuck roll n/off, ibp (ch)",13081014,116 A 3 chuck roll,"chuck roll n/off, ibp (sel)",13083575,NOT_FOUND,0.9184165596961975,0.9184163030608583,False
+"chuck roll n/off, ibp (ch)",13081014,116 A 3 chuck roll,"chuck roll n/off, ibp (cangus)",13081012,NOT_FOUND,0.8704738616943359,0.8704735500159289,False
+"chuck roll n/off, ibp (ch)",13081014,116 A 3 chuck roll,"chuck roll n/off, ibp (prime)",13083571,NOT_FOUND,0.856877863407135,0.8568773298752186,False
+"chuck roll n/off, ibp (ch)",13081014,116 A 3 chuck roll,bf chuck roll n/off nr ibp,1087NPL,NOT_FOUND,0.8386819958686829,0.8386816416195135,False
+"clod shoulder xt, ibp (ch)",13021014,114 A 3 shoulder clod,"clod shoulder xt, ibp (cangus)",13021012,NOT_FOUND,0.9037951827049255,0.9037948603856834,False
+"clod shoulder xt, ibp (ch)",13021014,114 A 3 shoulder clod,"clod shoulder xt, national (ch)",13021024,NOT_FOUND,0.8639574646949768,0.8639572096863337,False
+"clod shoulder xt, ibp (ch)",13021014,114 A 3 shoulder clod,"clod shoulder xt,westernreserve (ch)",13021144,NOT_FOUND,0.8362115621566772,0.8362113562071921,False
+"clod shoulder xt, ibp (ch)",13021014,114 A 3 shoulder clod,"clod shoulder xt, iowa premium (ch)",13021164,NOT_FOUND,0.8306812047958374,0.8306810135106883,False
+"clod shoulder xt, ibp (ch)",13021014,114 A 3 shoulder clod,"clod shoulder xt, greateromaha (ch)",13021004,NOT_FOUND,0.8213086724281311,0.8213083231361835,False
+"clod tender, ch",124003,114f Clod Tender (teres major),choice clod tender-processed,124007,NOT_FOUND,0.7817316055297852,0.7817319262631499,False
+"clod tender, ch",124003,114f Clod Tender (teres major),"clod tender peeled, ch, 10#a",124005,NOT_FOUND,0.7785767912864685,0.7785768494453139,False
+"clod tender, ch",124003,114f Clod Tender (teres major),"clods beef, ch",124004,114 A 3 shoulder clod,0.7578219771385193,0.7578218859073145,False
+"clod tender, ch",124003,114f Clod Tender (teres major),beef chuck clod tender nr,11400200,NOT_FOUND,0.7143787145614624,0.7143783906471952,False
+"clod tender, ch",124003,114f Clod Tender (teres major),beef chuck clod tender choice,11400400,114f Clod Tender (teres major),0.6504458785057068,0.6504456851393139,True
+"clods beef, ch",124004,114 A 3 shoulder clod,"clod tender, ch",124003,114f Clod Tender (teres major),0.7578218579292297,0.7578219003663226,False
+"clods beef, ch",124004,114 A 3 shoulder clod,buffalo clods,454215,NOT_FOUND,0.6824263334274292,0.6824263151161438,False
+"clods beef, ch",124004,114 A 3 shoulder clod,beef chuck clod tender nr,11400200,NOT_FOUND,0.6802030801773071,0.6802031553973147,False
+"clods beef, ch",124004,114 A 3 shoulder clod,"beef suey, ch",184002,NOT_FOUND,0.6695998907089233,0.6696002122515002,False
+"clods beef, ch",124004,114 A 3 shoulder clod,beef ch pld tri tip,43870,NOT_FOUND,0.6650339365005493,0.6650338084839498,False
+"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,"eye round, 5star (ch)",11264544,NOT_FOUND,0.7311276793479919,0.7311272173604857,False
+"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,"top round, ch, 17-20#",174170,NOT_FOUND,0.6854137182235718,0.6854137863795841,False
+"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,"eye round, national (ch)",11261024,NOT_FOUND,0.6715284585952759,0.6715283665377703,False
+"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,"eye round, creekstone (ch)",11261204,NOT_FOUND,0.6497637033462524,0.6497636251237364,False
+"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,bf round eye rnds ch *__,1710AZ1,NOT_FOUND,0.6338215470314026,0.6338212303890596,False
+"eye round, ibp (ch)",11261014,171 C 3 Eye of round,"eye round, ibp (n/r)",11263576,NOT_FOUND,0.8419253826141357,0.8419249515032728,False
+"eye round, ibp (ch)",11261014,171 C 3 Eye of round,"eye round, ibp (ch_angus)",11261013,NOT_FOUND,0.8181491494178772,0.8181493946281958,False
+"eye round, ibp (ch)",11261014,171 C 3 Eye of round,"eye round, ibp (select)",11261015,NOT_FOUND,0.7858480215072632,0.7858482155327631,False
+"eye round, ibp (ch)",11261014,171 C 3 Eye of round,"eye round, ibp (cangus)",11261012,NOT_FOUND,0.7693520784378052,0.7693518081703024,False
+"eye round, ibp (ch)",11261014,171 C 3 Eye of round,"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,0.7444667816162109,0.7444667235654898,False
+"flank steak, ch",134000,193 Flank,"flank steak, (ch)",13199984,NOT_FOUND,0.9785356521606445,0.9785358887261089,False
+"flank steak, ch",134000,193 Flank,"flank steak, national (ch)",13191024,NOT_FOUND,0.921496570110321,0.9214960684488802,False
+"flank steak, ch",134000,193 Flank,"flank steak, trimmed, ch",134001,NOT_FOUND,0.8887324929237366,0.8887322793504444,False
+"flank steak, ch",134000,193 Flank,"flank steak, (util)",13191567,NOT_FOUND,0.8742616772651672,0.8742618476594508,False
+"flank steak, ch",134000,193 Flank,beef flank steak,40820,193 Flank,0.8673858046531677,0.8673852506919687,True
+"flank steak, ibp (ch)",14193574,193 Flank,"flank steak, (ch)",13199984,NOT_FOUND,0.8747249841690063,0.8747249602447033,False
+"flank steak, ibp (ch)",14193574,193 Flank,"flank steak, ch",134000,193 Flank,0.8656830787658691,0.8656833011746969,True
+"flank steak, ibp (ch)",14193574,193 Flank,"flank steak, national (ch)",13191024,NOT_FOUND,0.838510274887085,0.8385100566689501,False
+"flank steak, ibp (ch)",14193574,193 Flank,"flank steak, afg (ch)",13191054,NOT_FOUND,0.831373393535614,0.8313729451452052,False
+"flank steak, ibp (ch)",14193574,193 Flank,beef flank steak //ibp//ch angus,40830,NOT_FOUND,0.8284081220626831,0.8284079361899481,False
+"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), ibp (cangus)",15183572,NOT_FOUND,0.9237587451934814,0.9237590459890144,False
+"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,0.8665869235992432,0.8665867995569645,True
+"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), jbs",207900008,NOT_FOUND,0.8591263294219971,0.8591261002074762,False
+"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), national (ch)",15181024,NOT_FOUND,0.858437716960907,0.8584377597842104,False
+"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), mex ribe",15181620,NOT_FOUND,0.8286291360855103,0.8286290905381887,False
+"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,"flat bottom round, ibp (select)",11301015,NOT_FOUND,0.8072987794876099,0.8072987183371565,False
+"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,"flat bottom round, ibp (cangus)",11301012,NOT_FOUND,0.8007076978683472,0.8007073246996439,False
+"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,0.7555898427963257,0.7555897254474442,False
+"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,"eye round, ibp (ch)",11261014,171 C 3 Eye of round,0.7444668412208557,0.7444668152076845,False
+"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,"flat bottom round, national (ch)",11301024,NOT_FOUND,0.7212941646575928,0.7212939796242808,False
+ground beef 73% fine - ibp,19161010,Ground beef 73%,ground beef 80% fine ibp (80#),19111010,NOT_FOUND,0.9440465569496155,0.944046584767554,False
+ground beef 73% fine - ibp,19161010,Ground beef 73%,ground beef 73% fine (3lb chub) ibp,19163570,NOT_FOUND,0.9186381697654724,0.9186381216746334,False
+ground beef 73% fine - ibp,19161010,Ground beef 73%,ground beef 73% fine 6/10 ibp(c-angus),19161012,NOT_FOUND,0.9096152782440186,0.9096152051898181,False
+ground beef 73% fine - ibp,19161010,Ground beef 73%,ground beef fine 73%,41230,Ground beef 73%,0.8782203197479248,0.8782202541214529,True
+ground beef 73% fine - ibp,19161010,Ground beef 73%,ground natural beef 85% //ibp//,45230,NOT_FOUND,0.8747562170028687,0.8747564903199044,False
+ground beef 80/20 frozen,42300,Ground beef 81%,ground beef fine 80/20 frozen,42301,NOT_FOUND,0.9735393524169922,0.973539294346631,False
+ground beef 80/20 frozen,42300,Ground beef 81%,ground beef fine 80/20 halal frozen,73073,NOT_FOUND,0.9339182376861572,0.9339175037132283,False
+ground beef 80/20 frozen,42300,Ground beef 81%,beef ground frozen,SP100,NOT_FOUND,0.8984891772270203,0.8984884770587329,False
+ground beef 80/20 frozen,42300,Ground beef 81%,ground beef fine 73% frozen,41230,Ground beef 73%,0.8981330394744873,0.8981327514240398,False
+ground beef 80/20 frozen,42300,Ground beef 81%,"beef ground frozen, 54/10oz",190033,NOT_FOUND,0.8893606066703796,0.8893605298193389,False
+ground beef fine 73%,41230,Ground beef 73%,ground beef fine 75%,42210,NOT_FOUND,0.9828338027000427,0.9828337084276428,False
+ground beef fine 73%,41230,Ground beef 73%,ground beef fine 80%,42300,Ground beef 81%,0.9744358062744141,0.9744358748287627,False
+ground beef fine 73%,41230,Ground beef 73%,ground beef fine 73% 12/3#,41238,NOT_FOUND,0.9210178852081299,0.921018005593665,False
+ground beef fine 73%,41230,Ground beef 73%,ground beef 81% fine cs beef (80#),19121070,NOT_FOUND,0.9036053419113159,0.9036052000035177,False
+ground beef fine 73%,41230,Ground beef 73%,ground beef 81% fine cs beef (40#),19111070,NOT_FOUND,0.8884057998657227,0.8884057862193663,False
+ground beef fine 73% frozen,41230,Ground beef 73%,ground beef fine 80/20 frozen,42301,NOT_FOUND,0.9344983100891113,0.9344981774426818,False
+ground beef fine 73% frozen,41230,Ground beef 73%,ground beef 80/20 frozen,42300,Ground beef 81%,0.898132860660553,0.8981327191528778,False
+ground beef fine 73% frozen,41230,Ground beef 73%,ground beef fine 80/20 halal frozen,73073,NOT_FOUND,0.893681526184082,0.8936812547248387,False
+ground beef fine 73% frozen,41230,Ground beef 73%,beef ground frozen,SP100,NOT_FOUND,0.8662965297698975,0.8662966905964695,False
+ground beef fine 73% frozen,41230,Ground beef 73%,"beef ground frozen, 54/10oz",190033,NOT_FOUND,0.860081136226654,0.8600812805761939,False
+ground beef fine 80%,42300,Ground beef 81%,ground beef fine 75%,42210,NOT_FOUND,0.9791661500930786,0.979165822312939,False
+ground beef fine 80%,42300,Ground beef 81%,ground beef fine 73%,41230,Ground beef 73%,0.9744356870651245,0.9744358988028922,False
+ground beef fine 80%,42300,Ground beef 81%,ground beef 81% fine cs beef (80#),19121070,NOT_FOUND,0.9003208875656128,0.9003208343034392,False
+ground beef fine 80%,42300,Ground beef 81%,ground beef 80% fine all american meats,19115590,NOT_FOUND,0.8977786898612976,0.8977782791018547,False
+ground beef fine 80%,42300,Ground beef 81%,ground beef coarse 80%,42370,NOT_FOUND,0.8922070264816284,0.8922070362503367,False
+"ground chuck, 80% fine, ibp",19101010,Ground beef 81%,"ground chuck, 80% fine, greater omaha",19101000,NOT_FOUND,0.7736199498176575,0.7736199276867957,False
+"ground chuck, 80% fine, ibp",19101010,Ground beef 81%,"ground chuck, 80% fine, greater omaha (c",19101002,NOT_FOUND,0.771304190158844,0.7713043481988715,False
+"ground chuck, 80% fine, ibp",19101010,Ground beef 81%,ground beef chuck 80/20,42330,NOT_FOUND,0.7299410700798035,0.72994082241648,False
+"ground chuck, 80% fine, ibp",19101010,Ground beef 81%,beef ground chuck 85/15,18230015,NOT_FOUND,0.7201916575431824,0.720191639459699,False
+"ground chuck, 80% fine, ibp",19101010,Ground beef 81%,bf grnd-z chuck 73 fine ibp-heb 60#,1040995,NOT_FOUND,0.7114346027374268,0.7114345446742029,False
+"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,0.9528854489326477,0.9528857142807717,False
+"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,"inner skirts, ibp (n/r)",16043576,NOT_FOUND,0.8993570804595947,0.899357401309723,False
+"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,"inner skirts, ibp (sel)",16043575,NOT_FOUND,0.8917293548583984,0.8917290823130948,False
+"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,"outside skirts, ibp (ungraded)",16021010,NOT_FOUND,0.865389883518219,0.8653897214319488,False
+"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,"inner skirts, ibp (cangus)",120800001,NOT_FOUND,0.8359879851341248,0.8359879590358799,False
+"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,"inside round xt, ibp (sel)",11173575,NOT_FOUND,0.8663051128387451,0.866305042211281,False
+"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,"inside round xt, ibp (cangus)",11191012,NOT_FOUND,0.8219634890556335,0.8219631392479176,False
+"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,inside round cosmo ibp (ch),11191014,NOT_FOUND,0.7888613343238831,0.7888612516660891,False
+"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,"inside round xt, afg (ch)",11191054,NOT_FOUND,0.7750810980796814,0.7750810473605663,False
+"inside round xt, ibp (ch)",11193574,168 3 top round inside XT,"flat bottom round, ibp (ch)",11301014,171 B 3 Round outside round flat,0.7555897235870361,0.7555896940079396,False
+inside skirts 60#/cs,150060,121 D 4 Inside skirt,"outside skirts, caviness (ch)",16021074,NOT_FOUND,0.6631096601486206,0.6631093791221043,False
+inside skirts 60#/cs,150060,121 D 4 Inside skirt,"inner skirts, topshelf (ch)",16043364,NOT_FOUND,0.6469941735267639,0.6469940901128739,False
+inside skirts 60#/cs,150060,121 D 4 Inside skirt,"outside skirts, case",150006,121 C 4 Outside skirt,0.6357370615005493,0.6357366456672466,False
+inside skirts 60#/cs,150060,121 D 4 Inside skirt,"inner skirts, 5star (ch)",16044544,NOT_FOUND,0.6344309449195862,0.6344309084214013,False
+inside skirts 60#/cs,150060,121 D 4 Inside skirt,"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,0.6254042387008667,0.6254043221847494,False
+"knuckle pld, ibp (ch)",11121014,167 A 4 knuckles,"knuckle pld, (ch)",11129984,NOT_FOUND,0.8876809477806091,0.8876809457129651,False
+"knuckle pld, ibp (ch)",11121014,167 A 4 knuckles,"knuckle pld, ibp (cangus)",11121012,NOT_FOUND,0.8721135258674622,0.8721134114634005,False
+"knuckle pld, ibp (ch)",11121014,167 A 4 knuckles,"knuckle pld, afg (ch)",11121054,NOT_FOUND,0.8548027873039246,0.8548032747281731,False
+"knuckle pld, ibp (ch)",11121014,167 A 4 knuckles,"knuckle pld, national (ch)",11121024,NOT_FOUND,0.8406763076782227,0.840676195613294,False
+"knuckle pld, ibp (ch)",11121014,167 A 4 knuckles,"knuckle pld, us212 (ch)",11122404,NOT_FOUND,0.8402486443519592,0.8402486409872856,False
+"outside skirts, case",150006,121 C 4 Outside skirt,"outside skirts, caviness (ch)",16021074,NOT_FOUND,0.7896144390106201,0.7896145463822264,False
+"outside skirts, case",150006,121 C 4 Outside skirt,"inner skirts, westernreserve (ch)",16041144,NOT_FOUND,0.7529748678207397,0.7529747190822869,False
+"outside skirts, case",150006,121 C 4 Outside skirt,"outside skirts, peeled",150004,NOT_FOUND,0.7433650493621826,0.743364825640437,False
+"outside skirts, case",150006,121 C 4 Outside skirt,"outside skirts peeled,",16029980,NOT_FOUND,0.739554762840271,0.7395549508406305,False
+"outside skirts, case",150006,121 C 4 Outside skirt,"inner skirts, topshelf (ch)",16043364,NOT_FOUND,0.734718918800354,0.7347189296859974,False
+"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,"inner skirts, ibp (ch)",16041014,121 D 4 Inside skirt,0.9528850317001343,0.952885689282261,False
+"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,"outside skirts, ibp (ungraded)",16021010,NOT_FOUND,0.909623384475708,0.9096233214370946,False
+"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,"inner skirts, ibp (n/r)",16043576,NOT_FOUND,0.8703321218490601,0.8703321664276673,False
+"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,"inner skirts, ibp (sel)",16043575,NOT_FOUND,0.8626399636268616,0.8626397682377218,False
+"outside skirts, ibp (ch)",16021014,121 C 4 Outside skirt,"outside skirts, ibp (cangus)",16021012,NOT_FOUND,0.8398904204368591,0.8398906184916249,False
+pectoral meat,120006,Pectoral,beef pectoral meat,41950,Pectoral,0.9362804889678955,0.9362805728612229,True
+pectoral meat,120006,Pectoral,"pectoral meat, national (ch)",13071024,NOT_FOUND,0.9016814827919006,0.9016812184453324,False
+pectoral meat,120006,Pectoral,bf pectoral meat ch *__,10162XL,NOT_FOUND,0.8489486575126648,0.8489483732105425,False
+pectoral meat,120006,Pectoral,bf pectoral meat ch oma,10163XL,NOT_FOUND,0.8351964354515076,0.835196493624804,False
+pectoral meat,120006,Pectoral,bf pectoral meat pr oma,1016313,NOT_FOUND,0.8313499093055725,0.8313499924746817,False
+pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,pork c.t. butts boneless seaboard,20053,NOT_FOUND,0.8989170789718628,0.8989173237564876,False
+pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,pork b/i shoulder butts ibp/seaboard,20070,NOT_FOUND,0.872310221195221,0.8723103229758061,False
+pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,pork b/i shoulder butts seaboard,22126,NOT_FOUND,0.8512027859687805,0.851202395015052,False
+pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,pork butt ct seaboard,20051,NOT_FOUND,0.8233043551445007,0.823304526840593,False
+pork boneless butt ibp/seaboard,20080,1/4 trim boneless Pork butt VAC,"butt boneless 1/4 vp, pork, seaboard",46091150,NOT_FOUND,0.821978747844696,0.8219790033161096,False
+"pork butt boneless, net weight",260003,1/4 trim boneless Pork butt VAC,"pork butt boned & defat, net weight",260002,NOT_FOUND,0.9126462936401367,0.912646196915825,False
+"pork butt boneless, net weight",260003,1/4 trim boneless Pork butt VAC,pork shoulder butt boneless,31031000,NOT_FOUND,0.7778335809707642,0.7778336619081812,False
+"pork butt boneless, net weight",260003,1/4 trim boneless Pork butt VAC,"pork chop boneless, 10oz",240091,NOT_FOUND,0.7454606294631958,0.7454605102558799,False
+"pork butt boneless, net weight",260003,1/4 trim boneless Pork butt VAC,"pork bones neck, 20#bx",280200,NOT_FOUND,0.7348392605781555,0.7348397597741072,False
+"pork butt boneless, net weight",260003,1/4 trim boneless Pork butt VAC,fat pork (40#) moesle,48059990,NOT_FOUND,0.7329113483428955,0.7329113512464014,False
+pork rib st louis 2-1/2-3 pld-,32200201,Trimmed pork sparerib MED,pork rib st louis 3--3/1/2 pld-,32200202,NOT_FOUND,0.9884649515151978,0.9884649860311903,False
+pork rib st louis 2-1/2-3 pld-,32200201,Trimmed pork sparerib MED,pork rib st louis 2-down,32200200,NOT_FOUND,0.8649474382400513,0.8649477779251784,False
+pork rib st louis 2-1/2-3 pld-,32200201,Trimmed pork sparerib MED,pork spare rib-stl wic-pld 2.50#-z,13129,NOT_FOUND,0.7961127758026123,0.7961128662919273,False
+pork rib st louis 2-1/2-3 pld-,32200201,Trimmed pork sparerib MED,pork spare rib-stl wic-pld 2.50#,13129,NOT_FOUND,0.7960340976715088,0.7960335681678818,False
+pork rib st louis 2-1/2-3 pld-,32200201,Trimmed pork sparerib MED,pork st. louis ribs 2 1/2 dn*,SP865,NOT_FOUND,0.7903860807418823,0.7903860317223301,False
+pork shoulder butt boneless frozen,20080,1/4 trim boneless Pork butt VAC,pork b/i shoulder butts frozen,20070,NOT_FOUND,0.880242645740509,0.8802430194204331,False
+pork shoulder butt boneless frozen,20080,1/4 trim boneless Pork butt VAC,pork loin boneless frozen,39090000,NOT_FOUND,0.8449146747589111,0.8449143827387804,False
+pork shoulder butt boneless frozen,20080,1/4 trim boneless Pork butt VAC,pork shoulder butt boneless fresh,31020104,NOT_FOUND,0.8285992741584778,0.8285994983634921,False
+pork shoulder butt boneless frozen,20080,1/4 trim boneless Pork butt VAC,pork shoulder butt boneless,31031000,NOT_FOUND,0.8249469995498657,0.8249473243574854,False
+pork shoulder butt boneless frozen,20080,1/4 trim boneless Pork butt VAC,smoked pork neckbones frozen,20234,NOT_FOUND,0.8002901673316956,0.8002906885530315,False
+"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,0.8391302824020386,0.8391301105327532,True
+"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,"pork back rib half cov, seaboard",250149,NOT_FOUND,0.8187182545661926,0.8187183437445336,False
+"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,pork spare rib 30#,45019990,NOT_FOUND,0.8021868467330933,0.8021866827241375,False
+"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,pork spare rib 2000#,45019980,NOT_FOUND,0.7928915619850159,0.7928912186876831,False
+"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,pork spare rib ind med-20504,13177IN,NOT_FOUND,0.7892928123474121,0.7892928896674609,False
+pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,pork spareribs ibp/seaboard small/lgt,20166,NOT_FOUND,0.9074993133544922,0.9074991573549066,False
+pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,"pork spare rib medium, seaboard",250015,Trimmed pork sparerib MED,0.8391299247741699,0.8391300987094432,True
+pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,0.8375807404518127,0.837580729984215,True
+pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,"spareribs (medium) 1pc vp, pork ibp",45111010,NOT_FOUND,0.8248067498207092,0.8248065951200653,False
+pork spareribs ibp/seaboard medium,20167,Trimmed pork sparerib MED,"spareribs (medium) 2pc, pork hormel",45014140,NOT_FOUND,0.7969818115234375,0.7969819537844209,False
+"ribeye heavy, ibp (ch)",17093574,112a HVY Lipon Ribeye,"ribeye heavy, ibp (sel)",17093575,NOT_FOUND,0.8850859999656677,0.8850861750258655,False
+"ribeye heavy, ibp (ch)",17093574,112a HVY Lipon Ribeye,"ribeye, lip-on heavy, s.b. ibp (ch)",17193574,NOT_FOUND,0.862708568572998,0.8627082517500557,False
+"ribeye heavy, ibp (ch)",17093574,112a HVY Lipon Ribeye,"ribeye heavy, ibp (cangus)",17093572,NOT_FOUND,0.8504601120948792,0.8504600666455627,False
+"ribeye heavy, ibp (ch)",17093574,112a HVY Lipon Ribeye,"short rib plate, ibp (ch)",13183574,NOT_FOUND,0.7677409648895264,0.7677407569570667,False
+"ribeye heavy, ibp (ch)",17093574,112a HVY Lipon Ribeye,bf ribeye bi hvy-frc ch ibp,10040004,NOT_FOUND,0.7663977742195129,0.7663978513387306,False
+"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,"ribeye lip on hvy, ch, 14up",164145,NOT_FOUND,0.9857144355773926,0.9857143497034613,False
+"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,"ribeye lip on hvy, creekstone ang, 16up",163112,NOT_FOUND,0.8684902787208557,0.8684900176650729,False
+"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,"ribeye lip on, ch, #2",164025,NOT_FOUND,0.8401930928230286,0.8401931468825035,False
+"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,0.8304957747459412,0.8304954333282648,False
+"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,"ribeye lip on, nr",160008,NOT_FOUND,0.8056050539016724,0.8056052029008424,False
+"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on, ch, #2",164025,NOT_FOUND,0.8647419214248657,0.8647418201873385,False
+"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on hvy, ch, 16up",164167,112a HVY Lipon Ribeye,0.830496072769165,0.8304954677205574,False
+"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on, nr",160008,NOT_FOUND,0.8247356414794922,0.8247359730266011,False
+"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on hvy, ch, 14up",164145,NOT_FOUND,0.8229045867919922,0.8229044589145857,False
+"ribeye lip on, ch, 16#dn",164165,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on/dn, creekstone (sel)",17091215,NOT_FOUND,0.7926679849624634,0.7926677881320332,False
+"ribeye lip on, nebraska beef (ch)",17111874,109E 1 Rib ribeye lip-on bn-in_Choice,"ribeye lip on, nebraska beef (sel)",17111875,NOT_FOUND,0.9640457630157471,0.9640458781654062,False
+"ribeye lip on, nebraska beef (ch)",17111874,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice dwn,12100414,NOT_FOUND,0.7649306654930115,0.7649304459795555,False
+"ribeye lip on, nebraska beef (ch)",17111874,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye lip-on boneless choice,43720,109E 1 Rib ribeye lip-on bn-in_Choice,0.7591601014137268,0.759159856762056,True
+"ribeye lip on, nebraska beef (ch)",17111874,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on choice up,12100700,NOT_FOUND,0.7576503157615662,0.757650659393019,False
+"ribeye lip on, nebraska beef (ch)",17111874,109E 1 Rib ribeye lip-on bn-in_Choice,beef ribeye boneless lip on 5# netted,12101514,109E 1 Rib ribeye lip-on bn-in_Choice,0.7571607828140259,0.7571605455995989,True
+"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,"short loin 0x1, ibp (nr)",15023576,NOT_FOUND,0.9321519732475281,0.9321522224073974,False
+"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,"short loin 0x1, ibp (sel)",15023575,NOT_FOUND,0.8639385104179382,0.8639383451438806,False
+"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,"short loin 0x1, ibp (cangus)",15023572,NOT_FOUND,0.8124873638153076,0.8124872882967125,False
+"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,"short loin 0x1, (ch)",15029984,NOT_FOUND,0.8108357191085815,0.8108354948872528,False
+"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,bf loin short 0x1 ch ibp-sra,1026100,NOT_FOUND,0.7534645795822144,0.7534649002052389,False
+"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,"short loin 0x1, upper iowa (ch)",15023334,NOT_FOUND,0.8489521145820618,0.8489522412826036,False
+"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,0.8245564103126526,0.824556759148261,False
+"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,"short loin 0x1, iowa premium (ch)",15021164,NOT_FOUND,0.7991756200790405,0.7991757809573696,False
+"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,"short loin 0x1, national (ch)",15021024,NOT_FOUND,0.7764158844947815,0.7764158025622232,False
+"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,"short loin 0x1, (ch)",15029984,NOT_FOUND,0.7016829252243042,0.701683029494595,False
+"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,"short loin 0x1, nebraska (ch)",15021874,174 3 Loin short loin 0x1_Choice,0.8245566487312317,0.8245567437797672,False
+"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,"short loin 0x1, national a. b (ch_angus)",15025723,NOT_FOUND,0.7453362345695496,0.7453357554563824,False
+"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,"short loin 0x1, iowapremium (black angus",15021163,NOT_FOUND,0.7233593463897705,0.7233594488807973,False
+"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,"short loin 0x1, upper iowa (ch)",15023334,NOT_FOUND,0.7119211554527283,0.7119211916261414,False
+"short loin 0x1, nebraska (sel angus)",15021875,174 3 Loin short loin 0x1_Select,"short loin 0x1, national (sel)",15021025,NOT_FOUND,0.7101927399635315,0.7101923370432424,False
+"short loin, 0+1, ch",144012,174 3 Short loin Choice,"short loin 0x1, (ch)",15029984,NOT_FOUND,0.8850492238998413,0.8850488443985067,False
+"short loin, 0+1, ch",144012,174 3 Short loin Choice,"short loins, ch",144016,NOT_FOUND,0.766638457775116,0.7666382678258188,False
+"short loin, 0+1, ch",144012,174 3 Short loin Choice,"short loin 0x1, greateromaha (ch)",15021004,NOT_FOUND,0.7502685189247131,0.7502684935573607,False
+"short loin, 0+1, ch",144012,174 3 Short loin Choice,"short loin 0x1, national (ch)",15021024,NOT_FOUND,0.7493482232093811,0.7493487074512952,False
+"short loin, 0+1, ch",144012,174 3 Short loin Choice,"short loin 0x1, ibp (ch)",15023574,174 3 Short loin Choice,0.7239379286766052,0.7239380309551633,True
+"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), jbs",207900008,NOT_FOUND,0.8896640539169312,0.8896633913577104,False
+"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), national (ch)",15181024,NOT_FOUND,0.8860476016998291,0.8860474677314341,False
+"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), ibp (ch)",15183574,185 A 4 Bottom sirloin or “flap meat”,0.8665871620178223,0.8665867323247902,True
+"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), heritage",15184956,NOT_FOUND,0.841581404209137,0.8415810526422736,False
+"sirloin flap meat, ch",140006,185 A 4 Bottom sirloin or “flap meat”,"flap meat (sirloin), harmony",15184496,NOT_FOUND,0.8385611772537231,0.838561010552877,False
+"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, (ch)",15109984,NOT_FOUND,0.8980526924133301,0.8980528517210433,False
+"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,"sirloin top butt, ch, cs lot",144007,NOT_FOUND,0.8521539568901062,0.8521541797303718,False
+"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,"sirloin top butt, nr, cs lot",144017,NOT_FOUND,0.8342082500457764,0.8342082655015765,False
+"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, greateromaha (ch)",15101004,NOT_FOUND,0.8240122199058533,0.824012256467043,False
+"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, national (ch)",15101024,NOT_FOUND,0.8236728310585022,0.8236729779953544,False
+"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,"spareribs (medium) 1pc vp, pork ibp",45111010,NOT_FOUND,0.9681833386421204,0.9681834387589978,False
+"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,"spareribs (light) vp, pork ibp",45001010,NOT_FOUND,0.9402215480804443,0.9402212910552527,False
+"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,"spareribs (light) vp 2pk, pork ibp",45213570,NOT_FOUND,0.8897053003311157,0.8897053442158336,False
+"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,"spareribs (medium) vp, pork premium iowa",45011940,NOT_FOUND,0.8658565878868103,0.8658568517517717,False
+"spareribs (medium) vp, pork ibp",45011010,Trimmed pork sparerib MED,"spareribs (medium) vp, pork, wholestone",45031080,NOT_FOUND,0.85799640417099,0.8579964194988952,False
+"strip loin bnls 0x1, ibp (ch)",15041014,180 3 Strip loin,"strip loin bnls 0x1, ibp (sel)",15043575,NOT_FOUND,0.9368699789047241,0.9368696021280116,False
+"strip loin bnls 0x1, ibp (ch)",15041014,180 3 Strip loin,"strip loin bnls 0x1, ibp (n/r)",15041010,NOT_FOUND,0.9137496948242188,0.9137493985964578,False
+"strip loin bnls 0x1, ibp (ch)",15041014,180 3 Strip loin,"strip loin bnls 0x1, (ch)",15049984,NOT_FOUND,0.8944191336631775,0.8944186748255221,False
+"strip loin bnls 0x1, ibp (ch)",15041014,180 3 Strip loin,"strip loin bnls 0x1, ibp (cangus)",15043572,NOT_FOUND,0.883155882358551,0.8831560868111694,False
+"strip loin bnls 0x1, ibp (ch)",15041014,180 3 Strip loin,"strip loin bnls 0x1, national (ch)",15041024,NOT_FOUND,0.8309256434440613,0.8309254108787258,False
+"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,0.9557170867919922,0.9557171780430256,False
+"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,"strip loin bnls 1x1, nebraska (n/r)",15071876,NOT_FOUND,0.9261786341667175,0.9261787697950489,False
+"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,"strip loin bnls 0x1, upper iowa (ch)",15043334,NOT_FOUND,0.8985098600387573,0.8985096429685409,False
+"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,"strip loin bnls 0x1, iowa premium (ch)",15041164,NOT_FOUND,0.8762028813362122,0.8762030732469245,False
+"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,"strip loin bnls 0x1, national (ch)",15041024,NOT_FOUND,0.8644856810569763,0.8644858591439427,False
+"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,"strip loin bnls 0x1, nebraska (ch)",15041874,175 3 Loin strip loin 1x1_Choice,0.9557172656059265,0.9557172365572446,False
+"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,"strip loin bnls 1x1, nebraska (n/r)",15071876,NOT_FOUND,0.9173266291618347,0.9173267153105003,False
+"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,"strip loin bnls 0x1, upper iowa (ch)",15043334,NOT_FOUND,0.8424347639083862,0.842434737103726,False
+"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,"strip loin bnls 0x1, iowa premium (ch)",15041164,NOT_FOUND,0.8270878195762634,0.8270874644351837,False
+"strip loin bnls 0x1, nebraska (sel)",15041875,180 3 Loin strip bnls 0x1_Choice,"strip loin bnls 0x1, national (ch)",15041024,NOT_FOUND,0.8260526061058044,0.8260524753212823,False
+"strip loin ny, 0+1, ch",144010,180 3 Strip loin,"strip loin #2, ch",144020,NOT_FOUND,0.759316623210907,0.7593170416383197,False
+"strip loin ny, 0+1, ch",144010,180 3 Strip loin,"strip loin, angus, ch, 0+1",143010,NOT_FOUND,0.7281506657600403,0.7281509206684056,False
+"strip loin ny, 0+1, ch",144010,180 3 Strip loin,"strip loin, process, 0+1, ch",144011,NOT_FOUND,0.7196158766746521,0.7196160801899225,False
+"strip loin ny, 0+1, ch",144010,180 3 Strip loin,"strip loin bnls 0x1, (ch)",15049984,NOT_FOUND,0.7041805982589722,0.7041806246577947,False
+"strip loin ny, 0+1, ch",144010,180 3 Strip loin,"strip loin bnls 0x1, demkota (ch)",15041174,NOT_FOUND,0.6599319577217102,0.6599315638549458,False
+"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,"tenderloin psmo, ibp (prime)",15221011,NOT_FOUND,0.8698727488517761,0.8698725973125778,False
+"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,"tenderloin psmo, ibp (cangus)",15221012,NOT_FOUND,0.8154796361923218,0.8154798726518055,False
+"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,"tenderloin psmo, national (ch)",15221024,NOT_FOUND,0.7718366384506226,0.7718367091683748,False
+"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,"tenderloin psmo, iowa premium (ch)",15221164,NOT_FOUND,0.6751038432121277,0.6751035602685332,False
+"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,0.6418059468269348,0.6418062189802858,False
+"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,"tenderloin psmo, national (ch)",15221024,NOT_FOUND,0.8073309659957886,0.8073308908867503,False
+"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,"tenderloin psmo, nb angus gold (n/r)",15421876,NOT_FOUND,0.7493842840194702,0.7493842327495828,False
+"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,"tenderloin psmo, ibp (ch)",15221014,189a Psmo tenderloin,0.6418059468269348,0.6418062354567109,False
+"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,"beef tenderloin, psmo, #2, ch",140021,NOT_FOUND,0.6383085250854492,0.638308580606845,False
+"tenderloin psmo, national a b (ch_angus)",15225723,189A 4 Loin tndrloin trmdheavy_Choice,"tenderloin psmo, iowa premium (ch)",15221164,NOT_FOUND,0.6315615773200989,0.6315615698217083,False
+"top round-17-20# caselo, ch",174171,168 3 top round inside XT,"top round, ch, 17-20#",174170,NOT_FOUND,0.8754353523254395,0.8754356331077703,False
+"top round-17-20# caselo, ch",174171,168 3 top round inside XT,prime top round-17-20#caselo,171171,NOT_FOUND,0.8571991324424744,0.8571993625007884,False
+"top round-17-20# caselo, ch",174171,168 3 top round inside XT,cornedbf ckd thm top round 2/8#,1832642,NOT_FOUND,0.6422604322433472,0.6422603074585072,False
+"top round-17-20# caselo, ch",174171,168 3 top round inside XT,"eye of round, ch, 3-6#",174360,171 C 3 Eye of round,0.5941718220710754,0.5941720419937528,False
+"top round-17-20# caselo, ch",174171,168 3 top round inside XT,trky whl 16-20# jen-z,1800115,NOT_FOUND,0.5864538550376892,0.5864540076603342,False
+"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,"top sirloin butt xt, (ch)",15109984,NOT_FOUND,0.9062564969062805,0.9062566304827133,False
+"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,"top sirloin butt xt, ibp (prime)",15101011,NOT_FOUND,0.9013890624046326,0.9013890492187578,False
+"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,"top sirloin butt xt, ibp (cangus)",15101012,NOT_FOUND,0.8949796557426453,0.894979313016883,False
+"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,"top sirloin butt xt, national (ch)",15101024,NOT_FOUND,0.8696286082267761,0.869628443363741,False
+"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,"top sirloin butt xt, greateromaha (ch)",15101004,NOT_FOUND,0.8469318151473999,0.8469313204299507,False
+"top sirloin butt, ibp star ranch (ch_ang",15103563,184B 3 Loin top butt CC_Choice,"sirloin top butt, ch",144008,184B 3 Loin top butt CC_Choice,0.7228647470474243,0.722865162191188,True
+"top sirloin butt, ibp star ranch (ch_ang",15103563,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, ibp (cangus)",15101012,NOT_FOUND,0.7207418084144592,0.7207422443478373,False
+"top sirloin butt, ibp star ranch (ch_ang",15103563,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, ibp (ch)",15103574,184 3 Top butt bnls,0.7199085354804993,0.7199085241360075,False
+"top sirloin butt, ibp star ranch (ch_ang",15103563,184B 3 Loin top butt CC_Choice,"top sirloin butt xt, black mountain (ch)",15103794,NOT_FOUND,0.7075719237327576,0.7075719761800937,False
+"top sirloin butt, ibp star ranch (ch_ang",15103563,184B 3 Loin top butt CC_Choice,"top sirloin butt, iowa premium (ch)",15101164,NOT_FOUND,0.6998343467712402,0.6998352172153868,False

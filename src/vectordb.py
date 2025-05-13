@@ -1,395 +1,374 @@
-import os
-import pandas as pd
-import numpy as np
-from pathlib import Path
-from typing import List, Dict, Tuple, Optional, Union, Any
-from tqdm import tqdm
-
-# Sentence transformers for embeddings
-from sentence_transformers import SentenceTransformer
-
-# Chroma DB for vector storage
 import chromadb
 from chromadb.utils import embedding_functions
+import pandas as pd
+import numpy as np
+from typing import List, Dict, Any, Optional, Tuple
+import src.config as config
+import re # For normalization
+from tqdm import tqdm # Progress bar
 
-# Import data processing from excel.py
-from src.excel import process_transaction_data, get_unique_products, load_mapping_data
-
-# Define paths
-BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-CHROMA_DB_DIR = Path(__file__).parent.parent / "chroma_db"
-
-# Ensure Chroma directory exists
-os.makedirs(CHROMA_DB_DIR, exist_ok=True)
-
-# Default embedding model
-DEFAULT_MODEL = 'all-MiniLM-L6-v2'
+# Import new data processing functions
+from src.data_processing import load_transaction_data, process_transaction_data
 
 class ProductEmbedder:
-    """Class to create and manage product embeddings"""
-    
-    def __init__(self, model_name: str = DEFAULT_MODEL):
-        """
-        Initialize embedder with a specific model
-        
-        Args:
-            model_name: Name of the sentence-transformer model to use
-        """
-        self.model_name = model_name
-        print(f"Loading embedding model: {model_name}")
-        self.model = SentenceTransformer(model_name)
-        
-    def create_text_description(self, row: pd.Series) -> str:
-        """
-        Create a text description combining product description and metrics
-        
-        Args:
-            row: Pandas Series containing product data
-            
-        Returns:
-            Enhanced text description for embedding
-        """
-        # Extract product description and metrics
-        product_desc = row['product_description']
-        
-        # Format price and quantity info if available
-        price_info = f", average price: ${row['avg_price']:.2f}" if 'avg_price' in row else ""
-        qty_info = f", average quantity: {row['avg_quantity']:.1f}" if 'avg_quantity' in row else ""
-        
-        # Create enhanced description
-        enhanced_desc = f"{product_desc}{price_info}{qty_info}"
-        return enhanced_desc
-    
-    def embed_products(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """
-        Create embeddings for products in dataframe
-        
-        Args:
-            df: DataFrame containing product data
-            
-        Returns:
-            Dictionary with product descriptions, embeddings, and metadata
-        """
-        # Create enhanced text descriptions
-        print("Creating enhanced descriptions for embedding...")
-        descriptions = [self.create_text_description(row) for _, row in df.iterrows()]
-        
-        # Generate embeddings
-        print(f"Generating embeddings for {len(descriptions)} products...")
-        embeddings = self.model.encode(descriptions, show_progress_bar=True)
-        
-        # Create product IDs
-        product_ids = [f"prod_{i}" for i in range(len(df))]
-        
-        # Create metadata for each product
-        metadata = []
-        for _, row in df.iterrows():
-            meta = {col: row[col] for col in df.columns if col != 'product_description'}
-            # Convert numeric values to standard Python types for ChromaDB compatibility
-            for k, v in meta.items():
-                if isinstance(v, (np.int64, np.int32, np.int16, np.int8)):
-                    meta[k] = int(v)
-                elif isinstance(v, (np.float64, np.float32, np.float16)):
-                    meta[k] = float(v)
-            metadata.append(meta)
-        
-        # Create mapping from original product descriptions to IDs
-        description_to_id = {row['product_description']: product_ids[i] for i, (_, row) in enumerate(df.iterrows())}
-        
-        return {
-            'product_ids': product_ids,
-            'descriptions': descriptions,
-            'original_descriptions': df['product_description'].tolist(),
-            'embeddings': embeddings,
-            'metadata': metadata,
-            'description_to_id': description_to_id
-        }
-    
-    def embed_query(self, query: str) -> np.ndarray:
-        """
-        Create embedding for a query string
-        
-        Args:
-            query: Query text to embed
-            
-        Returns:
-            Vector embedding of the query
-        """
-        return self.model.encode(query)
+    """Handles embedding generation for product descriptions."""
+    def __init__(self, model_name: str = config.EMBEDDING_MODEL):
+        print(f"Initializing sentence transformer with model: {model_name}")
+        self.model = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=model_name)
+        print("Sentence transformer initialized.")
 
+    def _prepare_metadata(self, df: pd.DataFrame) -> List[Dict[str, Any]]:
+        """
+        Prepares metadata dictionaries for ChromaDB from the DataFrame.
+        Now includes product_description, product_code, and usda_code.
+        """
+        metadata_columns = ['product_description', 'product_code', 'usda_code']
+        # Ensure all required columns are present
+        for col in metadata_columns:
+            if col not in df.columns:
+                raise ValueError(f"Metadata preparation error: Column '{col}' not found in DataFrame.")
+                
+        # Ensure no NaN values in metadata columns (replace with empty string or placeholder)
+        df_metadata = df[metadata_columns].fillna('N/A').astype(str)
+        
+        metadatas = df_metadata.to_dict('records')
+        return metadatas
+
+    def embed_products(self, df: pd.DataFrame) -> Tuple[List[str], List[np.ndarray], List[Dict[str, Any]]]:
+        """
+        Generates embeddings for product descriptions and prepares metadata.
+        Args:
+            df: DataFrame containing at least 'product_description', 'product_code', 'usda_code'.
+        Returns:
+            Tuple of (ids, embeddings, metadatas).
+        """
+        if 'product_description' not in df.columns:
+            raise ValueError("DataFrame must contain 'product_description' column for embedding.")
+            
+        print(f"Preparing to embed {len(df)} product descriptions...")
+        descriptions = df['product_description'].tolist()
+        
+        # Generate embeddings (ChromaDB's helper handles batching etc.)
+        # The model() call expects a list of documents
+        embeddings = self.model(descriptions)
+        print(f"Generated {len(embeddings)} embeddings.")
+
+        # Generate unique IDs for ChromaDB (using index for simplicity)
+        ids = [f"item_{i}" for i in range(len(df))]
+
+        # Prepare metadata
+        metadatas = self._prepare_metadata(df)
+        print(f"Prepared {len(metadatas)} metadata records.")
+
+        return ids, embeddings, metadatas
+
+    def embed_query(self, query: str) -> np.ndarray:
+        """Generates embedding for a single query string."""
+        # SentenceTransformerEmbeddingFunction expects a list, returns a list of embeddings
+        embedding = self.model([query])[0]
+        return np.array(embedding)
+
+# Helper function to normalize IDs from the mapping file
+def normalize_mapping_id(code):
+    if isinstance(code, str):
+        # Remove trailing '-<number>' and strip whitespace
+        return re.sub(r'-\d+$', '', code).strip()
+    return str(code).strip() # Convert non-strings to string and strip
+
+# Helper function to build the lookup map
+def build_usda_lookup(mapping_file=config.GROUND_TRUTH_FILE, 
+                      sheet_name=config.GROUND_TRUTH_SHEET_NAME, 
+                      id_cols=config.GROUND_TRUTH_ID_COLS, 
+                      usda_col=config.GROUND_TRUTH_USDA_COL) -> Dict[str, str]:
+    """Builds a lookup map from normalized mapping IDs to USDA codes."""
+    print(f"Loading ground truth mapping from: {mapping_file}, Sheet: {sheet_name}")
+    try:
+        df_map = pd.read_excel(mapping_file, sheet_name=sheet_name)
+        print(f"Loaded {len(df_map)} rows from mapping file.")
+    except FileNotFoundError:
+        print(f"Error: Mapping file not found at {mapping_file}")
+        return {}
+    except Exception as e:
+        print(f"Error loading mapping data: {e}")
+        return {}
+
+    # Check required columns
+    required_cols = id_cols + [usda_col]
+    if not all(col in df_map.columns for col in required_cols):
+        print(f"Error: Missing one or more required columns in mapping file. Need: {required_cols}. Found: {df_map.columns.tolist()}")
+        return {}
+
+    lookup_map = {}
+    processed_rows = 0
+    skipped_rows = 0
+    print(f"Building USDA lookup map using ID columns: {id_cols} -> {usda_col}")
+    for _, row in tqdm(df_map.iterrows(), total=len(df_map), desc="Processing mapping rows"):
+        usda_code = str(row[usda_col]).strip() if pd.notna(row[usda_col]) else None
+        if not usda_code:
+            skipped_rows += 1
+            continue # Skip rows with no USDA code
+            
+        found_id_for_row = False
+        for id_col in id_cols:
+            raw_id = row[id_col]
+            if pd.notna(raw_id):
+                normalized_id = normalize_mapping_id(raw_id)
+                if normalized_id: # Ensure not empty after normalization
+                    # Simple handling: store the USDA code for this normalized ID
+                    # If multiple rows map the same normalized ID, the last one wins (or first if checked)
+                    # Consider adding warning for conflicts if needed
+                    if normalized_id in lookup_map and lookup_map[normalized_id] != usda_code:
+                         # Log potential conflict if needed
+                         # print(f"Warning: Normalized ID '{normalized_id}' maps to multiple USDA codes ('{lookup_map[normalized_id]}' and '{usda_code}'). Using last found.")
+                         pass # Keeping last one for now
+                    lookup_map[normalized_id] = usda_code
+                    found_id_for_row = True
+                    
+        if found_id_for_row:
+            processed_rows += 1
+        else:
+            skipped_rows += 1
+
+    print(f"Built USDA lookup map with {len(lookup_map)} unique normalized ID entries.")
+    print(f"Processed {processed_rows} rows, skipped {skipped_rows} rows (missing USDA code or all ID cols empty).")
+    return lookup_map
 
 class ProductVectorDB:
-    """Class to manage product vector database"""
-    
-    def __init__(self, persist_directory: Optional[Union[str, Path]] = None, embedding_model: Optional[str] = None):
-        """
-        Initialize the vector database
-        
-        Args:
-            persist_directory: Directory to store the vector database
-            embedding_model: Name of embedding model to use
-        """
-        self.persist_directory = str(persist_directory or CHROMA_DB_DIR)
-        print(f"Using Chroma DB directory: {self.persist_directory}")
-        
-        # Initialize ChromaDB client
+    """Manages ChromaDB interactions for product embeddings."""
+    def __init__(self, persist_directory: str = str(config.CHROMA_DB_PATH), 
+                 collection_name: str = config.COLLECTION_NAME, 
+                 embedding_model_name: str = config.EMBEDDING_MODEL):
+        self.persist_directory = persist_directory
+        self.collection_name = collection_name
         self.client = chromadb.PersistentClient(path=self.persist_directory)
+        self.embedder = ProductEmbedder(model_name=embedding_model_name)
         
-        # Initialize embedder
-        self.embedding_model = embedding_model or DEFAULT_MODEL
-        self.embedder = ProductEmbedder(self.embedding_model)
+        # Build the USDA lookup map during initialization
+        self.usda_lookup_map = build_usda_lookup()
         
-        # Use pre-trained embedding function for efficiency
-        self.embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=self.embedding_model)
-    
-    def create_collection(self, collection_name: str = "products", recreate: bool = False) -> chromadb.Collection:
-        """
-        Create or get a collection in the DB
-        
-        Args:
-            collection_name: Name of the collection
-            recreate: Whether to delete and recreate an existing collection
-            
-        Returns:
-            ChromaDB collection
-        """
-        # Check if collection exists
-        existing_collections = self.client.list_collections()
-        exists = any(c.name == collection_name for c in existing_collections)
-        
-        if exists and recreate:
-            print(f"Deleting existing collection '{collection_name}'")
-            self.client.delete_collection(collection_name)
-            exists = False
-        
-        if not exists:
-            print(f"Creating new collection '{collection_name}'")
-            collection = self.client.create_collection(
-                name=collection_name,
-                embedding_function=self.embedding_function,
-                metadata={"model": self.embedding_model}
-            )
-        else:
-            print(f"Getting existing collection '{collection_name}'")
-            collection = self.client.get_collection(
-                name=collection_name,
-                embedding_function=self.embedding_function
-            )
-        
-        return collection
-    
-    def add_products_to_db(self, df: pd.DataFrame, collection_name: str = "products", recreate: bool = False) -> chromadb.Collection:
-        """
-        Add products from DataFrame to vector database
-        
-        Args:
-            df: DataFrame containing product data
-            collection_name: Name of the collection to add products to
-            recreate: Whether to delete and recreate an existing collection
-            
-        Returns:
-            ChromaDB collection with added products
-        """
-        # Create or get collection
-        collection = self.create_collection(collection_name, recreate)
-        
-        # Embed products
-        product_data = self.embedder.embed_products(df)
-        
-        # Add embeddings to collection (in batches to avoid timeouts on large datasets)
-        batch_size = 100
-        for i in tqdm(range(0, len(product_data['product_ids']), batch_size)):
-            end_idx = min(i + batch_size, len(product_data['product_ids']))
-            collection.add(
-                ids=product_data['product_ids'][i:end_idx],
-                embeddings=product_data['embeddings'][i:end_idx].tolist(),
-                documents=product_data['descriptions'][i:end_idx],
-                metadatas=product_data['metadata'][i:end_idx]
-            )
-        
-        print(f"Added {len(product_data['product_ids'])} products to collection '{collection_name}'")
-        return collection
-    
-    def get_similar_products(self, query: str, collection_name: str = "products", n_results: int = 5, 
-                            similarity_threshold: Optional[float] = None, bidirectional: bool = False) -> pd.DataFrame:
-        """
-        Find similar products to a query string
-        
-        Args:
-            query: Query string to search for
-            collection_name: Name of the collection to search in
-            n_results: Number of results to return
-            similarity_threshold: Minimum similarity score (0-1) to include in results (None = no threshold)
-            bidirectional: Whether to use bidirectional similarity (helps with abbreviations and word order)
-            
-        Returns:
-            DataFrame of similar products with similarity scores
-        """
-        # Get collection
-        collection = self.client.get_collection(
-            name=collection_name,
-            embedding_function=self.embedding_function
+        print(f"Getting or creating ChromaDB collection: {self.collection_name}")
+        self.collection = self.client.get_or_create_collection(
+            name=self.collection_name,
+            embedding_function=self.embedder.model, # Pass the embedding function instance
+            metadata={"hnsw:space": "cosine"} # Use cosine distance
         )
-        
-        # If using bidirectional similarity, we need a different approach
-        if bidirectional:
-            # Get raw embedder (not the wrapper Chroma uses)
-            embedder = self.embedding_function.embedding_function
-            
-            # Get query embedding
-            query_embedding = embedder.embed_query(query)
-            
-            # Get all product details from collection
-            product_data = collection.get(include=["embeddings", "metadatas", "documents"])
-            
-            # Calculate bidirectional similarities
-            similarities = []
-            for i, (doc, embedding) in enumerate(zip(product_data["documents"], product_data["embeddings"])):
-                # Forward similarity (query → product)
-                forward_sim = np.dot(query_embedding, embedding) / (np.linalg.norm(query_embedding) * np.linalg.norm(embedding))
-                
-                # Backward similarity (product → query)
-                # In a proper implementation, we would recalculate the product → query similarity
-                # But for simplicity, we'll use the same value as they should be identical in theory
-                backward_sim = forward_sim
-                
-                # Use max for most lenient interpretation
-                max_sim = max(forward_sim, backward_sim)
-                avg_sim = (forward_sim + backward_sim) / 2
-                
-                if similarity_threshold is None or max_sim >= similarity_threshold:
-                    similarities.append({
-                        # Use max to maximize recall
-                        "similarity": max_sim,  
-                        "bidirectional_avg": avg_sim,
-                        "description": doc,
-                        **product_data["metadatas"][i]  # Add all metadata
-                    })
-            
-            # Convert to DataFrame, sort, and limit
-            results_df = pd.DataFrame(similarities).sort_values("similarity", ascending=False).reset_index(drop=True)
-            
-            # Take top n_results
-            if len(results_df) > n_results:
-                results_df = results_df.head(n_results)
-                
-        else:
-            # Standard approach - query the collection directly
-            results = collection.query(
-                query_texts=[query],
-                n_results=n_results,
-                include=["metadatas", "documents", "distances"]
+        print(f"Collection '{self.collection_name}' ready.")
+
+    def _get_usda_code(self, product_code: str) -> str:
+        """Looks up the USDA code for a given transaction product code."""
+        # The lookup map keys are already normalized IDs from the mapping file.
+        # We assume the transaction product_code might directly match one of these normalized keys.
+        # If transaction codes also need normalization (e.g., removing '-<number>'), add it here.
+        normalized_transaction_code = normalize_mapping_id(product_code) # Apply same normalization
+        return self.usda_lookup_map.get(normalized_transaction_code, 'NOT_FOUND')
+
+    def add_products_to_db(self, unique_products_df: pd.DataFrame, recreate: bool = False):
+        """
+        Adds products to the ChromaDB collection.
+        Expects df with 'product_description' and 'product_code'.
+        Finds USDA codes and embeds descriptions.
+        """
+        if recreate:
+            print(f"Recreating collection: {self.collection_name}")
+            try:
+                self.client.delete_collection(name=self.collection_name)
+            except Exception as e:
+                print(f"Warning: Could not delete collection {self.collection_name} (may not exist): {e}")
+            self.collection = self.client.get_or_create_collection(
+                name=self.collection_name,
+                embedding_function=self.embedder.model,
+                metadata={"hnsw:space": "cosine"} 
             )
+
+        print("Adding products to database...")
+        if 'product_description' not in unique_products_df.columns or 'product_code' not in unique_products_df.columns:
+            raise ValueError("Input DataFrame must contain 'product_description' and 'product_code' columns.")
+
+        # Add USDA code by looking up product_code
+        print("Looking up USDA codes for products...")
+        unique_products_df['usda_code'] = unique_products_df['product_code'].apply(self._get_usda_code)
+        
+        not_found_count = (unique_products_df['usda_code'] == 'NOT_FOUND').sum()
+        if not_found_count > 0:
+            print(f"Warning: Could not find USDA code mapping for {not_found_count} out of {len(unique_products_df)} products.")
+
+        # Embed products and prepare data for ChromaDB
+        ids, embeddings, metadatas = self.embedder.embed_products(unique_products_df)
+        
+        # Add to collection in batches
+        batch_size = 5000 # Define batch size, safely below the typical limit
+        total_items = len(ids)
+        print(f"Adding {total_items} items to ChromaDB collection '{self.collection_name}' in batches of {batch_size}...")
+
+        for i in tqdm(range(0, total_items, batch_size), desc="Adding Batches to ChromaDB"):
+            batch_ids = ids[i:i + batch_size]
+            batch_embeddings = embeddings[i:i + batch_size]
+            batch_metadatas = metadatas[i:i + batch_size]
             
-            # Extract results
-            documents = results["documents"][0]
-            metadatas = results["metadatas"][0]
-            distances = results["distances"][0]
-            
-            # Calculate similarity scores (convert distance to similarity)
-            similarities = [1 - dist for dist in distances]
-            
-            # Create DataFrame with results
-            results_df = pd.DataFrame({
-                "similarity": similarities,
-                "description": documents
-            })
-            
-            # Add metadata columns
-            for i, meta in enumerate(metadatas):
-                for key, value in meta.items():
-                    results_df.at[i, key] = value
+            try:
+                self.collection.add(
+                    embeddings=[emb.tolist() for emb in batch_embeddings],
+                    metadatas=batch_metadatas,
+                    ids=batch_ids
+                )
+            except Exception as e:
+                print(f"\nError adding batch starting at index {i}: {e}")
+                # Decide if you want to stop or continue with other batches
+                # For now, let's re-raise to halt the process on error
+                raise e 
+                
+        print(f"Successfully added {total_items} items to the collection.")
+
+    def get_similar_products(self, query: str, n_results: int = 5, 
+                             similarity_threshold: Optional[float] = None, 
+                             where_filter: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+        """Finds products similar to a query description."""
+        query_embedding = self.embedder.embed_query(query)
+        
+        # Ensure embedding is in the correct list-of-lists format if needed
+        query_embeddings_list = [query_embedding.tolist()]
+        
+        print(f"Querying collection '{self.collection_name}' for {n_results} results...")
+        results = self.collection.query(
+            query_embeddings=query_embeddings_list,
+            n_results=n_results,
+            include=['metadatas', 'distances'], # Using distance, lower is better
+            where=where_filter
+        )
+
+        # Process results
+        ids = results.get('ids', [[]])[0]
+        distances = results.get('distances', [[]])[0]
+        metadatas = results.get('metadatas', [[]])[0]
+        
+        if not ids:
+             print("Query returned no results.")
+             return pd.DataFrame()
+             
+        # Convert distance to similarity (cosine similarity = 1 - cosine distance)
+        # Chroma returns cosine distance (sqrt(2-2*cos_sim)), but often provides distance directly
+        # Let's assume lower distance is better and convert to a similarity score (0-1)
+        # Simple approach: similarity = 1 - distance (assuming distance is normalized 0-1, common for cosine)
+        # If using L2 distance, this conversion needs adjustment. Since we set 'cosine', this should be okay.
+        similarities = [1 - d for d in distances]
+
+        results_data = []
+        for i, item_id in enumerate(ids):
+             metadata = metadatas[i]
+             row = {
+                 'id': item_id,
+                 'similarity': similarities[i],
+                 'distance': distances[i],
+                 **metadata # Unpack all metadata fields (product_description, product_code, usda_code)
+             }
+             results_data.append(row)
+             
+        results_df = pd.DataFrame(results_data)
                     
-            # Apply similarity threshold if specified
-            if similarity_threshold is not None:
-                results_df = results_df[results_df['similarity'] >= similarity_threshold]
-        
-        # Ensure 'product_description' is available for output
-        if 'product_description' not in results_df.columns and 'description' in results_df.columns:
-            # Extract original product description from enhanced description
-            results_df['product_description'] = results_df['description'].apply(
-                lambda x: x.split(", average price")[0] if ", average price" in x else x
-            )
+        # Apply similarity threshold if specified
+        if similarity_threshold is not None:
+             print(f"Applying similarity threshold: > {similarity_threshold}")
+             results_df = results_df[results_df['similarity'] >= similarity_threshold]
+             print(f"Found {len(results_df)} results after threshold.")
+
+        # Ensure required columns exist before returning
+        expected_cols = ['id', 'similarity', 'distance', 'product_description', 'product_code', 'usda_code']
+        for col in expected_cols:
+            if col not in results_df.columns:
+                 # Handle missing columns, maybe add them with default value if appropriate
+                 print(f"Warning: Expected column '{col}' not found in results DataFrame.")
+                 # Add with N/A if missing, adjust as needed
+                 if col not in results_df.columns:
+                     results_df[col] = 'N/A' 
+                     
+        # Reorder columns for consistency
+        results_df = results_df[expected_cols + [col for col in results_df.columns if col not in expected_cols]]
         
         return results_df
 
 
-def create_product_vector_db(recreate: bool = False) -> ProductVectorDB:
+def create_product_vector_db(recreate: bool = False) -> Tuple[ProductVectorDB, pd.DataFrame]:
     """
-    Create a complete product vector database from transaction data
+    Create a complete product vector database from the new transaction data structure.
+    Uses data_processing functions and stores USDA code.
     
     Args:
         recreate: Whether to delete and recreate existing collections
         
     Returns:
-        Initialized ProductVectorDB instance
+        Tuple of (Initialized ProductVectorDB instance, DataFrame of unique products processed)
     """
-    # Load and process transaction data
+    # Load and process transaction data using new functions
     print("Processing transaction data...")
-    _, unique_products = process_transaction_data()
-    
-    # Initialize vector database
+    raw_transactions_df = load_transaction_data() # Uses paths from config
+    unique_products_df = process_transaction_data(raw_transactions_df)
+
+    if unique_products_df is None or unique_products_df.empty:
+        print("Error: Failed to process transaction data. Cannot create vector DB.")
+        return None, None # Return None tuple to indicate failure
+
+    # Initialize vector database (this also builds the USDA lookup map)
     print("Initializing vector database...")
-    vector_db = ProductVectorDB()
+    # Pass config params explicitly if needed, or rely on defaults in ProductVectorDB init
+    vector_db = ProductVectorDB(
+        persist_directory=str(config.CHROMA_DB_PATH),
+        collection_name=config.COLLECTION_NAME,
+        embedding_model_name=config.EMBEDDING_MODEL
+    )
     
-    # Add products to database
+    # Add products to database (this now handles USDA lookup and embedding)
     print("Adding products to vector database...")
-    vector_db.add_products_to_db(unique_products, recreate=recreate)
+    try:
+        vector_db.add_products_to_db(unique_products_df, recreate=recreate)
+    except Exception as e:
+        print(f"Error occurred during add_products_to_db: {e}")
+        # Depending on severity, you might want to return None here too
+        raise # Re-raise for now to make the error visible
     
-    return vector_db
+    # Return the DB instance and the processed unique products DataFrame (now just desc/code)
+    return vector_db, unique_products_df
 
 
 def find_similar_products(query: str, n_results: int = 5, similarity_threshold: Optional[float] = None, 
-                     vector_db: Optional[ProductVectorDB] = None, bidirectional: bool = False) -> pd.DataFrame:
-    """
-    Find products similar to a query string
-    
-    Args:
-        query: Query string to search for
-        n_results: Number of results to return
-        similarity_threshold: Minimum similarity score (0-1) to include in results (None = no threshold)
-        vector_db: Existing vector database instance (will create if None)
-        bidirectional: Whether to use bidirectional similarity (helps with abbreviations and word order)
-        
-    Returns:
-        DataFrame of similar products with similarity scores
-    """
+                          vector_db: Optional[ProductVectorDB] = None) -> pd.DataFrame:
+    """Helper function to find similar products using an existing or new DB."""
     # Create or use existing vector database
     if vector_db is None:
         print("Loading vector database...")
-        vector_db = ProductVectorDB()
+        vector_db, _ = create_product_vector_db(recreate=False) # Don't need unique_products_df here
+        if vector_db is None:
+             print("Failed to load or create vector database.")
+             return pd.DataFrame()
     
     # Find similar products
     print(f"Finding products similar to: '{query}'")
-    if similarity_threshold is not None:
-        print(f"Using similarity threshold: {similarity_threshold}")
-    if bidirectional:
-        print(f"Using bidirectional similarity")
-    results = vector_db.get_similar_products(query, n_results=n_results, 
-                                          similarity_threshold=similarity_threshold,
-                                          bidirectional=bidirectional)
+    results_df = vector_db.get_similar_products(query, n_results=n_results, similarity_threshold=similarity_threshold)
     
-    return results
+    print("\n--- Similarity Search Results ---")
+    if not results_df.empty:
+        print(results_df.to_string())
+    else:
+        print("No similar products found.")
+        
+    return results_df
 
-
+# Example usage (updated)
 if __name__ == "__main__":
-    # Example usage
-    try:
-        # Create vector database
-        vector_db = create_product_vector_db(recreate=True)
-        
-        # Query for similar products
-        test_queries = [
-            "almond milk",
-            "beef frozen",
-            "fresh vegetables"
-        ]
-        
-        for query in test_queries:
-            similar_products = find_similar_products(query, vector_db=vector_db)
-            print(f"\nQuery: '{query}'")
-            print("Top similar products:")
-            print(similar_products[["similarity", "product_description", "avg_price"]].head())
+    # Example: Create DB (potentially recreating it)
+    print("\n--- Example: Creating Vector Database ---")
+    # Setting recreate=True will rebuild the DB from scratch
+    # Set recreate=False to load existing DB if available
+    vector_db_instance, unique_prods = create_product_vector_db(recreate=False) 
     
-    except Exception as e:
-        print(f"Error: {e}")
+    if vector_db_instance:
+        print("\n--- Example: Querying for Similar Products ---")
+        # Example queries using descriptions from the transaction data
+        if unique_prods is not None and not unique_prods.empty:
+             test_queries = unique_prods['product_description'].sample(min(3, len(unique_prods))).tolist()
+        else:
+             test_queries = ["example product description one", "another item description"] # Fallback queries
+             
+        for test_query in test_queries:
+            find_similar_products(test_query, n_results=5, vector_db=vector_db_instance)
+    else:
+         print("\nFailed to create or load the vector database for the example.")
