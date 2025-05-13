@@ -1,204 +1,125 @@
 #!/usr/bin/env python3
 """
-Run bidirectional similarity analysis with proper database initialization
+Simplified script to run and test bidirectional similarity analysis.
+Initializes the vector database and then calls the main test function.
 """
-import pandas as pd
-import numpy as np
 import sys
+import pandas as pd
 from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent))
 
-from src.vectordb import ProductVectorDB, create_product_vector_db
-from analysis.bidirectional_similarity import (
-    calculate_bidirectional_similarity,
-    find_similar_products_bidirectional,
-    test_bidirectional_similarity,
-    implement_bidirectional_solution
-)
+# --- Path Setup ---
+# Get the project root directory (VectorDB)
+# Assumes this script (run_bidirectional_test.py) is in VectorDB/analysis/
+current_script_path = Path(__file__).resolve()
+project_root = current_script_path.parent.parent
 
-def run_complete_analysis():
+# Add project root to sys.path to allow imports like 'from src.module'
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# Add the 'analysis' directory itself to sys.path to allow 'from bidirectional_similarity'
+# This helps if 'analysis' is not a package or script is run from project root.
+analysis_dir = current_script_path.parent
+if str(analysis_dir) not in sys.path:
+    sys.path.insert(0, str(analysis_dir))
+# --- End Path Setup ---
+
+# Now import from src and analysis
+from src import config
+try:
+    from src.vectordb import create_product_vector_db, ProductVectorDB
+    # This import should now work whether script is run from 'analysis' dir
+    # or from project root 'VectorDB' dir.
+    from analysis.bidirectional_similarity import test_bidirectional_similarity
+except ImportError as e:
+    print(f"CRITICAL ERROR: Could not import necessary modules.")
+    print(f"Details: {e}")
+    print(f"Attempted Project Root: {project_root}")
+    print(f"Attempted Analysis Dir: {analysis_dir}")
+    print(f"Current sys.path: {sys.path}")
+    print("Ensure 'src.vectordb' is a package and 'bidirectional_similarity.py' is in the 'analysis' directory.")
+    sys.exit(1)
+
+def main():
     """
-    Run the complete bidirectional similarity analysis with database preparation
+    Main function to run the bidirectional similarity test.
     """
-    # First create the vector database (or use existing one)
-    print("\n=== Creating Vector Database ===")
-    vector_db = create_product_vector_db(recreate=False)
-    print("Vector database ready\n")
-    
-    # Load the product data for our bidirectional analysis
-    collection = vector_db.client.get_collection("products")
-    product_data = collection.get(include=["documents"])
-    product_descriptions = product_data["documents"]
-    
-    # Load the mapping file for ground truth
-    mapping_path = Path(__file__).parent.parent / "data/CorrectMapping/product_mapping_semantic.xlsx"
-    mapping_df = pd.read_excel(mapping_path)
-    
-    # Load all clusters from the mapping file
-    all_clusters = mapping_df["Standardized Product Name"].unique().tolist()
-    
-    # Identify known problem clusters (for reference)
-    known_problem_clusters = {
-        "Organic Chicken Breast",
-        "Frozen Jumbo Shrimp", 
-        "Brown Rice Long Grain",
-        "Orange Juice Fresh Squeezed"
-    }
-    
-    print("\n=== Comparing Standard vs Bidirectional Similarity ===\n")
-    
-    standard_recall = {}
-    bidirectional_recall = {}
-    
-    # Process all clusters
-    for cluster_name in all_clusters:
-        # Mark if this is a known problematic cluster
-        is_problem_cluster = cluster_name in known_problem_clusters
-        print(f"\n{'='*50}")
-        if is_problem_cluster:
-            print(f"CLUSTER: {cluster_name} 🔍 (Known problem cluster)")
-        else:
-            print(f"CLUSTER: {cluster_name}")
+    print("--- Starting Bidirectional Similarity Test Run ---")
+
+    # --- 1. Initialize Vector Database --- 
+    # This now loads actual transaction data, processes it, builds the USDA lookup,
+    # embeds products, and stores metadata (including usda_code).
+    # Set recreate=False to use existing DB if available, True to rebuild.
+    recreate_db = False # Set to True to force rebuild on first run or after changes
+    print(f"Initializing Product Vector DB (recreate={recreate_db})...")
+    try:
+        vector_db_instance, unique_products_df = create_product_vector_db(recreate=recreate_db)
         
-        # Get variations for this cluster
-        row = mapping_df[mapping_df["Standardized Product Name"] == cluster_name]
-        if row.empty:
-            continue
+        if vector_db_instance is None or unique_products_df is None:
+            print("Error: Failed to initialize vector database or process unique products.")
+            sys.exit(1)
             
-        variations = [desc.strip() for desc in row.iloc[0]["Possible Descriptions"].split(";")]
-        print(f"Variations ({len(variations)}): {variations}")
+        if unique_products_df.empty:
+             print("Warning: No unique products were processed. Evaluation may not run.")
+             # Allow continuing, test function might handle empty query df
+             
+        # Ensure necessary columns are present for the test
+        if 'product_description' not in unique_products_df.columns or 'product_code' not in unique_products_df.columns:
+             print("Error: Processed unique products DataFrame is missing required 'product_description' or 'product_code' columns.")
+             sys.exit(1)
+
+    except Exception as e:
+        print(f"Error during Vector DB initialization: {e}")
+        import traceback
+        traceback.print_exc() # Print detailed error
+        sys.exit(1)
+
+    print("Vector DB Initialized successfully.")
+    print(f"Total unique products processed for potential querying: {len(unique_products_df)}")
+
+    # --- 2. Prepare Queries for Evaluation --- 
+    # We'll use ALL unique products as queries for comprehensive evaluation.
+    # The test function requires a DataFrame with 'product_description' and 'product_code'.
+    if len(unique_products_df) > 0:
+        queries_df = unique_products_df.copy()  # Use all products (no sampling)
+        print(f"Using all {len(queries_df)} unique products as queries for comprehensive evaluation.")
+    else:
+        print("No unique products available to use as queries. Skipping evaluation.")
+        sys.exit(0) # Exit cleanly if no queries
         
-        # Standard approach (current implementation)
-        print("\nSTANDARD APPROACH:")
-        
-        from src.vectordb import find_similar_products
-        std_results = find_similar_products(
-            cluster_name, 
-            n_results=15,
-            similarity_threshold=0.25,
-            vector_db=vector_db
+    # --- 3. Run Bidirectional Similarity Test --- 
+    # The test function now uses the USDA code stored in metadata.
+    # We pass the DB instance and the DataFrame of queries.
+    print("\nRunning bidirectional similarity evaluation...")
+    try:
+        # Use parameters from config or override here
+        precision, recall, f1, detailed_results = test_bidirectional_similarity(
+            vector_db=vector_db_instance,
+            queries_df=queries_df, # Pass the DataFrame of queries
+            forward_threshold=config.SIMILARITY_THRESHOLD_FORWARD,
+            backward_threshold=config.SIMILARITY_THRESHOLD_BACKWARD,
+            n_final_results=config.N_RESULTS_FINAL
         )
         
-        # Count matches
-        std_found = set()
-        for _, res_row in std_results.iterrows():
-            desc = res_row["product_description"]
-            sim = res_row["similarity"]
-            is_match = desc.lower() in [v.lower() for v in variations]
-            print(f"  {'✓' if is_match else '✗'} {desc} (sim: {sim:.4f})")
-            if is_match:
-                std_found.add(desc.lower())
-        
-        std_recall_val = len(std_found) / len(variations) if variations else 0
-        standard_recall[cluster_name] = std_recall_val
-        print(f"  Standard Recall: {std_recall_val:.2f} ({len(std_found)}/{len(variations)})")
-        
-        # Bidirectional approach (our new method)
-        print("\nBIDIRECTIONAL APPROACH:")
-        
-        # Get embedder directly - SentenceTransformer model for embeddings
-        from sentence_transformers import SentenceTransformer
-        
-        # Create a wrapper class that provides the embed_query interface
-        class EmbedderWrapper:
-            def __init__(self, model):
-                self.model = model
-                
-            def embed_query(self, text):
-                # SentenceTransformer uses encode() instead of embed_query()
-                return self.model.encode(text, convert_to_numpy=True)
-        
-        # Create the wrapper
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-        embedder = EmbedderWrapper(model)
-        
-        # Calculate bidirectional similarity for each product
-        similarities = []
-        for product in product_descriptions:
-            forward, backward, average = calculate_bidirectional_similarity(
-                embedder, cluster_name, product
-            )
-            similarities.append({
-                'product_description': product,
-                'forward_similarity': forward,
-                'backward_similarity': backward,
-                'bidirectional_similarity': average,
-                'max_similarity': max(forward, backward)
-            })
-        
-        # Convert to DataFrame
-        results_df = pd.DataFrame(similarities)
-        
-        # Filter by threshold
-        bi_results = results_df[results_df['max_similarity'] >= 0.25]
-        
-        # Sort by bidirectional similarity
-        bi_results = bi_results.sort_values('bidirectional_similarity', ascending=False).reset_index(drop=True)
-        
-        # Limit to n_results
-        if len(bi_results) > 15:
-            bi_results = bi_results.head(15)
-        
-        # Count matches
-        bi_found = set()
-        for _, res_row in bi_results.iterrows():
-            desc = res_row["product_description"]
-            sim = res_row["bidirectional_similarity"]
-            max_sim = res_row["max_similarity"]
-            
-            # Extract the base description without price and quantity info
-            base_desc = desc.split(", average price")[0] if ", average price" in desc else desc
-            
-            # Check if any variation matches the base description
-            is_match = any(v.lower() == base_desc.lower() for v in variations)
-            
-            print(f"  {'✓' if is_match else '✗'} {desc} (bi_sim: {sim:.4f}, max: {max_sim:.4f})")
-            if is_match:
-                bi_found.add(base_desc.lower())
-        
-        bi_recall_val = len(bi_found) / len(variations) if variations else 0
-        bidirectional_recall[cluster_name] = bi_recall_val
-        print(f"  Bidirectional Recall: {bi_recall_val:.2f} ({len(bi_found)}/{len(variations)})")
-        
-        # Show improvement
-        if bi_recall_val > std_recall_val:
-            print(f"  ▲ Improvement: +{(bi_recall_val-std_recall_val)*100:.1f}%")
-        elif bi_recall_val < std_recall_val:
-            print(f"  ▼ Decrease: -{(std_recall_val-bi_recall_val)*100:.1f}%")
-        else:
-            print(f"  ◆ No change in recall")
-    
-    # Print overall summary
-    print("\n=== OVERALL SUMMARY ===\n")
-    std_avg = sum(standard_recall.values()) / len(standard_recall) if standard_recall else 0
-    bi_avg = sum(bidirectional_recall.values()) / len(bidirectional_recall) if bidirectional_recall else 0
-    print(f"Standard approach average recall: {std_avg:.3f} across {len(standard_recall)} clusters")
-    print(f"Bidirectional approach average recall: {bi_avg:.3f} across {len(bidirectional_recall)} clusters")
-    
-    if bi_avg > std_avg:
-        print(f"▲ Overall improvement: +{(bi_avg-std_avg)*100:.1f}%")
-        
-    # Detailed analysis by cluster type
-    problem_std_recalls = {k: v for k, v in standard_recall.items() if k in known_problem_clusters}
-    problem_bi_recalls = {k: v for k, v in bidirectional_recall.items() if k in known_problem_clusters}
-    
-    other_std_recalls = {k: v for k, v in standard_recall.items() if k not in known_problem_clusters}
-    other_bi_recalls = {k: v for k, v in bidirectional_recall.items() if k not in known_problem_clusters}
-    
-    # Calculate averages for problem clusters
-    prob_std_avg = sum(problem_std_recalls.values()) / len(problem_std_recalls) if problem_std_recalls else 0
-    prob_bi_avg = sum(problem_bi_recalls.values()) / len(problem_bi_recalls) if problem_bi_recalls else 0
-    
-    # Calculate averages for other clusters
-    other_std_avg = sum(other_std_recalls.values()) / len(other_std_recalls) if other_std_recalls else 0
-    other_bi_avg = sum(other_bi_recalls.values()) / len(other_bi_recalls) if other_bi_recalls else 0
-    
-    print("\n=== CLUSTER TYPE ANALYSIS ===\n")
-    print(f"Problem Clusters: Standard {prob_std_avg:.3f} vs. Bidirectional {prob_bi_avg:.3f}")
-    print(f"Other Clusters: Standard {other_std_avg:.3f} vs. Bidirectional {other_bi_avg:.3f}")
-    
-    # Show implementation solution
-    implement_bidirectional_solution()
+        print("\n--- Evaluation Complete --- ")
+        print(f"Precision: {precision:.4f}")
+        print(f"Recall:    {recall:.4f}")
+        print(f"F1 Score:  {f1:.4f}")
+
+        # Optional: Save detailed results to a file
+        results_dir = project_root / "analysis_results"
+        results_dir.mkdir(exist_ok=True) # Ensure directory exists
+        results_file = results_dir / "bidirectional_evaluation_results.csv"
+        detailed_results.to_csv(results_file, index=False)
+        print(f"Detailed evaluation results saved to: {results_file}")
+
+    except Exception as e:
+        print(f"An error occurred during the similarity test: {e}")
+        import traceback
+        traceback.print_exc() # Print detailed error
+        sys.exit(1)
+
+    print("\n--- Test Run Finished Successfully ---")
 
 if __name__ == "__main__":
-    run_complete_analysis()
+    main()
