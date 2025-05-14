@@ -23,6 +23,7 @@ GROUND_TRUTH_SHEET_NAME = "Sheet1"
 # List of columns in the mapping file that might match the transaction ProductCode
 # (Normalization needed: remove '-<number>')
 GROUND_TRUTH_ID_COLS = [
+    "Fulton_code",
     "Pritzlaff_code", 
     "Queen_code", 
     "Moesle_code", 
