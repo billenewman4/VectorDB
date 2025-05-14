@@ -72,8 +72,13 @@ class ProductEmbedder:
 def normalize_mapping_id(code):
     if isinstance(code, str):
         # Remove trailing '-<number>' and strip whitespace
-        return re.sub(r'-\d+$', '', code).strip()
-    return str(code).strip() # Convert non-strings to string and strip
+        code = re.sub(r'-\d+$', '', code).strip()
+        # Also remove any leading company prefix (single digit followed by digits)
+        # This will convert patterns like '51040948' to '1040948'
+        code = re.sub(r'^\d(\d+)$', r'\1', code)
+    else:
+        code = str(code).strip() # Convert non-strings to string and strip
+    return code
 
 # Helper function to build the lookup map
 def build_usda_lookup(mapping_file=config.GROUND_TRUTH_FILE, 
