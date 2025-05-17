@@ -33,9 +33,11 @@ GROUND_TRUTH_USDA_COL = "USDA_Code" # The target value for evaluation
 
 # --- Embedding Model ---
 # Using a Sentence Transformer model suitable for product descriptions
-EMBEDDING_MODEL = 'all-MiniLM-L6-v2' 
-# Alternative: 'paraphrase-MiniLM-L6-v2'
-# Alternative: 'multi-qa-MiniLM-L6-cos-v1' # Good for semantic search/QA
+EMBEDDING_MODEL = 'all-mpnet-base-v2' # Higher quality model, previously used with success
+# Alternative powerful models:
+# 'paraphrase-multilingual-mpnet-base-v2' # Better for paraphrasing
+# 'msmarco-distilbert-base-v4' # Specifically tuned for retrieval
+# 'all-MiniLM-L6-v2' # Faster but less accurate model
 
 # --- Vector Database (ChromaDB) ---
 CHROMA_DB_PATH = PROJECT_ROOT / "chroma_db_actuals" # New path for actuals data
