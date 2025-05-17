@@ -1,6 +1,7 @@
 import pandas as pd
 import src.config as config
 import re
+from src.abbreviation_translator import expand_abbreviations
 
 def clean_text(text):
     """Basic text cleaning: lowercase, strip whitespace."""
@@ -58,8 +59,8 @@ def process_transaction_data(df_raw):
     df[code_col] = df[code_col].astype(str) # Codes should be strings
     df[desc_col] = df[desc_col].astype(str)
 
-    # Clean description
-    df['cleaned_description'] = df[desc_col].apply(clean_text)
+    # Clean description and expand meat cut abbreviations
+    df['cleaned_description'] = df[desc_col].apply(lambda text: expand_abbreviations(clean_text(text)))
 
     # Filter out empty descriptions after cleaning
     initial_rows = len(df)
