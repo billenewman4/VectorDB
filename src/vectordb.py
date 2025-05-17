@@ -108,7 +108,8 @@ def build_usda_lookup(mapping_file=config.GROUND_TRUTH_FILE,
     skipped_rows = 0
     print(f"Building USDA lookup map using ID columns: {id_cols} -> {usda_col}")
     for _, row in tqdm(df_map.iterrows(), total=len(df_map), desc="Processing mapping rows"):
-        usda_code = str(row[usda_col]).strip() if pd.notna(row[usda_col]) else None
+        # Keep USDA code in original format, only convert to string if needed and handle NaN
+        usda_code = str(row[usda_col]) if pd.notna(row[usda_col]) else None
         if not usda_code:
             skipped_rows += 1
             continue # Skip rows with no USDA code
@@ -225,67 +226,111 @@ class ProductVectorDB:
         print(f"Successfully added {total_items} items to the collection.")
 
     def get_similar_products(self, query: str, n_results: int = 5, 
-                             similarity_threshold: Optional[float] = None, 
-                             where_filter: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
-        """Finds products similar to a query description."""
-        query_embedding = self.embedder.embed_query(query)
+                              similarity_threshold: Optional[float] = None, 
+                              where_filter: Optional[Dict[str, Any]] = None,
+                              initial_results: int = config.N_RESULTS_INITIAL_SEARCH) -> pd.DataFrame:
+        """Finds products similar to a query description using bi-directional similarity.
         
-        # Ensure embedding is in the correct list-of-lists format if needed
+        The bi-directional similarity approach works as follows:
+        1. Initial query->database similarity (forward): Get top N items from database similar to the query
+        2. Database->query similarity (backward): For each item found, calculate similarity from item to query
+        3. Calculate bi-directional similarity: Average of forward and backward similarities
+        4. Rank results by bi-directional similarity
+        
+        Args:
+            query: The search query text
+            n_results: Number of final results to return
+            similarity_threshold: Minimum similarity threshold (applied to bi-directional similarity)
+            where_filter: Optional filter for ChromaDB query
+            initial_results: Number of initial results to retrieve for bi-directional check
+            
+        Returns:
+            DataFrame with results ranked by bi-directional similarity
+        """
+        # Embed the query once for reuse
+        query_embedding = self.embedder.embed_query(query)
+        query_embedding_array = np.array(query_embedding)
+        
+        # Ensure embedding is in the correct list-of-lists format for ChromaDB
         query_embeddings_list = [query_embedding.tolist()]
         
-        print(f"Querying collection '{self.collection_name}' for {n_results} results...")
-        results = self.collection.query(
+        # Step 1: Initial forward search (query -> database)
+        print(f"Performing initial forward search on '{self.collection_name}' for {initial_results} candidates...")
+        forward_results = self.collection.query(
             query_embeddings=query_embeddings_list,
-            n_results=n_results,
-            include=['metadatas', 'distances'], # Using distance, lower is better
+            n_results=initial_results,  # Get more initial results for bi-directional check
+            include=['metadatas', 'distances', 'embeddings'],  # We need embeddings for backward similarity
             where=where_filter
         )
 
         # Process results
-        ids = results.get('ids', [[]])[0]
-        distances = results.get('distances', [[]])[0]
-        metadatas = results.get('metadatas', [[]])[0]
+        ids = forward_results.get('ids', [[]])[0]
+        forward_distances = forward_results.get('distances', [[]])[0]
+        metadatas = forward_results.get('metadatas', [[]])[0]
+        embeddings = forward_results.get('embeddings', [[]])[0]
         
         if not ids:
-             print("Query returned no results.")
-             return pd.DataFrame()
-             
-        # Convert distance to similarity (cosine similarity = 1 - cosine distance)
-        # Chroma returns cosine distance (sqrt(2-2*cos_sim)), but often provides distance directly
-        # Let's assume lower distance is better and convert to a similarity score (0-1)
-        # Simple approach: similarity = 1 - distance (assuming distance is normalized 0-1, common for cosine)
-        # If using L2 distance, this conversion needs adjustment. Since we set 'cosine', this should be okay.
-        similarities = [1 - d for d in distances]
-
+            print("Query returned no results.")
+            return pd.DataFrame()
+        
+        # Convert distance to forward similarity
+        forward_similarities = [1 - d for d in forward_distances]
+        
+        # Step 2: Calculate backward similarity (database items -> query)
+        print("Calculating backward similarities (database -> query)...")
         results_data = []
         for i, item_id in enumerate(ids):
-             metadata = metadatas[i]
-             row = {
-                 'id': item_id,
-                 'similarity': similarities[i],
-                 'distance': distances[i],
-                 **metadata # Unpack all metadata fields (product_description, product_code, usda_code)
-             }
-             results_data.append(row)
-             
+            # Get item embedding
+            item_embedding = np.array(embeddings[i])
+            
+            # Calculate backward similarity (item -> query)
+            # Cosine similarity = dot(A, B) / (norm(A) * norm(B))
+            dot_product = np.dot(item_embedding, query_embedding_array)
+            norm_item = np.linalg.norm(item_embedding)
+            norm_query = np.linalg.norm(query_embedding_array)
+            
+            backward_similarity = dot_product / (norm_item * norm_query) if norm_item * norm_query != 0 else 0
+            
+            # Step 3: Calculate bi-directional similarity (average of forward and backward)
+            forward_similarity = forward_similarities[i]
+            bi_directional_similarity = (forward_similarity + backward_similarity) / 2
+            
+            # Create result row
+            metadata = metadatas[i]
+            row = {
+                'id': item_id,
+                'forward_similarity': forward_similarity,
+                'backward_similarity': backward_similarity,
+                'bi_directional_similarity': bi_directional_similarity,
+                'distance': forward_distances[i],  # Original distance from forward search
+                **metadata  # Unpack all metadata fields
+            }
+            results_data.append(row)
+        
+        # Create DataFrame with results
         results_df = pd.DataFrame(results_data)
-                    
-        # Apply similarity threshold if specified
+        
+        # Step 4: Rank by bi-directional similarity
+        results_df = results_df.sort_values('bi_directional_similarity', ascending=False)
+        
+        # Apply similarity threshold if specified (to bi-directional similarity)
         if similarity_threshold is not None:
-             print(f"Applying similarity threshold: > {similarity_threshold}")
-             results_df = results_df[results_df['similarity'] >= similarity_threshold]
-             print(f"Found {len(results_df)} results after threshold.")
-
+            print(f"Applying bi-directional similarity threshold: > {similarity_threshold}")
+            results_df = results_df[results_df['bi_directional_similarity'] >= similarity_threshold]
+            print(f"Found {len(results_df)} results after threshold.")
+        
+        # Take top n_results
+        if len(results_df) > n_results:
+            results_df = results_df.head(n_results)
+        
         # Ensure required columns exist before returning
-        expected_cols = ['id', 'similarity', 'distance', 'product_description', 'product_code', 'usda_code']
+        expected_cols = ['id', 'forward_similarity', 'backward_similarity', 'bi_directional_similarity', 
+                        'distance', 'product_description', 'product_code', 'usda_code']
         for col in expected_cols:
             if col not in results_df.columns:
-                 # Handle missing columns, maybe add them with default value if appropriate
-                 print(f"Warning: Expected column '{col}' not found in results DataFrame.")
-                 # Add with N/A if missing, adjust as needed
-                 if col not in results_df.columns:
-                     results_df[col] = 'N/A' 
-                     
+                print(f"Warning: Expected column '{col}' not found in results DataFrame.")
+                results_df[col] = 'N/A'  # Add with N/A if missing
+        
         # Reorder columns for consistency
         results_df = results_df[expected_cols + [col for col in results_df.columns if col not in expected_cols]]
         
@@ -335,8 +380,20 @@ def create_product_vector_db(recreate: bool = False) -> Tuple[ProductVectorDB, p
 
 
 def find_similar_products(query: str, n_results: int = 5, similarity_threshold: Optional[float] = None, 
-                          vector_db: Optional[ProductVectorDB] = None) -> pd.DataFrame:
-    """Helper function to find similar products using an existing or new DB."""
+                          vector_db: Optional[ProductVectorDB] = None, 
+                          initial_results: int = config.N_RESULTS_INITIAL_SEARCH) -> pd.DataFrame:
+    """Helper function to find similar products using an existing or new DB with bi-directional similarity.
+    
+    Args:
+        query: The search query text
+        n_results: Number of final results to return
+        similarity_threshold: Minimum bi-directional similarity threshold
+        vector_db: Optional existing vector database instance
+        initial_results: Number of initial results to fetch for bi-directional check
+        
+    Returns:
+        DataFrame with results ranked by bi-directional similarity
+    """
     # Create or use existing vector database
     if vector_db is None:
         print("Loading vector database...")
@@ -345,13 +402,20 @@ def find_similar_products(query: str, n_results: int = 5, similarity_threshold: 
              print("Failed to load or create vector database.")
              return pd.DataFrame()
     
-    # Find similar products
-    print(f"Finding products similar to: '{query}'")
-    results_df = vector_db.get_similar_products(query, n_results=n_results, similarity_threshold=similarity_threshold)
+    # Find similar products using bi-directional similarity
+    print(f"Finding products similar to: '{query}' using bi-directional similarity")
+    results_df = vector_db.get_similar_products(
+        query, 
+        n_results=n_results, 
+        similarity_threshold=similarity_threshold,
+        initial_results=initial_results
+    )
     
-    print("\n--- Similarity Search Results ---")
+    print("\n--- Bi-Directional Similarity Search Results ---")
     if not results_df.empty:
-        print(results_df.to_string())
+        # Display forward, backward, and bi-directional similarities
+        display_cols = ['product_description', 'forward_similarity', 'backward_similarity', 'bi_directional_similarity', 'usda_code']
+        print(results_df[display_cols].to_string())
     else:
         print("No similar products found.")
         
@@ -359,21 +423,24 @@ def find_similar_products(query: str, n_results: int = 5, similarity_threshold: 
 
 # Example usage (updated)
 if __name__ == "__main__":
-    # Example: Create DB (potentially recreating it)
-    print("\n--- Example: Creating Vector Database ---")
-    # Setting recreate=True will rebuild the DB from scratch
-    # Set recreate=False to load existing DB if available
-    vector_db_instance, unique_prods = create_product_vector_db(recreate=False) 
+    # Example: Create DB (recreating it with the simpler model)
+    print("\n--- Example: Creating Vector Database with Bi-Directional Similarity ---")
+    # Setting recreate=True will rebuild the DB from scratch with the simpler model
+    vector_db_instance, unique_prods = create_product_vector_db(recreate=True) 
     
     if vector_db_instance:
-        print("\n--- Example: Querying for Similar Products ---")
+        print("\n--- Example: Querying for Similar Products (Bi-Directional Similarity) ---")
         # Example queries using descriptions from the transaction data
         if unique_prods is not None and not unique_prods.empty:
              test_queries = unique_prods['product_description'].sample(min(3, len(unique_prods))).tolist()
+             # Add some queries with abbreviations
+             abbrev_queries = ["Bnls Beef Stk", "Frz Stk Portn", "Sh Cut Rst-Rdy Trmd"] 
+             test_queries = abbrev_queries + test_queries
         else:
-             test_queries = ["example product description one", "another item description"] # Fallback queries
+             test_queries = ["Bnls chicken breast", "Frz beef", "Portn Cut"] # Queries with abbreviations
              
         for test_query in test_queries:
             find_similar_products(test_query, n_results=5, vector_db=vector_db_instance)
+            print("\n" + "-"*80 + "\n") # Add separator between results
     else:
          print("\nFailed to create or load the vector database for the example.")

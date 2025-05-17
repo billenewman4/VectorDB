@@ -10,7 +10,9 @@ The project has been organized into a clear directory structure:
 VectorDB/
 ├── src/                     # Core implementation
 │   ├── vectordb.py          # Main vector DB implementation
-│   └── excel.py             # Excel data processing utilities
+│   ├── data_processing.py   # Data processing pipeline
+│   ├── excel.py             # Excel data processing utilities
+│   └── abbreviation_translator.py # Meat cut abbreviation translation
 ├── tests/                   # Testing
 │   ├── test_vectordb.py     # Vector DB functionality tests
 │   └── test_excel.py        # Excel data processing tests
@@ -31,7 +33,9 @@ VectorDB/
 
 - **analyze_clusters.py**: Tests specific product clusters with different similarity thresholds
 - **bidirectional_similarity.py**: Investigates similarity asymmetry between product terms
-- **evaluate_accuracy.py**: Detailed evaluation of matching accuracy for product descriptions Product Matching
+- **evaluate_accuracy.py**: Detailed evaluation of matching accuracy for product descriptions
+- **generate_best_usda_matches.py**: Generates best USDA code matches for products
+- **summarize_usda_matches.py**: Produces detailed statistics on USDA matching accuracy
 
 A project to match product descriptions using vector embeddings and similarity search.
 
@@ -44,12 +48,15 @@ This project uses vector embeddings to match similar product descriptions based 
 ### 1. Data Processing
 - **Transaction Data**: Loads product transaction data from Excel files
 - **Data Cleaning**: Standardizes text, handles missing values, and normalizes descriptions
+- **Abbreviation Translation**: Converts industry-specific abbreviations to their full descriptions (e.g., "Bnls Rnd Stk" → "Boneless Round Steak")
+- **USDA Code Preservation**: Maintains original USDA code formats throughout processing
 - **Unique Products**: Extracts unique products and calculates metrics (avg price, quantity, etc.)
 
 ### 2. Vector Embedding
-- **Model**: Uses Sentence Transformers (`all-MiniLM-L6-v2`) to convert text into 384-dimensional vector embeddings
+- **Model**: Uses Sentence Transformers (`all-mpnet-base-v2`) to convert text into high-dimensional vector embeddings
 - **Enhanced Descriptions**: Combines product text with price and quantity data for richer embeddings
 - **Example**: "almond milk, average price: $2.99, average quantity: 48.5" → [0.02, -0.04, ...]
+- **Abbreviation Translation**: Automatically expands meat cut abbreviations (e.g., "Bnls" → "Boneless", "Rst" → "Roast") for improved semantic matching
 
 ### 3. Vector Database
 - **Chroma DB**: Stores vectors in an efficient, searchable database
@@ -184,9 +191,106 @@ python evaluate_accuracy.py
 ## Potential Improvements
 
 - **Similarity Threshold**: Implement a cutoff to reduce false positives
-- **Alternative Models**: Try different embedding models for better precision
+- **Expanded Abbreviation Dictionary**: Add more industry-specific abbreviations to the translation system
 - **Weight Tuning**: Adjust the importance of price and quantity in embeddings
 - **Domain Fine-tuning**: Train the model on product-specific data
+
+## Recent Updates
+
+- **Enhanced Embedding Model**: Upgraded from `all-MiniLM-L6-v2` to `all-mpnet-base-v2` for higher quality embeddings
+- **Meat Cut Abbreviation Translation**: Added a system to translate meat industry abbreviations to full descriptions
+- **USDA Code Format Preservation**: Modified processing to maintain original USDA code formats
+- **Summary Statistics Tool**: Added detailed analysis of USDA code mapping accuracy
+
+## Detailed Workflow
+
+This section explains the end-to-end workflow of the VectorDB system, from data processing to analysis.
+
+### 1. Data Processing Pipeline
+
+```
+Transaction Data → Data Cleaning → Abbreviation Translation → USDA Code Mapping → Vector Embedding → Vector Database
+```
+
+#### Function Call Sequence:
+
+1. `data_processing.load_transaction_data()` - Loads raw transaction data from Excel
+2. `data_processing.process_transaction_data()` - Cleans data and expands abbreviations
+3. `vectordb.build_usda_lookup()` - Creates mapping from product codes to USDA codes
+4. `vectordb.create_product_vector_db()` - Main function that orchestrates the entire process
+   - Initializes the sentence transformer model
+   - Embeds product descriptions
+   - Creates and populates the vector database
+
+### 2. Running the System
+
+To rebuild the vector database from scratch:
+
+```python
+# From Python
+from src.vectordb import create_product_vector_db
+create_product_vector_db(recreate=True)
+
+# Or from the command line
+python -c "from src.vectordb import create_product_vector_db; create_product_vector_db(recreate=True)"
+```
+
+To load an existing database (without recreating):
+
+```python
+from src.vectordb import create_product_vector_db
+vector_db, products_df = create_product_vector_db(recreate=False)
+```
+
+### 3. Analysis Workflow
+
+After the vector database is created, you can run various analyses:
+
+#### Generate Best USDA Matches for Products
+
+```bash
+python analysis/generate_best_usda_matches.py
+```
+
+This script:
+1. Loads the vector database
+2. For each product, finds the best matching USDA code based on embedding similarity
+3. Generates Excel and CSV reports in the `analysis_results` directory
+4. Calculates accuracy for products with known USDA mappings
+
+#### Analyze USDA Matching Statistics
+
+```bash
+python analysis/summarize_usda_matches.py
+```
+
+This script:
+1. Loads the USDA matching results from `analysis_results/best_usda_matches.csv`
+2. Calculates detailed statistics about matching accuracy
+3. Analyzes performance by similarity threshold
+4. Identifies common mismatches and patterns
+5. Generates a detailed report at `analysis_results/usda_mapping_report.md`
+
+#### Other Analysis Tools
+
+- **Bidirectional Similarity Test**: `python analysis/run_bidirectional_test.py`
+- **Debug Single Query**: `python analysis/debug_single_query_bidirectional.py [product_code]`
+- **Cluster Analysis**: `python analysis/analyze_clusters.py`
+
+### 4. Complete Processing Chain Example
+
+To run the complete process from data loading to analysis:
+
+```bash
+# 1. Recreate the vector database with expanded abbreviations
+python -c "from src.vectordb import create_product_vector_db; create_product_vector_db(recreate=True)"
+
+# 2. Generate best USDA matches for all products
+python analysis/generate_best_usda_matches.py
+
+# 3. Analyze the matching results
+python analysis/summarize_usda_matches.py
+```
 
 ## License
 

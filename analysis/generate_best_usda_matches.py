@@ -146,7 +146,9 @@ def find_best_usda_match(
 def generate_best_usda_matches(
     vector_db: ProductVectorDB,
     mapping_df: pd.DataFrame,
-    transaction_df: pd.DataFrame
+    transaction_df: pd.DataFrame,
+    usda_embeddings: Dict[str, np.ndarray],
+    product_to_usda: Dict[str, str]
 ) -> pd.DataFrame:
     """
     Generate a DataFrame showing each product's best matching USDA code.
@@ -155,18 +157,15 @@ def generate_best_usda_matches(
         vector_db: Initialized vector database
         mapping_df: DataFrame with ground truth mappings
         transaction_df: DataFrame with transaction data
+        usda_embeddings: Dictionary mapping USDA codes to their embeddings
+        product_to_usda: Dictionary mapping product codes to their known USDA codes
         
     Returns:
         DataFrame with products and their best matching USDA codes
     """
-    # Create embeddings for all USDA codes
-    usda_embeddings = {}
-    for usda_code in get_unique_usda_codes(mapping_df):
-        usda_embedding = vector_db.embedder.embed_query(usda_code)
-        usda_embeddings[usda_code] = usda_embedding
-    
-    # Create ground truth mapping for verification
-    product_to_usda = create_product_to_usda_mapping(transaction_df, mapping_df)
+    # Using the usda_embeddings and product_to_usda passed as parameters
+    print(f"Using {len(usda_embeddings)} USDA code embeddings for matching")
+    print(f"Using {len(product_to_usda)} products with known USDA codes for verification")
     
     # Get unique products from transaction data
     unique_products = transaction_df.drop_duplicates(subset=[config.TRANSACTION_PRODUCT_CODE_COL, config.TRANSACTION_DESC_COL])
@@ -206,26 +205,71 @@ def generate_best_usda_matches(
         # If product is found in the vector DB
         if query_result and len(query_result["ids"]) > 0:
             # Handle different return formats between get() and query()
-            if "embeddings" in query_result and isinstance(query_result["embeddings"], list):
-                if len(query_result["embeddings"]) > 0:
-                    # Check if we have a nested list (from query() result)
-                    if isinstance(query_result["embeddings"][0], list):
-                        # query() result with nested lists
-                        product_embedding = np.array(query_result["embeddings"][0][0])
-                        product_id = query_result["ids"][0][0]
+            if "embeddings" in query_result:
+                # Try to extract the embedding, handling different ChromaDB versions
+                try:
+                    if isinstance(query_result["embeddings"], list):
+                        if len(query_result["embeddings"]) > 0:
+                            # Handle nested lists from query() result
+                            if isinstance(query_result["embeddings"][0], list):
+                                if len(query_result["embeddings"][0]) > 0:
+                                    # New ChromaDB format with nested lists
+                                    product_embedding = np.array(query_result["embeddings"][0][0])
+                                    product_id = query_result["ids"][0][0] if isinstance(query_result["ids"][0], list) else query_result["ids"][0]
+                                else:
+                                    print(f"Empty nested embeddings for product {product_code}")
+                                    continue
+                            else:
+                                # Direct get() result in older ChromaDB
+                                product_embedding = np.array(query_result["embeddings"][0])
+                                product_id = query_result["ids"][0]
+                        else:
+                            print(f"Empty embeddings for product {product_code}")
+                            continue
                     else:
-                        # Direct get() result
-                        product_embedding = np.array(query_result["embeddings"][0])
-                        product_id = query_result["ids"][0]
-                else:
-                    print(f"Empty embeddings for product {product_code}")
-                    continue
+                        print(f"Unexpected embeddings format for product {product_code}")
+                        continue
+                except Exception as e:
+                    print(f"Error processing embeddings for product {product_code}: {e}")
+                    # Fallback approach - try to get the embedding via data key in newer ChromaDB versions
+                    if "data" in query_result and len(query_result["data"]) > 0:
+                        try:
+                            if isinstance(query_result["data"][0], dict) and "embedding" in query_result["data"][0]:
+                                product_embedding = np.array(query_result["data"][0]["embedding"])
+                                product_id = query_result["ids"][0]
+                            else:
+                                print(f"Could not find embedding in data for product {product_code}")
+                                continue
+                        except Exception as e2:
+                            print(f"Error extracting embedding from data for product {product_code}: {e2}")
+                            continue
+                    else:
+                        continue
             else:
-                print(f"Unexpected query_result format for product {product_code}: {query_result.keys()}")
-                continue
+                # For newer ChromaDB versions that include embedding in 'data'
+                if "data" in query_result and len(query_result["data"]) > 0:
+                    try:
+                        if isinstance(query_result["data"][0], dict) and "embedding" in query_result["data"][0]:
+                            product_embedding = np.array(query_result["data"][0]["embedding"])
+                            product_id = query_result["ids"][0]
+                        else:
+                            print(f"Could not find embedding in data for product {product_code}")
+                            continue
+                    except Exception as e:
+                        print(f"Error extracting embedding from data for product {product_code}: {e}")
+                        continue
+                else:
+                    print(f"No embeddings or data found for product {product_code}: {query_result.keys()}")
+                    continue
             
             # Find best matching USDA code
             best_usda_code, similarity = find_best_usda_match(product_embedding, usda_embeddings)
+            
+            # Convert similarity from numpy array to float if needed
+            if hasattr(similarity, 'item'):
+                similarity = similarity.item()
+            elif isinstance(similarity, (list, np.ndarray)):
+                similarity = float(similarity[0]) if len(similarity) > 0 else 0.0
             
             # Check if this is a known match in the ground truth
             known_usda_code = product_to_usda.get(product_code, None)
@@ -236,7 +280,7 @@ def generate_best_usda_matches(
                 "product_code": product_code,
                 "product_description": product_desc,
                 "best_matching_usda_code": best_usda_code,
-                "similarity_score": similarity,
+                "similarity_score": similarity,  # Now a plain float, not array
                 "known_usda_code": known_usda_code,
                 "is_correct_match": is_correct_match
             })
@@ -244,92 +288,179 @@ def generate_best_usda_matches(
     # Convert to DataFrame
     results_df = pd.DataFrame(results)
     
-    # Calculate accuracy statistics for products with known USDA codes
+    # Calculate detailed accuracy statistics for products with known USDA codes
     known_usda_products = results_df.dropna(subset=["known_usda_code"])
-    if not known_usda_products.empty:
-        accuracy = known_usda_products["is_correct_match"].mean()
-        print(f"\nAccuracy on {len(known_usda_products)} products with known USDA codes: {accuracy:.4f}")
+    unknown_usda_products = results_df[results_df["known_usda_code"].isna()]
+    
+    total_products = len(results_df)
+    known_count = len(known_usda_products)
+    unknown_count = len(unknown_usda_products)
+    
+    print("\n--- USDA Matching Analysis ---")
+    print(f"Total products analyzed: {total_products}")
+    
+    if known_count > 0:
+        # Count of products that matched and didn't match
+        correct_matches = known_usda_products[known_usda_products["is_correct_match"] == True]
+        incorrect_matches = known_usda_products[known_usda_products["is_correct_match"] == False]
+        
+        correct_count = len(correct_matches)
+        incorrect_count = len(incorrect_matches)
+        
+        # Calculate percentages
+        correct_pct = (correct_count / known_count) * 100
+        incorrect_pct = (incorrect_count / known_count) * 100
+        known_pct = (known_count / total_products) * 100
+        unknown_pct = (unknown_count / total_products) * 100
+        
+        print(f"\nProducts with known USDA codes: {known_count} ({known_pct:.2f}% of total)")
+        print(f"  - Correctly matched: {correct_count} ({correct_pct:.2f}% of known products)")
+        print(f"  - Incorrectly matched: {incorrect_count} ({incorrect_pct:.2f}% of known products)")
+        print(f"\nProducts without known USDA codes: {unknown_count} ({unknown_pct:.2f}% of total)")
+        
+        # Overall accuracy
+        accuracy = correct_count / known_count if known_count > 0 else 0
+        print(f"\nOverall accuracy: {accuracy:.4f} ({correct_count}/{known_count})")
+    else:
+        print("No products with known USDA codes found for accuracy analysis.")
     
     return results_df
 
 
 def main():
-    """Main function to generate best USDA matches report."""
-    print("--- Starting Best USDA Matches Generator ---")
+    # Set up the project paths
+    project_root = Path(config.PROJECT_ROOT)
+    results_dir = project_root / "analysis_results"
+    results_dir.mkdir(exist_ok=True)
     
-    # Initialize vector database
-    recreate_db = False  # Set to True to force rebuild
-    print(f"Initializing Vector DB (recreate={recreate_db})...")
+    print("Loading ground truth mapping data...")
+    mapping_df = load_ground_truth_mapping()
+    if mapping_df is None or mapping_df.empty:
+        print("Error: Could not load mapping data.")
+        return
     
+    print("\nLoading transaction data...")
+    transaction_df = load_transaction_data()
+    if transaction_df is None or transaction_df.empty:
+        print("Error: Could not load transaction data.")
+        return
+        
+    print("\nExtracting unique USDA codes from mapping...")
+    unique_usda_codes = get_unique_usda_codes(mapping_df)
+    print(f"Found {len(unique_usda_codes)} unique USDA codes in mapping.")
+    
+    # Create mapping from product codes to known USDA codes
+    print("\nCreating product to USDA mapping...")
+    product_to_usda = create_product_to_usda_mapping(transaction_df, mapping_df)
+    print(f"Found {len(product_to_usda)} products with known USDA codes.")
+    
+    print("\nInitializing vector database...")
     try:
-        vector_db_instance, unique_products_df = create_product_vector_db(recreate=recreate_db)
-        if vector_db_instance is None:
-            print("Error: Failed to initialize vector database.")
-            sys.exit(1)
-            
-        print(f"Vector DB initialized with {len(unique_products_df)} unique products.")
-        
-        # Load ground truth mapping
-        mapping_df = load_ground_truth_mapping()
-        if mapping_df.empty:
-            print("Error: Ground truth mapping is empty or failed to load.")
-            sys.exit(1)
-            
-        # Load transaction data
-        transaction_df = load_transaction_data()
-        if transaction_df.empty:
-            print("Error: Transaction data is empty or failed to load.")
-            sys.exit(1)
-        
-        # Generate best USDA matches report
-        print("\nGenerating best USDA matches report...")
+        vector_db = ProductVectorDB(
+            persist_directory=str(config.CHROMA_DB_PATH),
+            collection_name=config.COLLECTION_NAME,
+            embedding_model_name=config.EMBEDDING_MODEL
+        )
+    except Exception as e:
+        print(f"Error initializing vector database: {e}")
+        return
+    
+    # USDA code embedding dictionary for similarity search
+    print("\nGenerating USDA code embeddings...")
+    usda_embeddings = {}
+    for usda_code in tqdm(unique_usda_codes, desc="Embedding USDA Codes"):
+        try:
+            embedding = vector_db.embedder.embed_query(usda_code)
+            usda_embeddings[usda_code] = embedding
+        except Exception as e:
+            print(f"Error embedding USDA code '{usda_code}': {e}")
+    print(f"Generated embeddings for {len(usda_embeddings)} USDA codes.")
+    
+    print("\nGenerating best USDA matches report...")
+    try:
         results_df = generate_best_usda_matches(
-            vector_db=vector_db_instance,
+            vector_db=vector_db,
             mapping_df=mapping_df,
-            transaction_df=transaction_df
+            transaction_df=transaction_df,
+            usda_embeddings=usda_embeddings,
+            product_to_usda=product_to_usda
         )
         
-        # Save results
-        results_dir = project_root / "analysis_results"
-        results_dir.mkdir(exist_ok=True)
-        
+        # Print results to terminal instead of saving to files
         if not results_df.empty:
-            results_file = results_dir / "best_usda_matches.xlsx"
-            results_df.to_excel(results_file, index=False)
-            print(f"Results saved to: {results_file}")
+            print("\n--- USDA Matching Results ---")
+            print("Format: product_id, product_code, product_description, best_matching_usda_code, similarity_score, known_usda_code, is_correct_match")
             
-            # Also save as CSV for easier viewing
-            csv_file = results_dir / "best_usda_matches.csv"
-            results_df.to_csv(csv_file, index=False)
-            print(f"Results also saved as CSV to: {csv_file}")
+            # Print header row
+            print("\n" + ",".join(results_df.columns.tolist()))
+            
+            # Print data rows (limited to prevent overwhelming terminal)
+            max_rows_to_print = 50  # Adjust this number as needed
+            for idx, row in results_df.head(max_rows_to_print).iterrows():
+                row_values = [str(row[col]) for col in results_df.columns]
+                print(",".join(row_values))
+                
+            if len(results_df) > max_rows_to_print:
+                print(f"\n... and {len(results_df) - max_rows_to_print} more rows (not shown to avoid terminal overflow).")
             
             # Sort by similarity score and print top 10 and bottom 10
             print("\n--- Top 10 Highest Similarity Matches ---")
             top10 = results_df.sort_values('similarity_score', ascending=False).head(10)
             for _, row in top10.iterrows():
-                sim_score = float(row['similarity_score']) if hasattr(row['similarity_score'], 'item') else row['similarity_score']
-                print(f"{row['product_description']} -> {row['best_matching_usda_code']}: {sim_score:.4f}")
+                print(f"{row['product_description']} -> {row['best_matching_usda_code']}: {row['similarity_score']:.4f}")
                 
             print("\n--- Bottom 10 Lowest Similarity Matches ---")
             bottom10 = results_df.sort_values('similarity_score', ascending=True).head(10)
             for _, row in bottom10.iterrows():
-                sim_score = float(row['similarity_score']) if hasattr(row['similarity_score'], 'item') else row['similarity_score']
-                print(f"{row['product_description']} -> {row['best_matching_usda_code']}: {sim_score:.4f}")
+                print(f"{row['product_description']} -> {row['best_matching_usda_code']}: {row['similarity_score']:.4f}")
+            
+            # Get accuracy statistics
+            known_usda_products = results_df.dropna(subset=["known_usda_code"])
+            unknown_usda_products = results_df[results_df["known_usda_code"].isna()]
+            
+            total_products = len(results_df)
+            known_count = len(known_usda_products)
+            unknown_count = len(unknown_usda_products)
+            
+            if known_count > 0:
+                # Count products that matched and didn't match
+                correct_matches = known_usda_products[known_usda_products["is_correct_match"] == True]
+                incorrect_matches = known_usda_products[known_usda_products["is_correct_match"] == False]
+                
+                correct_count = len(correct_matches)
+                incorrect_count = len(incorrect_matches)
+                
+                # Calculate percentages
+                correct_pct = (correct_count / known_count) * 100
+                incorrect_pct = (incorrect_count / known_count) * 100
+                known_pct = (known_count / total_products) * 100
+                unknown_pct = (unknown_count / total_products) * 100
+                accuracy = correct_count / known_count
+                
+                # Print detailed statistics to terminal
+                print("\n--- Detailed USDA Matching Statistics ---")
+                print(f"{'Metric':<30} {'Count':<10} {'Percentage':<15}")
+                print("-" * 55)
+                print(f"{'Total Products':<30} {total_products:<10} {'':15}")
+                print(f"{'Products with Known USDA':<30} {known_count:<10} {known_pct:.2f}%")
+                print(f"{'Products with Unknown USDA':<30} {unknown_count:<10} {unknown_pct:.2f}%")
+                print(f"{'Correct Matches':<30} {correct_count:<10} {correct_pct:.2f}%")
+                print(f"{'Incorrect Matches':<30} {incorrect_count:<10} {incorrect_pct:.2f}%")
+                print(f"{'Accuracy':<30} {'':10} {accuracy:.4f}")
+                print("-" * 55)
             
             # Product 1040948 special analysis
             special_product = results_df[results_df["product_code"] == "1040948"]
             if not special_product.empty:
                 print("\n--- Special Analysis for Product Code 1040948 ---")
                 for _, row in special_product.iterrows():
-                    sim_score = float(row['similarity_score']) if hasattr(row['similarity_score'], 'item') else row['similarity_score']
                     print(f"Product Description: {row['product_description']}")
                     print(f"Best Matching USDA Code: {row['best_matching_usda_code']}")
-                    print(f"Similarity Score: {sim_score:.4f}")
+                    print(f"Similarity Score: {row['similarity_score']:.4f}")
                     print(f"Known USDA Code: {row['known_usda_code']}")
                     print(f"Is Correct Match: {row['is_correct_match']}")
             else:
                 print("\n--- Product Code 1040948 Not Found in Results ---")
-        
     except Exception as e:
         print(f"An error occurred during report generation: {e}")
         import traceback
