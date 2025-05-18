@@ -31,17 +31,32 @@ GROUND_TRUTH_ID_COLS = [
 ]
 GROUND_TRUTH_USDA_COL = "USDA_Code" # The target value for evaluation
 
-# --- Embedding Model ---
-# Using a Sentence Transformer model suitable for product descriptions
-EMBEDDING_MODEL = 'all-mpnet-base-v2' # Higher quality model, previously used with success
-# Alternative powerful models:
-# 'paraphrase-multilingual-mpnet-base-v2' # Better for paraphrasing
-# 'msmarco-distilbert-base-v4' # Specifically tuned for retrieval
-# 'all-MiniLM-L6-v2' # Faster but less accurate model
+# --- Embedding Model Configuration ---
+# Choose which embedding model to use: 'openai', 'sentence-transformer'
+EMBEDDING_TYPE = 'openai'  # Change to 'sentence-transformer' to use Sentence Transformer embeddings
+
+# SentenceTransformer model options
+# Options: 'all-MiniLM-L6-v2' (baseline), 'all-mpnet-base-v2' (previously tested & improved performance)
+SENTENCE_TRANSFORMER_MODEL = 'all-mpnet-base-v2'  # Default to our current best model
+EMBEDDING_MODEL = SENTENCE_TRANSFORMER_MODEL  # For backward compatibility
+
+# OpenAI embedding model options
+# Options: 'text-embedding-3-small', 'text-embedding-3-large'
+OPENAI_EMBEDDING_MODEL = 'text-embedding-3-small'
+
+# OpenAI API configuration
+OPENAI_API_KEY = ''  # Set your API key here or use environment variable
 
 # --- Vector Database (ChromaDB) ---
 CHROMA_DB_PATH = PROJECT_ROOT / "chroma_db_actuals" # New path for actuals data
-COLLECTION_NAME = "actual_products"
+
+# Use different collection names for different embedding types to avoid conflicts
+if EMBEDDING_TYPE == 'openai':
+    COLLECTION_NAME = f"actual_products_{OPENAI_EMBEDDING_MODEL}"
+else:
+    COLLECTION_NAME = f"actual_products_{SENTENCE_TRANSFORMER_MODEL.replace('-', '_')}"
+
+print(f"Using collection name: {COLLECTION_NAME}")
 
 # --- Similarity Search Parameters ---
 # Default number of initial candidates to retrieve in forward search
