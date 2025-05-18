@@ -1,0 +1,8 @@
+Analysis Results - LOCAL embedding, usda_only scope
+================================================================================
+Total samples evaluated: 5
+Correct USDA code in top 1: 1 (20.0%)
+Correct USDA code in top 3: 3 (60.0%)
+Correct USDA code in top 5: 3 (60.0%)
+Mean Reciprocal Rank (MRR): 0.3986
+Average rank of correct match (when found): 8.60

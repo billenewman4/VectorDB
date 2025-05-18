@@ -4,13 +4,15 @@ USDA Best Match Generator
 
 This script generates a report showing each product and its best matching
 USDA code along with the similarity score, regardless of threshold.
+Enhanced with GPT-4 selector for improved matching accuracy.
 """
 import sys
+import os
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 # --- Path Setup ---
 current_script_path = Path(__file__).resolve()
@@ -27,6 +29,14 @@ if str(analysis_dir) not in sys.path:
 from src import config
 try:
     from src.vectordb import create_product_vector_db, ProductVectorDB
+    # Import GPT-4 selector - handle gracefully if not available
+    try:
+        from src.llm_selector import GPT4Selector
+        gpt4_available = True
+    except ImportError as e:
+        print(f"Warning: GPT-4 selector not available: {e}")
+        print("Falling back to embedding-only matching.")
+        gpt4_available = False
 except ImportError as e:
     print(f"CRITICAL ERROR: Could not import necessary modules: {e}")
     sys.exit(1)
@@ -113,6 +123,36 @@ def create_product_to_usda_mapping(
     return product_to_usda
 
 
+def find_top_k_usda_matches(
+    product_embedding: np.ndarray,
+    usda_embeddings: Dict[str, np.ndarray],
+    k: int = 5
+) -> List[Tuple[str, float]]:
+    """
+    Finds the top k USDA codes with highest similarity to the product embedding.
+    
+    Args:
+        product_embedding: Embedding of the product description
+        usda_embeddings: Dictionary mapping USDA codes to their embeddings
+        k: Number of top matches to return
+        
+    Returns:
+        List of (usda_code, similarity_score) tuples, sorted by similarity (highest first)
+    """
+    similarities = []
+    
+    for usda_code, usda_embedding in usda_embeddings.items():
+        # Calculate cosine similarity
+        similarity = np.dot(product_embedding, usda_embedding) / (
+            np.linalg.norm(product_embedding) * np.linalg.norm(usda_embedding)
+        )
+        similarities.append((usda_code, float(similarity)))
+    
+    # Sort by similarity (highest first) and take top k
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    return similarities[:k]
+
+
 def find_best_usda_match(
     product_embedding: np.ndarray,
     usda_embeddings: Dict[str, np.ndarray]
@@ -127,20 +167,11 @@ def find_best_usda_match(
     Returns:
         Tuple of (best_matching_usda_code, similarity_score)
     """
-    best_usda_code = None
-    best_similarity = -1.0
-    
-    for usda_code, usda_embedding in usda_embeddings.items():
-        # Calculate cosine similarity
-        similarity = np.dot(product_embedding, usda_embedding) / (
-            np.linalg.norm(product_embedding) * np.linalg.norm(usda_embedding)
-        )
-        
-        if similarity > best_similarity:
-            best_similarity = similarity
-            best_usda_code = usda_code
-    
-    return best_usda_code, best_similarity
+    # Get the top match using the find_top_k_usda_matches function
+    top_matches = find_top_k_usda_matches(product_embedding, usda_embeddings, k=1)
+    if top_matches:
+        return top_matches[0]  # Return the top match (usda_code, similarity)
+    return None, 0.0  # Return default values if no matches found
 
 
 def generate_best_usda_matches(
@@ -148,10 +179,14 @@ def generate_best_usda_matches(
     mapping_df: pd.DataFrame,
     transaction_df: pd.DataFrame,
     usda_embeddings: Dict[str, np.ndarray],
-    product_to_usda: Dict[str, str]
+    product_to_usda: Dict[str, str],
+    use_gpt4_selector: bool = False,
+    top_k_candidates: int = 5,
+    test_limit: int = 0
 ) -> pd.DataFrame:
     """
     Generate a DataFrame showing each product's best matching USDA code.
+    Can use GPT-4 to select the best match from top embedding candidates.
     
     Args:
         vector_db: Initialized vector database
@@ -159,6 +194,8 @@ def generate_best_usda_matches(
         transaction_df: DataFrame with transaction data
         usda_embeddings: Dictionary mapping USDA codes to their embeddings
         product_to_usda: Dictionary mapping product codes to their known USDA codes
+        use_gpt4_selector: Whether to use GPT-4 to select from top matches
+        top_k_candidates: Number of top candidates to consider for GPT-4 selection
         
     Returns:
         DataFrame with products and their best matching USDA codes
@@ -169,7 +206,26 @@ def generate_best_usda_matches(
     
     # Get unique products from transaction data
     unique_products = transaction_df.drop_duplicates(subset=[config.TRANSACTION_PRODUCT_CODE_COL, config.TRANSACTION_DESC_COL])
-    print(f"Processing {len(unique_products)} unique products...")
+    
+    # Filter to only include products with known USDA codes for testing
+    known_products = []
+    for _, row in unique_products.iterrows():
+        product_code = str(row[config.TRANSACTION_PRODUCT_CODE_COL])
+        if product_code in product_to_usda:
+            known_products.append(row)
+    
+    # Convert known products to DataFrame
+    if known_products:
+        unique_products = pd.DataFrame(known_products)
+        print(f"Filtered to {len(unique_products)} products with known USDA codes for testing")
+        
+        # Apply test limit if specified
+        if test_limit > 0 and len(unique_products) > test_limit:
+            unique_products = unique_products.sample(test_limit, random_state=42)  # Use fixed seed for reproducibility
+            print(f"Limited test to {len(unique_products)} randomly selected products")
+    else:
+        print("Warning: No products with known USDA codes found!")
+        return pd.DataFrame()  # Return empty DataFrame if no known products
     
     # Find best USDA match for each product
     results = []
@@ -262,8 +318,59 @@ def generate_best_usda_matches(
                     print(f"No embeddings or data found for product {product_code}: {query_result.keys()}")
                     continue
             
-            # Find best matching USDA code
-            best_usda_code, similarity = find_best_usda_match(product_embedding, usda_embeddings)
+            # Extra fields for result dictionary
+            extra_fields = {}
+            
+            if use_gpt4_selector and gpt4_available:
+                # Get top k matches instead of just the best match
+                top_k_matches = find_top_k_usda_matches(product_embedding, usda_embeddings, k=top_k_candidates)
+                
+                # Initialize GPT-4 selector if not already initialized
+                if 'gpt4_selector' not in globals():
+                    global gpt4_selector
+                    try:
+                        api_key = config.OPENAI_API_KEY or os.environ.get("OPENAI_API_KEY")
+                        if not api_key:
+                            print("Warning: No OpenAI API key found. Falling back to embedding-only matching.")
+                            gpt4_selector = None
+                        else:
+                            gpt4_selector = GPT4Selector(api_key=api_key)
+                    except Exception as e:
+                        print(f"Error initializing GPT-4 selector: {e}")
+                        print("Falling back to embedding-only matching.")
+                        gpt4_selector = None
+                        use_gpt4_selector = False
+                
+                if gpt4_selector is not None and top_k_matches:
+                    # Use GPT-4 to select the best match
+                    try:
+                        best_usda_code, confidence, reasoning = gpt4_selector.select_best_match(
+                            product_description=product_desc,
+                            candidate_usda_codes=top_k_matches
+                        )
+                        
+                        # Find the similarity score for the selected code
+                        similarity = next((score for code, score in top_k_matches if code == best_usda_code), 0.0)
+                        
+                        # Add GPT-4 specific fields
+                        extra_fields = {
+                            "gpt4_confidence": confidence,
+                            "gpt4_reasoning": reasoning,
+                            "candidate_codes": ",".join([code for code, _ in top_k_matches]),
+                            "candidate_scores": ",".join([f"{score:.4f}" for _, score in top_k_matches])
+                        }
+                        
+                        print(f"GPT-4 selected USDA code: {best_usda_code} for product: {product_desc[:50]}...")
+                    except Exception as e:
+                        print(f"Error using GPT-4 selector: {e}")
+                        # Fall back to regular embedding match
+                        best_usda_code, similarity = find_best_usda_match(product_embedding, usda_embeddings)
+                else:
+                    # Fall back to regular embedding match
+                    best_usda_code, similarity = find_best_usda_match(product_embedding, usda_embeddings)
+            else:
+                # Regular embedding-based matching
+                best_usda_code, similarity = find_best_usda_match(product_embedding, usda_embeddings)
             
             # Convert similarity from numpy array to float if needed
             if hasattr(similarity, 'item'):
@@ -275,7 +382,7 @@ def generate_best_usda_matches(
             known_usda_code = product_to_usda.get(product_code, None)
             is_correct_match = (known_usda_code == best_usda_code) if known_usda_code else None
             
-            results.append({
+            result_dict = {
                 "product_id": product_id,
                 "product_code": product_code,
                 "product_description": product_desc,
@@ -283,7 +390,12 @@ def generate_best_usda_matches(
                 "similarity_score": similarity,  # Now a plain float, not array
                 "known_usda_code": known_usda_code,
                 "is_correct_match": is_correct_match
-            })
+            }
+            
+            # Add any extra fields from GPT-4 selection
+            result_dict.update(extra_fields)
+            
+            results.append(result_dict)
     
     # Convert to DataFrame
     results_df = pd.DataFrame(results)
@@ -327,11 +439,30 @@ def generate_best_usda_matches(
     return results_df
 
 
-def main():
+def main(use_gpt4_selector: bool = False, top_k_candidates: int = 5, test_limit: int = 0):
+    """
+    Main function to generate best USDA matches report.
+    
+    Args:
+        use_gpt4_selector: Whether to use GPT-4 to select from top embedding matches
+        top_k_candidates: Number of top candidates to consider for GPT-4 selection
+        test_limit: Limit the number of products to test (0 = no limit)
+        
+    Returns:
+        Tuple of (accuracy, correct_count, total_count) for metrics reporting
+    """
     # Set up the project paths
     project_root = Path(config.PROJECT_ROOT)
     results_dir = project_root / "analysis_results"
     results_dir.mkdir(exist_ok=True)
+    
+    # Display GPT-4 selector status
+    if use_gpt4_selector:
+        if gpt4_available:
+            print(f"Using GPT-4 to select best match from top {top_k_candidates} embedding candidates")
+        else:
+            print("GPT-4 selector requested but not available. Falling back to embedding-only matching.")
+            use_gpt4_selector = False
     
     print("Loading ground truth mapping data...")
     mapping_df = load_ground_truth_mapping()
@@ -383,7 +514,10 @@ def main():
             mapping_df=mapping_df,
             transaction_df=transaction_df,
             usda_embeddings=usda_embeddings,
-            product_to_usda=product_to_usda
+            product_to_usda=product_to_usda,
+            use_gpt4_selector=use_gpt4_selector,
+            top_k_candidates=top_k_candidates,
+            test_limit=test_limit
         )
         
         # Print results to terminal instead of saving to files
@@ -436,39 +570,47 @@ def main():
                 known_pct = (known_count / total_products) * 100
                 unknown_pct = (unknown_count / total_products) * 100
                 accuracy = correct_count / known_count
-                
+
                 # Print detailed statistics to terminal
-                print("\n--- Detailed USDA Matching Statistics ---")
-                print(f"{'Metric':<30} {'Count':<10} {'Percentage':<15}")
-                print("-" * 55)
-                print(f"{'Total Products':<30} {total_products:<10} {'':15}")
-                print(f"{'Products with Known USDA':<30} {known_count:<10} {known_pct:.2f}%")
-                print(f"{'Products with Unknown USDA':<30} {unknown_count:<10} {unknown_pct:.2f}%")
-                print(f"{'Correct Matches':<30} {correct_count:<10} {correct_pct:.2f}%")
-                print(f"{'Incorrect Matches':<30} {incorrect_count:<10} {incorrect_pct:.2f}%")
-                print(f"{'Accuracy':<30} {'':10} {accuracy:.4f}")
-                print("-" * 55)
-            
-            # Product 1040948 special analysis
-            special_product = results_df[results_df["product_code"] == "1040948"]
-            if not special_product.empty:
-                print("\n--- Special Analysis for Product Code 1040948 ---")
-                for _, row in special_product.iterrows():
-                    print(f"Product Description: {row['product_description']}")
-                    print(f"Best Matching USDA Code: {row['best_matching_usda_code']}")
-                    print(f"Similarity Score: {row['similarity_score']:.4f}")
-                    print(f"Known USDA Code: {row['known_usda_code']}")
-                    print(f"Is Correct Match: {row['is_correct_match']}")
-            else:
-                print("\n--- Product Code 1040948 Not Found in Results ---")
+                print("\n--- USDA Matching Statistics ---")
+                print(f"Total products analyzed: {total_products}")
+                print(f"Products with known USDA codes: {known_count} ({known_pct:.2f}%)")
+                print(f"Products with unknown USDA codes: {unknown_count} ({unknown_pct:.2f}%)")
+                print(f"\nFor products with known USDA codes:")
+                print(f"Correct matches: {correct_count} ({correct_pct:.2f}%)")
+                print(f"Incorrect matches: {incorrect_count} ({incorrect_pct:.2f}%)")
+                print(f"\nOverall accuracy: {accuracy:.4f}")
+
+                if correct_count > 0:
+                    # Display the average similarity for correct matches
+                    avg_similarity_correct = correct_matches["similarity_score"].mean()
+                    print(f"Average similarity score for correct matches: {avg_similarity_correct:.4f}")
+
+                if incorrect_count > 0:
+                    # Display the average similarity for incorrect matches
+                    avg_similarity_incorrect = incorrect_matches["similarity_score"].mean()
+                    print(f"Average similarity score for incorrect matches: {avg_similarity_incorrect:.4f}")
+
+                # Return metrics for external use (for compare_embeddings.py)
+                return accuracy, correct_count, known_count
+        else:
+            print("No results generated.")
+            return 0.0, 0, 0
     except Exception as e:
-        print(f"An error occurred during report generation: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+        print(f"Error generating report: {e}")
+        return 0.0, 0, 0
         
     print("\n--- Report Generation Complete ---")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Generate best USDA matches report')
+    parser.add_argument('--use-gpt4', action='store_true', help='Use GPT-4 to select the best match from top candidates')
+    parser.add_argument('--top-k', type=int, default=5, help='Number of top candidates to consider for GPT-4 selection')
+    parser.add_argument('--limit', type=int, default=0, help='Limit the number of products to test (0 = no limit)')
+    args = parser.parse_args()
+    
+    # Run the main function with arguments
+    main(use_gpt4_selector=args.use_gpt4, top_k_candidates=args.top_k, test_limit=args.limit)

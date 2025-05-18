@@ -1,0 +1,71 @@
+# VectorDB Enhancement Instructions
+
+## 1. Embedding Model Upgrade
+
+### Add OpenAI Embedding Integration
+
+1. Create a new embedding function in `src/vectordb.py` that uses OpenAI's embedding model:
+
+
+2. Modify the `config.py` file to add OpenAI configuration options:
+
+
+3. Update the `ProductEmbedder` class to support both types of embedding models:
+
+
+4. Update the `ProductVectorDB` class initialization to pass the embedding_type parameter:
+
+## 2. Comparing Results with Previous Models
+
+Implement a script to compare the performance between OpenAI embeddings and our previously used models ('all-MiniLM-L6-v2' and 'all-mpnet-base-v2'). Create a new file `src/compare_embeddings.py`:
+
+
+## 3. LLM-Enhanced Selection with GPT-4
+
+Implement a new approach where the embedding model finds the top 5 similar USDA codes, then GPT-4 makes the final selection:
+
+1. Create a new file `src/llm_selector.py`:
+
+
+2. Modify the `generate_best_usda_matches.py` to incorporate the GPT-4 selector:
+
+
+3. Add the `find_top_k_usda_matches` function in the same file:
+
+4. Add a CLI argument to enable the GPT-4 selector and top-k parameter:
+
+
+## Getting Started
+
+1. Install required packages:
+
+
+2. Set your OpenAI API key:
+   - Either add it to the config.py file
+   - Or set it as an environment variable: `export OPENAI_API_KEY="your-api-key-here"`
+
+3. Run the embedding comparison:
+
+4. Run analysis with GPT-4 selector:
+
+
+## Performance Considerations
+
+1. OpenAI embeddings may be more expensive than local models but could provide better accuracy
+
+2. The GPT-4 selector adds an API call for each product, which increases cost and time
+   - Consider setting a similarity threshold to only use GPT-4 for ambiguous cases
+   - Run a smaller test set first to validate the approach
+
+3. You can add caching to the OpenAI API calls to avoid redundant requests
+
+4. Note that in our previous testing, upgrading from 'all-MiniLM-L6-v2' to 'all-mpnet-base-v2' improved embedding quality, so this should be included in our comparison as a potential strong baseline
+
+## Implementation Steps Checklist
+
+- [ ] Add OpenAI embeddings integration to config.py and vectordb.py
+- [ ] Create the embedding comparison script
+- [ ] Run baseline comparison between OpenAI and SentenceTransformer models (including all-mpnet-base-v2)
+- [ ] Implement the GPT-4 selector for top-k candidates
+- [ ] Update the analysis script to use the GPT-4 selector
+- [ ] Evaluate final accuracy improvements
