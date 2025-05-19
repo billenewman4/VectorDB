@@ -1,0 +1,10 @@
+product_code,product_description,best_matching_usda_code,similarity_score,known_usda_code,is_correct_match
+124004,"CLODS BEEF, CH",Ground beef 73%,0.4027811586856842,114 A 3 shoulder clod,False
+1035A2BP,BF Loin Tend PSMO 5+ CH IBP D4087AH,184B 3 Loin top butt CC_Choice,0.4624793231487274,189a Psmo tenderloin,False
+164167,"RIBEYE LIP ON HVY, CH, 16UP",112a HVY Lipon Ribeye,0.7857571244239807,112a HVY Lipon Ribeye,True
+12101514,Beef Ribeye Boneless Lip On 5# Netted,130 4 chuck short rib,0.5875545144081116,109E 1 Rib ribeye lip-on bn-in_Choice,False
+17100500,Beef Flank Steak Choice (UI),185 A 4 Bottom sirloin or “flap meat”,0.4516026973724365,193 Flank,False
+11310500,Beef Chuck Short Ribs (UI),130 4 chuck short rib,0.7151641249656677,130 4 chuck short rib,True
+13800403,Beef Loin Ball Tip Choice-2 UP,185b Ball Tip,0.6473156809806824,185b Ball Tip,True
+14400500,Beef Round Flat Choice (UI),171 B 3 Round outside round flat ,0.4580429196357727,171 B 3 Round outside round flat ,True
+13034IN,PORK SHL BUT BNL IND-5205 4/2/8#,Trimmed pork sparerib MED,0.6424267888069153,1/4 trim boneless Pork butt VAC,False

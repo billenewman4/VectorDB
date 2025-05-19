@@ -1,3 +1,57 @@
+# Helper functions for working with USDA codes, normalizing IDs, etc.
+import pandas as pd
+import numpy as np
+import re
+from tqdm import tqdm
+from typing import Dict, List, Tuple, Optional, Any
+from src import config
+
+def preprocess_text_for_matching(text: str) -> str:
+    """
+    Enhanced preprocessing function for better text matching between product descriptions and USDA codes.
+    Normalizes text by expanding abbreviations, removing special characters, and standardizing format.
+    
+    Args:
+        text: Input text to preprocess
+        
+    Returns:
+        Preprocessed text optimized for matching
+    """
+    if not text:
+        return ""
+    
+    # Convert to lowercase
+    text = text.lower()
+    
+    # Replace common abbreviations
+    abbrev_map = {
+        "bf": "beef",
+        "bn": "bone",
+        "bnls": "boneless",
+        "bi": "bonein",
+        "ch": "choice",
+        "sel": "select",
+        "os": "outside",
+        "lip on": "lipon",
+        "inside": "inside",
+        "lip-on": "lipon",
+        "hvy": "heavy",
+        "xt": "extra",
+        "trmd": "trimmed",
+    }
+    
+    # Apply abbreviation replacements
+    for abbrev, full in abbrev_map.items():
+        text = re.sub(r'\b' + abbrev + r'\b', full, text)
+    
+    # Remove special characters and numbers
+    text = re.sub(r'[^a-z\s]', ' ', text)
+    
+    # Standardize white space
+    text = re.sub(r'\s+', ' ', text).strip()
+    
+    return text
+
 # Helper function to normalize IDs from the mapping file
 def normalize_mapping_id(code):
     if isinstance(code, str):
@@ -74,7 +128,7 @@ def build_usda_lookup(mapping_file=config.GROUND_TRUTH_FILE,
 def create_product_vector_db(recreate: bool = False, 
                          embedding_type: str = config.EMBEDDING_TYPE,
                          embedding_model_name: Optional[str] = None,
-                         api_key: Optional[str] = None) -> Tuple[ProductVectorDB, pd.DataFrame]:
+                         api_key: Optional[str] = None) -> Tuple[Any, pd.DataFrame]:
     """
     Create a complete product vector database from the new transaction data structure.
     Uses data_processing functions and stores USDA code.
@@ -86,7 +140,7 @@ def create_product_vector_db(recreate: bool = False,
         api_key: Optional API key for OpenAI embeddings
         
     Returns:
-        Tuple of (Initialized ProductVectorDB instance, DataFrame of unique products processed)
+        Tuple of (Initialized vector database instance, DataFrame of unique products processed)
     """
     # Load and process transaction data using new functions
     print("Processing transaction data...")
@@ -107,6 +161,8 @@ def create_product_vector_db(recreate: bool = False,
         model_name = embedding_model_name or config.SENTENCE_TRANSFORMER_MODEL
         print(f"Using SentenceTransformer model: {model_name}")
     
+    # Import here to avoid circular imports
+    from src.VectorDB.DB import ProductVectorDB
     vector_db = ProductVectorDB(
         persist_directory=str(config.CHROMA_DB_PATH),
         collection_name=config.COLLECTION_NAME,
@@ -129,7 +185,7 @@ def create_product_vector_db(recreate: bool = False,
 
 
 def find_similar_products(query: str, n_results: int = 5, similarity_threshold: Optional[float] = None, 
-                           vector_db: Optional[ProductVectorDB] = None, 
+                           vector_db: Optional[Any] = None, 
                            initial_results: int = config.N_RESULTS_INITIAL_SEARCH,
                            embedding_type: str = config.EMBEDDING_TYPE,
                            embedding_model_name: Optional[str] = None,
