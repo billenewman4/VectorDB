@@ -1,3 +1,12 @@
+import math
+import chromadb
+import numpy as np
+import pandas as pd
+from typing import Dict, List, Any, Optional, Tuple
+
+from src import config
+from src.VectorDB.helper import normalize_mapping_id, build_usda_lookup
+from src.VectorDB.localEmbedder import ProductEmbedder
 
 class ProductVectorDB:
     """Manages ChromaDB interactions for product embeddings."""
