@@ -1,0 +1,21 @@
+sample_id,product_description,correct_usda,embedding_rank,pure_cross_encoder_rank,weighted_rank,embedding_improved,cross_encoder_improved,embedding_maintained,cross_encoder_maintained,embedding_degraded,cross_encoder_degraded
+1,bf round os flat ch ibp d6277ah,171 C 3 Eye of round,4,2,2,True,False,False,True,False,False
+2,bf loin tend psmo 5+ ch ibp d4087ah,189a Psmo tenderloin,2,1,1,True,False,False,True,False,False
+3,beef ny strip steaks ch 8/9oz*,175 3 Loin strip loin 1x1_Choice,7,2,2,True,False,False,True,False,False
+4,bf loin short-z 0x1 ch ibp,174 3 Short loin Choice ,3,4,4,False,False,False,False,True,False
+5,bf round top inside xt ch ibp 6117,168 3 top round inside XT,1,1,1,False,False,True,True,False,False
+6,bf rib meat lifter/blade ch oma,Cap & Wedge,35,9,10,True,False,False,False,False,True
+7,bf chuck flap ch oma,116g Chuck Flap,1,1,1,False,False,True,True,False,False
+8,bf rib meat-z lifter/blade ch oma,Cap & Wedge,35,12,12,True,False,False,False,False,False
+9,bf grnd 80 fine ibp 8/10#-z,Ground beef 81%,15,24,20,False,True,False,False,True,False
+10,bf chuck roll n/off ch ibp d1307ah,116 A 3 chuck roll,1,1,1,False,False,True,True,False,False
+11,bf pectoral meat ch oma,Pectoral,1,1,1,False,False,True,True,False,False
+12,"chicken breast strips, grill",123 A 3 short rib choice,4,32,31,False,True,False,False,True,False
+13,bf chuck roll-z n/off ch ibp,116 A 3 chuck roll,1,1,1,False,False,True,True,False,False
+14,bf grnd 80 fine ibp 8/10# d0231bh,Ground beef 81%,24,18,17,True,True,False,False,False,False
+15,bf skirt inner ch ibp,121 D 4 Inside skirt,1,1,1,False,False,True,True,False,False
+16,bf round top inside ch ibp d6137ah,168 1 top round inside ,2,1,1,True,False,False,True,False,False
+17,pork shl but bnl ind-5205 4/2/8#,1/4 trim boneless Pork butt VAC,7,1,1,True,False,False,True,False,False
+18,veal ossobucco center cut 1in,123 A 3 short rib choice,7,34,28,False,True,False,False,True,False
+19,bf loin short 0x1 ch ibp d4377ac,174 3 Short loin Choice ,3,4,4,False,False,False,False,True,False
+20,bf loin top but ch ibp d4427ac,185 1 Ball tips ,34,31,32,True,False,False,False,False,True

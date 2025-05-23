@@ -13,34 +13,47 @@ from tqdm import tqdm
 class CrossEncoder:
     """
     CrossEncoder for more accurate matching between product descriptions and USDA codes.
-    Uses a cross-encoder model to compare pairs of texts directly, rather than separate embeddings.
+    Uses a weighted combination of embedding similarity and cross-encoder scores.
     """
     
-    def __init__(self, model_name: str = 'cross-encoder/ms-marco-MiniLM-L-6-v2'):
+    def __init__(self, model_name: str = 'cross-encoder/ms-marco-MiniLM-L-6-v2',
+                cross_encoder_weight: float = 0.7, embedding_weight: float = 0.3):
         """
         Initialize the CrossEncoder with a pre-trained model.
         
         Args:
             model_name: Name of the pre-trained cross-encoder model to use.
                         Default is 'cross-encoder/ms-marco-MiniLM-L-6-v2'
+            cross_encoder_weight: Weight to apply to cross-encoder scores.
+                                Default is 0.7
+            embedding_weight: Weight to apply to embedding similarity scores.
+                            Default is 0.3
         """
         self.model_name = model_name
+        self.cross_encoder_weight = cross_encoder_weight
+        self.embedding_weight = embedding_weight
         print(f"Initializing CrossEncoder with model: {model_name}")
+        print(f"Weights: Cross-encoder={cross_encoder_weight:.2f}, Embedding={embedding_weight:.2f}")
         self.model = SentenceCrossEncoder(model_name)
     
     def rerank(self, query: str, candidates: List[Dict[str, Any]], 
-               batch_size: int = 32) -> List[Dict[str, Any]]:
+               batch_size: int = 32, debug: bool = False) -> List[Dict[str, Any]]:
         """
-        Re-rank candidate USDA codes based on cross-encoder scores.
+        Re-rank candidate USDA codes using a weighted combination of
+        cross-encoder scores and embedding similarity.
         
         Args:
             query: The product description to match
-            candidates: List of candidate matches (each with 'usda_code' and other fields)
+            candidates: List of candidate matches (each with 'usda_code' and 'similarity' fields)
             batch_size: Batch size for cross-encoder predictions
+            debug: Whether to print debug information
             
         Returns:
             Re-ranked list of candidates with updated similarity scores
         """
+        if debug:
+            print(f"Re-ranking {len(candidates)} candidates for query: '{query}'")
+        
         # Prepare text pairs for the cross-encoder
         text_pairs = []
         for candidate in candidates:
@@ -53,22 +66,38 @@ class CrossEncoder:
             batch_scores = self.model.predict(batch)
             scores.extend(batch_scores)
         
-        # Create copies of candidates with updated scores
         reranked_candidates = []
         for i, candidate in enumerate(candidates):
             # Create a copy of the candidate to avoid modifying the original
             reranked = dict(candidate)
             
-            # Store both the original and cross-encoder scores
-            reranked['embedding_similarity'] = candidate['similarity']
-            reranked['cross_encoder_score'] = float(scores[i])
+            # Get original embedding similarity
+            embedding_score = candidate.get('similarity', 0.0)
             
-            # Update the main similarity score to use the cross-encoder score
-            reranked['similarity'] = float(scores[i])
+            # Get cross-encoder score
+            cross_encoder_score = float(scores[i])
+            
+            # Store both scores for reference
+            reranked['embedding_score'] = embedding_score
+            reranked['cross_encoder_score'] = cross_encoder_score
+            
+            # Calculate weighted score - simple weighted average
+            weighted_score = (
+                self.cross_encoder_weight * cross_encoder_score + 
+                self.embedding_weight * embedding_score
+            )
+            
+            # Update the similarity score
+            reranked['similarity'] = weighted_score
+            
+            # Debug output
+            if debug:
+                print(f"  {candidate['usda_code']} - Emb: {embedding_score:.4f}, CE: {cross_encoder_score:.4f}, "
+                      f"Final: {weighted_score:.4f}")
             
             reranked_candidates.append(reranked)
         
-        # Sort by new similarity scores
+        # Sort by weighted similarity scores
         reranked_candidates = sorted(reranked_candidates, key=lambda x: x['similarity'], reverse=True)
         
         return reranked_candidates
