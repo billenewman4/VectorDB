@@ -56,10 +56,10 @@ def preprocess_text_for_matching(text: str) -> str:
 def normalize_mapping_id(code):
     if isinstance(code, str):
         # Remove trailing '-<number>' and strip whitespace
-        code = re.sub(r'-\d+$', '', code).strip()
+        code = re.sub(r'-\d+$', '', code).strip()  # UNCOMMENTED - this is needed for proper matching
         # Also remove any leading company prefix (single digit followed by digits)
         # This will convert patterns like '51040948' to '1040948'
-        code = re.sub(r'^\d(\d+)$', r'\1', code)
+        code = re.sub(r'^\d(\d+)$', r'\1', code)  # UNCOMMENTED - this is needed for proper matching
     else:
         code = str(code).strip() # Convert non-strings to string and strip
     return code
@@ -109,8 +109,8 @@ def build_usda_lookup(mapping_file=config.GROUND_TRUTH_FILE,
                     # Consider adding warning for conflicts if needed
                     if normalized_id in lookup_map and lookup_map[normalized_id] != usda_code:
                          # Log potential conflict if needed
-                         # print(f"Warning: Normalized ID '{normalized_id}' maps to multiple USDA codes ('{lookup_map[normalized_id]}' and '{usda_code}'). Using last found.")
-                         pass # Keeping last one for now
+                         print(f"Warning: Normalized ID '{normalized_id}' maps to multiple USDA codes ('{lookup_map[normalized_id]}' and '{usda_code}'). Using last found.")
+                         # pass # Keeping last one for now
                     lookup_map[normalized_id] = usda_code
                     found_id_for_row = True
                     

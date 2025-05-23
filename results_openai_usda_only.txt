@@ -1,8 +1,0 @@
-Analysis Results - OPENAI embedding, usda_only scope
-================================================================================
-Total samples evaluated: 20
-Correct USDA code in top 1: 7 (35.0%)
-Correct USDA code in top 3: 9 (45.0%)
-Correct USDA code in top 5: 11 (55.0%)
-Mean Reciprocal Rank (MRR): 0.4276
-Average rank of correct match (when found): 6.75
