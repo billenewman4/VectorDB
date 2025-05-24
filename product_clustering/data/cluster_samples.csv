@@ -1,0 +1,101 @@
+product_code,cluster,cluster_id,probability,product_description,brand,size
+920240,0,cluster_0,1.0,fathers day feature,fathers,
+920242,0,cluster_0,1.0,fathers day feature delux,fathers,
+920223,0,cluster_0,1.0,mother day feature 1,mother,
+920224,0,cluster_0,1.0,mothers day feature #2,mothers,
+920225,0,cluster_0,1.0,mothers day feature #3,mothers,
+50120136,30,cluster_30,0.9555172233149949,bananas 24ct green,bananas,24ct
+50133,30,cluster_30,0.9687717043138083,lettuce iceburg cello 24 ct,lettuce,24 ct
+50133109,30,cluster_30,0.9755701723868688,celery 30ct,celery,30ct
+50120145,30,cluster_30,0.9555172233149949,bananas green plaintain 40#,bananas,
+50134291,30,cluster_30,1.0,lettuce iceburg liner premium 12ct,lettuce,12ct
+1012583,60,cluster_60,0.8267507092373998,cont foam tray white 2/200ct 8p,cont,200ct
+1012585,60,cluster_60,0.8369117600996249,cont foam tray white 400ct 2p,cont,400ct
+1012582,60,cluster_60,1.0,cont foam tray white 500ct 4pr,cont,500ct
+1012595,60,cluster_60,1.0,cont foam tray white 400ct 4phd,cont,400ct
+1012591,60,cluster_60,1.0,cont foam tray white 500ct 4p,cont,500ct
+12001B,90,cluster_90,1.0,goat whl-6way -cut 1.5 in,goat,
+30520,90,cluster_90,1.0,goat - 6 way cut skinless 40#ave.,goat,
+430151,90,cluster_90,1.0,goat leg cut 1.5in cubes,goat,
+430156,90,cluster_90,1.0,6way goat cut 1.5in bonein,6way,
+30521,90,cluster_90,0.971345478189359,goat skin-on cut 6way *ryan* iw,goat,
+99999928,120,cluster_120,0.9577250901798612,"fruit, pulp soursop twinpk, chiq 12x2/7z","fruit,",
+96064690,120,cluster_120,0.8684358137780335,"fruit, pulp guava twinpk, chiq (12x2/7z)","fruit,",
+99999917,120,cluster_120,0.8457292799816712,"fruit, pulp papaya twinpk, chiq 12x2/7z","fruit,",
+99999920,120,cluster_120,1.0,"fruit, pulp blkby twinpk, chiq (12x2/7z)","fruit,",
+96114690,120,cluster_120,1.0,"fruit, pulp tamarnd twinpk, chiq 12x2/7z","fruit,",
+19560111,150,cluster_150,1.0,duck leg bi cul ret 12/16-oz,duck,
+19558,150,cluster_150,1.0,duck leg bi mlf 36/8-oz 18#,duck,
+42280711,150,cluster_150,1.0,duck leg confit b/out 20 lb/cs bnls,duck,20 lb
+332080,150,cluster_150,1.0,"duck leg confit, 8-10oz",duck,10oz
+19583010,150,cluster_150,1.0,duck leg-confit cul-ret 12/16-oz,duck,
+104356,180,cluster_180,1.0,bf oxtail - cut 25#,bf,
+10433BM,180,cluster_180,1.0,bf oxtail afg 20#,bf,
+10435H,180,cluster_180,1.0,bf oxtail-z-cut ibp-1510 15#,bf,
+10432I,180,cluster_180,1.0,bf oxtail fresh aur 25#,bf,
+10432999,180,cluster_180,1.0,bf oxtail-z aur 25#,bf,
+15149984,210,cluster_210,1.0,"sirloin fat on culotte, (ch)",sirloin,
+15141094,210,cluster_210,1.0,"sirloin fat on culotte, b. mountain (ch)",sirloin,
+15141014,210,cluster_210,1.0,"sirloin fat on culotte, ibp (ch)",sirloin,
+15141004,210,cluster_210,1.0,"sirloin fat on culotte, go (ch)",sirloin,
+15141050,210,cluster_210,1.0,"sirloin fat on culotte, heartland, ch",sirloin,
+10401000,240,cluster_240,1.0,"oxtails, greater omaha (15#)","oxtails,",
+10391010,240,cluster_240,0.800857447559062,"oxtails whole steer, ibp (15#)",oxtails,
+10401320,240,cluster_240,0.9462360583744854,"oxtails (cut), mex gusi",oxtails,
+10411050,240,cluster_240,0.8456866355035257,"oxtails whole steer, afg #06125",oxtails,
+10391005,240,cluster_240,1.0,"oxtails, greater omaha (sel)","oxtails,",
+16044664,270,cluster_270,1.0,"inner skirts, canadian diamond",inner,
+16044667,270,cluster_270,1.0,"inner skirts, canadian diamond (a)",inner,
+16043340,270,cluster_270,1.0,"inner skirts, diamond canada (a)",inner,
+16044665,270,cluster_270,1.0,"inner skirts, canadian diamond (aa)",inner,
+16044663,270,cluster_270,1.0,"inner skirts, canadian diamond changu 3a",inner,
+178681,300,cluster_300,0.6487727859110691,chk wing party-jum mta 4/10#cvp,chk,
+17899C,300,cluster_300,1.0,chk wing-z party-jum hor-#2 40#,chk,
+17869C,300,cluster_300,1.0,chk wing party-jum pil-#2 40#,chk,
+17866978,300,cluster_300,0.9427533014041198,chk wing party-jum ckg 40#,chk,
+1787310,300,cluster_300,0.9782700603341199,chk wing party-jum san 4/10#,chk,
+17849015,330,cluster_330,1.0,chk leg 1/4 sm-hal *__ 40#,chk,
+1784990,330,cluster_330,1.0,chk leg 1/4 sm cou 40#,chk,
+17844950,330,cluster_330,1.0,chk leg whl jum hor 40#,chk,
+17859,330,cluster_330,1.0,chk leg-m bnl skl pec 40#,chk,
+17854010,330,cluster_330,1.0,chk leg 1/4 jum *__ 40#,chk,
+10169903,360,cluster_360,1.0,bf rib back rib-z ch_*,bf,
+1016491,360,cluster_360,0.7706806411947207,bf rib back rib me suk,bf,
+1016491,360,cluster_360,1.0,bf rib back rib me suk,bf,
+10169907,360,cluster_360,1.0,bf rib back rib-z nr har,bf,
+10169900,360,cluster_360,0.9537275393564804,bf rib back rib-z ch ibp,bf,
+74314369,390,cluster_390,0.8408972297241208,"shrimp, ez pld 51-60ct, panamei (10/2#)","shrimp,",60ct
+74304369,390,cluster_390,1.0,"shrimp, ez pld 41-50ct, panamei (20/1#)","shrimp,",50ct
+74324360,390,cluster_390,0.9329334620744183,"shrimp, ez pld 13-15ct, panamei (20/1#)","shrimp,",15ct
+74404369,390,cluster_390,0.9216720880236512,"shrimp, ez pld 41-50ct, panamei (10/2#)","shrimp,",50ct
+74264360,390,cluster_390,1.0,"shrimp, ez pld 26-30ct, panamei (20/1#)","shrimp,",30ct
+23243001,420,cluster_420,0.9404401448060377,chicken breast amish (w),chicken,
+320001,420,cluster_420,1.0,"chicken drumstick, gerber amish",chicken,
+340009,420,cluster_420,1.0,"chicken thighs, bnls, s/l, gerber amish",chicken,
+24403001,420,cluster_420,1.0,chicken leg drumstick amish,chicken,
+24565200,420,cluster_420,1.0,chicken thighs amish,chicken,
+124030,450,cluster_450,1.0,"petite tender fillet, 3oz",petite,3oz
+124040,450,cluster_450,1.0,"petite tender fillet, 4oz",petite,4oz
+124050,450,cluster_450,1.0,"petite tender fillet, 5oz",petite,5oz
+124060,450,cluster_450,1.0,"petite tender fillet, 6oz",petite,6oz
+124080,450,cluster_450,1.0,"petite tender fillet, 8oz",petite,8oz
+47059980,480,cluster_480,1.0,"picnics boneless, pork",picnics,
+47159980,480,cluster_480,0.839524114358426,picnic boneless combo pork,picnic,
+47051920,480,cluster_480,1.0,"picnics boneless, pork prestage",picnics,
+31004001,480,cluster_480,0.8477351622605431,pork picnics boneless skinless,pork,
+47043570,480,cluster_480,0.8918084336776121,"picnics bone in pork (2pc), ibp",picnics,
+45079981,510,cluster_510,1.0,"rib tips, pork (30#)",rib,
+45089990,510,cluster_510,1.0,pork ribtips 30#,pork,
+250012,510,cluster_510,0.8486829513418928,pork rib tips,pork,
+45189990,510,cluster_510,1.0,"rib tips, pork moesle (60#)",rib,
+45061080,510,cluster_510,0.8531512712668574,"rib tips #20, pork, jbq",rib,
+16300010,540,cluster_540,0.8314447135037308,beef plate short ribs 10 oz,beef,10 oz
+16310011,540,cluster_540,0.9023295515478611,beef plate short ribs 10-12 oz,beef,12 oz
+16310039,540,cluster_540,1.0,beef plate short ribs 16oz,beef,16oz
+16310005,540,cluster_540,0.6574292349994909,beef plate short ribs bnls 5oz,beef,5oz
+16310096,540,cluster_540,1.0,beef plate short ribs 6oz,beef,6oz
+11401003,570,cluster_570,0.934633018701587,beef chuck tenderloin choice 3oz,beef,3oz
+11401004,570,cluster_570,1.0,beef chuck tenderloin choice 4oz,beef,4oz
+11401008,570,cluster_570,1.0,beef chuck tenderloin choice 8oz,beef,8oz
+11401005,570,cluster_570,1.0,beef chuck tenderloin choice 5oz,beef,5oz
+11401007,570,cluster_570,1.0,beef chuck tenderloin choice 7oz,beef,7oz
