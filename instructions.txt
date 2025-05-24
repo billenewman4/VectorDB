@@ -1,71 +1,129 @@
-# VectorDB Enhancement Instructions
+# Product Clustering Action Plan
 
-## 1. Embedding Model Upgrade
+## 1. Objective
+- Group ~10,000 SKUs into clusters of 5-20 similar products
+- Achieve ~80% precision on spot-check sample
+- Deliver working code runnable on laptop (16GB RAM)
+- Output format: clusters.json mapping cluster_id → [sku_ids...]
 
-### Add OpenAI Embedding Integration
+## 2. Implementation Plan
 
-1. Create a new embedding function in `src/vectordb.py` that uses OpenAI's embedding model:
+### 2.1 Data Preparation [Done]
+- Leverage existing data processing pipeline from src/data_processing.py
+- Update preprocessing to focus on product similarity rather than USDA mapping:
+  - Implemented text normalization (lowercase, strip punctuation, standardize whitespace)
+  - Simplified the approach by focusing directly on product descriptions
+  - Removed attribute extraction to improve clustering quality
+- Created data preprocessing pipeline that directly processes raw product descriptions
 
+### 2.2 Feature Engineering [Done]
+- Utilize existing embedding infrastructure (src/VectorDB/localEmbedder.py)
+- Continue using the 'all-mpnet-base-v2' model from sentence-transformers
+- Create a weighted feature vector combining:
+  - Text embeddings from product descriptions (primary feature)
+  - Brand information (if available)
+  - Size/quantity features
+  - Price range indicators (if available)
+- Save embeddings to numpy array for reproducibility
 
-2. Modify the `config.py` file to add OpenAI configuration options:
+### 2.3 Clustering Implementation [Done]
+- Created a new clustering.py module
+- Implemented HDBSCAN clustering with initial parameters:
+  - min_cluster_size=5
+  - min_samples=3
+  - metric='euclidean'
+- Enhanced with improved_clustering.py module for optimized parameters:
+  - min_cluster_size=3 (for more granular clusters)
+  - min_samples=2 (for more focused product groupings)
+  - Added test mode capability for rapid parameter tuning
+- Implemented helper functions to analyze cluster statistics
 
+### 2.4 Outlier Handling [Done]
+- Identified unclustered products (assigned to noise cluster -1 by HDBSCAN)
+- Exported these to a separate file (unclustered.csv) for manual review
+- Implemented optimized clustering parameters to achieve better balance between precision and recall
+- Added capability to run clustering on subsets of data for faster experimentation embeddings for future re-clustering
 
-3. Update the `ProductEmbedder` class to support both types of embedding models:
+### 2.5 Evaluation [Done]
+- Created an evaluation module to assess cluster quality
+- Implemented metrics including:
+  - Cluster coherence (intra-cluster similarity using cosine similarity)
+  - Cluster size distribution analysis
+  - Automated quality assessment with configurable thresholds
+  - Manual review capability through sample cluster display
+- Established target precision of 80% with automated verification
+- Optimized clustering parameters to improve quality metrics
 
+### 2.6 Export & Visualization [Done]
+- Export clusters.json with mapping of cluster_id → [sku_ids...]
+- Generate cluster_size_hist.png for distribution visualization
+- Create a simple HTML visualization of largest clusters
 
-4. Update the `ProductVectorDB` class initialization to pass the embedding_type parameter:
+## 3. Implementation Details
 
-## 2. Comparing Results with Previous Models
+### 3.1 Directory Structure
+```
+product_clustering/
+├── README.md           # quick start + CLI flags
+├── clustering.py       # main HDBSCAN implementation
+├── evaluation.py       # evaluation and spot-check tools
+├── visualization.py    # simple visualization tools
+└── requirements.txt    # Add hdbscan, matplotlib to existing
+```
 
-Implement a script to compare the performance between OpenAI embeddings and our previously used models ('all-MiniLM-L6-v2' and 'all-mpnet-base-v2'). Create a new file `src/compare_embeddings.py`:
+### 3.2 Leveraging Existing Codebase
+- Reuse the ProductEmbedder class for generating embeddings
+- Adapt bidirectional similarity methods for intra-cluster evaluation
+- Modify ChromaDB integration to support clustering operations
+- Keep the config.py approach for parameters
 
+### 3.3 Key Improvements Over Original Plan
+- Use of 'all-mpnet-base-v2' instead of MiniLM for better embeddings
+- Potential to incorporate CrossEncoder for boundary case validation
+- Ability to use weighted features instead of just text embeddings
+- Infrastructure for both local and OpenAI embeddings already in place
 
-## 3. LLM-Enhanced Selection with GPT-4
+## 4. Future Enhancements (Post-MVP)
 
-Implement a new approach where the embedding model finds the top 5 similar USDA codes, then GPT-4 makes the final selection:
+### 4.1 Cross-Encoder Re-Ranking 
+- Leverage existing CrossEncoder implementation
+- Apply to validate and refine cluster boundaries
+- Use for post-clustering refinement
 
-1. Create a new file `src/llm_selector.py`:
+### 4.2 Graph + Community Detection 
+- Convert embeddings to a similarity graph
+- Apply community detection algorithms (Louvain/Leiden)
+- Control cluster granularity with resolution parameter
 
+### 4.3 Hierarchical Clustering 
+- Implement cluster splitting for large clusters
+- Create hierarchical representation of product categories
 
-2. Modify the `generate_best_usda_matches.py` to incorporate the GPT-4 selector:
+### 4.4 Incremental Updates 
+- Develop a pipeline for adding new products to existing clusters
+- Implement HDBSCAN's approximate_predict method
+- Periodically re-cluster to maintain quality
 
+### 4.5 Dashboard & Cluster Analysis 
+- Create a simple Streamlit dashboard for cluster exploration
+- Track cluster metrics over time
+- Visualize embeddings with dimensionality reduction
 
-3. Add the `find_top_k_usda_matches` function in the same file:
+## 5. Parameter Configuration
 
-4. Add a CLI argument to enable the GPT-4 selector and top-k parameter:
+param | default | tuning tip
+------|---------|------------
+min_cluster_size | 5 | raise to 8 if clusters too small
+min_samples | 3 | controls sensitivity to noise
+metric | "euclidean" | cosine also works well with embeddings
+embed_model | all-mpnet-base-v2 | already using a strong model
 
+## 6. CLI Example
 
-## Getting Started
+```bash
+# Run the clustering pipeline
+python clustering.py --min_cluster_size 5 --min_samples 3 --output clusters.json
 
-1. Install required packages:
-
-
-2. Set your OpenAI API key:
-   - Either add it to the config.py file
-   - Or set it as an environment variable: `export OPENAI_API_KEY="your-api-key-here"`
-
-3. Run the embedding comparison:
-
-4. Run analysis with GPT-4 selector:
-
-
-## Performance Considerations
-
-1. OpenAI embeddings may be more expensive than local models but could provide better accuracy
-
-2. The GPT-4 selector adds an API call for each product, which increases cost and time
-   - Consider setting a similarity threshold to only use GPT-4 for ambiguous cases
-   - Run a smaller test set first to validate the approach
-
-3. You can add caching to the OpenAI API calls to avoid redundant requests
-
-4. Note that in our previous testing, upgrading from 'all-MiniLM-L6-v2' to 'all-mpnet-base-v2' improved embedding quality, so this should be included in our comparison as a potential strong baseline
-
-## Implementation Steps Checklist
-
-- [ ] Add OpenAI embeddings integration to config.py and vectordb.py
-- [ ] Create the embedding comparison script
-- [ ] Run baseline comparison between OpenAI and SentenceTransformer models (including all-mpnet-base-v2)
-- [ ] Implement the GPT-4 selector for top-k candidates
-- [ ] Update the analysis script to use the GPT-4 selector
-- [ ] Evaluate final accuracy improvements
+# Evaluate cluster quality
+python evaluation.py --clusters clusters.json --sample_size 15
+```
