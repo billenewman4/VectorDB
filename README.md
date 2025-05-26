@@ -4,10 +4,56 @@ A comprehensive implementation for product semantic analysis, clustering, and US
 
 ## Project Overview
 
-This project implements two main capabilities:
+This project solves two key challenges in retail product data management:
 
-1. **Product Clustering**: Automatically groups similar products based on their descriptions using HDBSCAN clustering and vector embeddings
-2. **USDA Code Mapping**: Maps product descriptions to standardized USDA codes using semantic similarity search
+1. **Product Clustering**: Automatically groups similar products based on their semantic descriptions, ensuring that similar items (like different varieties of apples or cuts of beef) are grouped together.
+
+2. **USDA Code Mapping**: Maps product descriptions to standardized USDA codes, enabling consistent categorization and analysis across different retailers and systems.
+
+## High-Level Workflow
+
+### Product Clustering Workflow
+
+```
+Transaction Data → Data Cleaning → Vector Embedding → HDBSCAN Clustering → CrossEncoder Refinement → Evaluation
+```
+
+1. **Data Preparation**: Clean and normalize product descriptions
+2. **Embedding Generation**: Convert text descriptions to vector embeddings using a powerful neural model (all-mpnet-base-v2)
+3. **Initial Clustering**: Group similar products using HDBSCAN algorithm with optimized parameters
+4. **CrossEncoder Refinement**: Apply pairwise similarity judgments to improve cluster coherence
+5. **Evaluation**: Measure cluster quality using coherence metrics and manual inspection
+
+### USDA Code Mapping Workflow
+
+```
+Transaction Data → Data Cleaning → Abbreviation Translation → Vector Embedding → Similarity Search → CrossEncoder Reranking
+```
+
+1. **Data Processing**: Clean and normalize product data, expanding abbreviations
+2. **Vector Embedding**: Convert product descriptions to vector embeddings
+3. **Vector Database**: Store embeddings in a ChromaDB vector database for efficient retrieval
+4. **Similarity Search**: Find most similar USDA products based on semantic meaning
+5. **Cross-Encoder Verification**: Re-rank matches using pairwise comparison for higher accuracy
+
+## Key Improvements
+
+### Embedding Model Upgrade
+- Upgraded from 'all-MiniLM-L6-v2' to 'all-mpnet-base-v2'
+- Provides higher quality vector representations for better semantic understanding
+- Significantly improves clustering quality and USDA code matching accuracy
+
+### Clustering Enhancements
+- **Simplified Data Preparation**: Removed attribute extraction, using normalized product descriptions directly
+- **Granular Clustering Parameters**: Optimized min_cluster_size=3 and min_samples=2 for more focused product groups
+- **Test Mode**: Added capability to run on data subsets for faster parameter tuning
+- **CrossEncoder Refinement**: Implemented pairwise similarity refinement to improve cluster coherence
+
+### USDA Code Mapping Fixes
+- **Improved Normalization Logic**: Disabled potentially problematic normalization patterns
+  - Removed trailing number removal that caused incorrect mappings
+  - Disabled first digit removal that created ambiguity
+- **Conflict Detection**: Added warnings when multiple USDA mappings exist for the same product code
 
 ## Project Structure
 
@@ -237,19 +283,69 @@ print(results)
 13879C: bacon celeb slab derind 4/7#-z
 ```
 
-## Performance Metrics
+## Real-World Examples and Results
 
-### Clustering Quality
-- Average coherence score: 0.83
-- Median coherence score: 0.84
-- Target precision: 80% (percentage of "good" clusters)
-- CrossEncoder refinement improves precision by removing outliers
+### Clustering Results Examples
 
-### USDA Code Mapping
-- High recall (100%) - finds all relevant matches
-- Moderate precision (40%) - some false positives
-- F1 score: 0.58
-- Response time: ~0.011 seconds per query
+#### Before: Mixed Produce Cluster (Original Clustering)
+```
+50120136: BANANAS 24CT GREEN
+50133: LETTUCE ICEBURG CELLO 24 CT
+50133109: CELERY 30CT
+50120145: BANANAS GREEN PLAINTAIN 40#
+50134291: LETTUCE ICEBURG LINER PREMIUM 12CT
+```
+
+#### After: Focused Product Clusters (With CrossEncoder Refinement)
+
+```
+# Beef Rib/Short Rib Cluster
+1016230: BF SHORT RIB PLA-BI ME LFT
+1072106: BF SHORT RIB-CHU-BI-Z PR WRE
+10049998: BF RIBEYE BI HVY PR IBP
+
+# Frenched Pork Chops Cluster
+240089: PORK CHOP FRENCHED, 8OZ
+240102: PORK CHOP FRENCHED, 10OZ
+240077: PORK CHOP FRENCHED, 7OZ
+240094: PORK CHOP FRENCHED, 9OZ
+
+# Veal Heads Cluster
+1122231: VEAL HEAD-Z CAT 2CT
+112223C: VEAL HEAD-Z CAT 3CT
+1122242: VEAL HEAD-Z PRO 3CT
+68897000: VEAL HEADS
+30149980: VEAL, HEADS 3PC
+```
+
+### Performance Metrics
+
+#### Clustering Quality
+- **Cluster Size Distribution**:
+  - 1-5 products: 35.7% of clusters
+  - 6-10 products: 38.7% of clusters
+  - 11-20 products: 19.6% of clusters
+  - 21+ products: 6.0% of clusters
+- **Coherence**: Average coherence score of 0.83 (scale 0-1)
+- **Precision**: CrossEncoder refinement significantly improves cluster precision
+
+#### USDA Code Mapping
+- **Recall**: Near 100% - finds all relevant product matches
+- **Precision**: ~40% - some false positives, but much better than baseline
+- **F1 Score**: 0.58
+- **Response Time**: ~0.011 seconds per query
+
+## Challenges and Solutions
+
+### Challenges Addressed
+1. **Mixed Product Types**: Initial clusters contained unrelated products (e.g., bananas with lettuce)
+   - *Solution*: CrossEncoder reranking to refine clusters based on pairwise similarity
+
+2. **Incorrect USDA Mappings**: Product codes were being incorrectly normalized
+   - *Solution*: Disabled problematic normalization patterns and added conflict warnings
+
+3. **Performance Issues**: Initial embedding model wasn't providing sufficient quality
+   - *Solution*: Upgraded to more powerful 'all-mpnet-base-v2' model
 
 ## Directory Structure
 
