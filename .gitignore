@@ -39,6 +39,7 @@ ENV/
 # Vector DB storage
 vector_store/
 chroma_db/
+chroma_db_actuals/
 
 # Logs
 logs/
