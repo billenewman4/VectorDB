@@ -1,9 +1,0 @@
-product_code,cluster,cluster_id,probability,product_description
-99552,0,cluster_0,1.0,paper wax 15x15 bulk
-84508,0,cluster_0,1.0,copy paper 8.5x11 20# bright white
-SP0011,0,cluster_0,1.0,"paper: 5 1/2"""
-290120,30,cluster_30,0.8312769146034449,"pork steak bi, 12oz"
-240161,30,cluster_30,1.0,"pork chop frenched, 16oz"
-240094,30,cluster_30,1.0,"pork chop frenched, 9oz"
-240093,30,cluster_30,1.0,"pork chop cc, 9oz"
-SP213,30,cluster_30,0.9092815832429557,pork chop end to end 5 oz

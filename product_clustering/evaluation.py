@@ -31,14 +31,32 @@ def load_cluster_data(data_dir: Optional[str] = None) -> Tuple[Dict, pd.DataFram
             "data"
         )
     
-    # Load clusters.json
-    clusters_path = os.path.join(data_dir, "clusters.json")
-    with open(clusters_path, 'r') as f:
-        clusters_dict = json.load(f)
-    
-    # Load cluster assignments
-    assignments_path = os.path.join(data_dir, "cluster_assignments.csv")
-    assignments_df = pd.read_csv(assignments_path)
+    # First try to load refined clusters if available
+    refined_clusters_path = os.path.join(data_dir, "refined_clusters", "refined_clusters.json")
+    if os.path.exists(refined_clusters_path):
+        print(f"Found refined clusters at {refined_clusters_path}")
+        with open(refined_clusters_path, 'r') as f:
+            clusters_dict = json.load(f)
+            
+        # Create a DataFrame for the refined clusters
+        cluster_data = []
+        for cluster_id, product_codes in clusters_dict.items():
+            for code in product_codes:
+                cluster_data.append({
+                    'product_code': code,
+                    'cluster': int(cluster_id.replace('cluster_', '')),
+                    'cluster_label': cluster_id
+                })
+        assignments_df = pd.DataFrame(cluster_data)
+    else:
+        # Fall back to regular clusters if refined not available
+        clusters_path = os.path.join(data_dir, "clusters.json")
+        with open(clusters_path, 'r') as f:
+            clusters_dict = json.load(f)
+        
+        # Load cluster assignments
+        assignments_path = os.path.join(data_dir, "cluster_assignments.csv")
+        assignments_df = pd.read_csv(assignments_path)
     
     print(f"Loaded {len(clusters_dict)} clusters")
     print(f"Loaded assignments for {len(assignments_df)} products")
@@ -115,85 +133,94 @@ def calculate_cluster_coherence(data_dir: Optional[str] = None):
             "data"
         )
     
-    # Load embeddings and product codes
+    clusters_dict, assignments_df = load_cluster_data(data_dir)
+    
+    # Check if we're using refined clusters
+    is_refined = os.path.exists(os.path.join(data_dir, "refined_clusters", "refined_clusters.json"))
+    
+    # Load product embeddings
     embeddings_path = os.path.join(data_dir, "product_embeddings.npy")
+    product_embeddings = np.load(embeddings_path)
+    
+    # Load product codes
     codes_path = os.path.join(data_dir, "product_codes.txt")
-    assignments_path = os.path.join(data_dir, "cluster_assignments.csv")
-    
-    if not os.path.exists(embeddings_path) or not os.path.exists(codes_path) or not os.path.exists(assignments_path):
-        print("Required files not found")
-        return
-    
-    # Load data
-    embeddings = np.load(embeddings_path)
     with open(codes_path, 'r') as f:
-        product_codes = [line.strip() for line in f]
-    assignments_df = pd.read_csv(assignments_path)
+        product_codes = [line.strip() for line in f.readlines()]
     
-    # Create a mapping from product code to embedding index
-    code_to_index = {code: i for i, code in enumerate(product_codes)}
-    
-    # Get valid clusters (not -1)
-    valid_clusters = sorted(assignments_df[assignments_df['cluster'] >= 0]['cluster'].unique())
+    # Create dict mapping product codes to embeddings
+    product_to_embedding = {}
+    for i, code in enumerate(product_codes):
+        product_to_embedding[code] = product_embeddings[i]
     
     # Calculate coherence for each cluster
-    coherence_scores = []
+    coherence_scores = {}
+    missing_products = 0
+    total_products = 0
     
-    for cluster in valid_clusters:
-        # Get products in this cluster
-        cluster_df = assignments_df[assignments_df['cluster'] == cluster]
+    for cluster_id, product_list in clusters_dict.items():
+        if len(product_list) <= 1:
+            coherence_scores[cluster_id] = 0.0
+            continue
+            
+        # Get embeddings for products in this cluster
+        cluster_embeddings = []
+        total_products += len(product_list)
         
-        # Get embedding indices
-        indices = [code_to_index[code] for code in cluster_df['product_code'] if code in code_to_index]
+        for product_code in product_list:
+            if product_code in product_to_embedding:
+                cluster_embeddings.append(product_to_embedding[product_code])
+            else:
+                missing_products += 1
         
-        if len(indices) < 2:
-            continue  # Skip clusters with too few products
+        if len(cluster_embeddings) <= 1:
+            coherence_scores[cluster_id] = 0.0
+            continue
+            
+        # Calculate all pairwise similarities
+        cluster_embeddings = np.array(cluster_embeddings)
+        sim_matrix = cosine_similarity(cluster_embeddings)
         
-        # Get embeddings
-        cluster_embeddings = embeddings[indices]
+        # Remove self-similarity (diagonal)
+        np.fill_diagonal(sim_matrix, 0)
         
-        # Calculate pairwise similarities
-        similarities = cosine_similarity(cluster_embeddings)
-        
-        # Calculate average similarity (excluding self-similarity)
-        np.fill_diagonal(similarities, 0)
-        avg_similarity = similarities.sum() / (similarities.shape[0] * (similarities.shape[0] - 1))
-        
-        coherence_scores.append({
-            'cluster': cluster,
-            'size': len(indices),
-            'coherence': avg_similarity
-        })
+        # Average pairwise similarity as coherence score
+        avg_similarity = sim_matrix.sum() / (len(cluster_embeddings) * (len(cluster_embeddings) - 1))
+        coherence_scores[cluster_id] = avg_similarity
     
-    # Convert to DataFrame
-    coherence_df = pd.DataFrame(coherence_scores)
+    if missing_products > 0:
+        print(f"Warning: {missing_products} out of {total_products} products ({missing_products/total_products:.1%}) were not found in the embeddings file")
     
     # Calculate overall statistics
-    print(f"\nCluster Coherence Analysis:")
-    print(f"  - Average coherence: {coherence_df['coherence'].mean():.4f}")
-    print(f"  - Median coherence: {coherence_df['coherence'].median():.4f}")
-    print(f"  - Min coherence: {coherence_df['coherence'].min():.4f}")
-    print(f"  - Max coherence: {coherence_df['coherence'].max():.4f}")
+    coherence_values = list(coherence_scores.values())
+    avg_coherence = np.mean(coherence_values)
+    median_coherence = np.median(coherence_values)
     
-    # Save coherence data
-    coherence_path = os.path.join(data_dir, "cluster_coherence.csv")
-    coherence_df.to_csv(coherence_path, index=False)
-    print(f"Saved coherence data to {coherence_path}")
+    print(f"Average cluster coherence: {avg_coherence:.4f}")
+    print(f"Median cluster coherence: {median_coherence:.4f}")
+    
+    # Calculate distribution of scores
+    high_coherence = sum(1 for x in coherence_values if x > 0.8)
+    med_coherence = sum(1 for x in coherence_values if 0.6 <= x <= 0.8)
+    low_coherence = sum(1 for x in coherence_values if x < 0.6)
+    print(f"High coherence clusters (>0.8): {high_coherence} ({high_coherence/len(coherence_values):.1%})")
+    print(f"Medium coherence clusters (0.6-0.8): {med_coherence} ({med_coherence/len(coherence_values):.1%})")
+    print(f"Low coherence clusters (<0.6): {low_coherence} ({low_coherence/len(coherence_values):.1%})")
     
     # Plot histogram of coherence scores
     plt.figure(figsize=(10, 6))
-    plt.hist(coherence_df['coherence'], bins=20)
+    plt.hist(coherence_values, bins=20)
     plt.xlabel('Coherence Score')
-    plt.ylabel('Frequency')
-    plt.title('Distribution of Cluster Coherence Scores')
-    plt.grid(alpha=0.3)
+    plt.ylabel('Number of Clusters')
+    plt.title('Distribution of Cluster Coherence Scores' + (' (Refined)' if is_refined else ''))
+    plt.grid(True, alpha=0.3)
     
-    coherence_plot_path = os.path.join(data_dir, "coherence_histogram.png")
-    plt.savefig(coherence_plot_path)
+    # Save histogram to file
+    hist_path = os.path.join(data_dir, "coherence_histogram" + ("_refined" if is_refined else "") + ".png")
+    plt.savefig(hist_path)
+    print(f"Saved coherence histogram to {hist_path}")
     plt.close()
-    print(f"Saved coherence histogram to {coherence_plot_path}")
     
-    return coherence_df
+    return coherence_scores
 
 def automated_quality_check(data_dir: Optional[str] = None, 
                            coherence_threshold: float = 0.75,

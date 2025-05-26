@@ -1,72 +1,255 @@
-# VectorDB
+# Product Clustering and Matching Solution
 
-A vector database implementation for product matching using semantic similarity.
-
-## Project Structure
-
-The project has been organized into a clear directory structure:
-
-```
-VectorDB/
-├── src/                     # Core implementation
-│   ├── vectordb.py          # Main vector DB implementation
-│   ├── data_processing.py   # Data processing pipeline
-│   ├── excel.py             # Excel data processing utilities
-│   └── abbreviation_translator.py # Meat cut abbreviation translation
-├── tests/                   # Testing
-│   ├── test_vectordb.py     # Vector DB functionality tests
-│   └── test_excel.py        # Excel data processing tests
-├── analysis/                # Analysis tools
-│   ├── analyze_clusters.py           # Analyze problematic product clusters
-│   ├── bidirectional_similarity.py   # Test similarity in both directions
-│   └── evaluate_accuracy.py          # Evaluate overall matching accuracy
-├── data/                    # Data files
-│   ├── Transactions/                 # Transaction data
-│   └── CorrectMapping/               # Ground truth mapping files
-├── chroma_db/               # Vector database storage
-├── README.md                # This documentation
-├── instructions.txt         # Project requirements
-└── requirements.txt         # Dependencies
-```
-
-## Tools and Analysis Scripts
-
-- **analyze_clusters.py**: Tests specific product clusters with different similarity thresholds
-- **bidirectional_similarity.py**: Investigates similarity asymmetry between product terms
-- **evaluate_accuracy.py**: Detailed evaluation of matching accuracy for product descriptions
-- **generate_best_usda_matches.py**: Generates best USDA code matches for products
-- **summarize_usda_matches.py**: Produces detailed statistics on USDA matching accuracy
-
-A project to match product descriptions using vector embeddings and similarity search.
+A comprehensive implementation for product semantic analysis, clustering, and USDA code mapping using advanced NLP techniques.
 
 ## Project Overview
 
-This project uses vector embeddings to match similar product descriptions based on semantic similarity. By converting product descriptions into vector embeddings and storing them in a vector database (Chroma DB), we can efficiently find similar products even when they use different wording or formatting.
+This project implements two main capabilities:
 
-## How It Works
+1. **Product Clustering**: Automatically groups similar products based on their descriptions using HDBSCAN clustering and vector embeddings
+2. **USDA Code Mapping**: Maps product descriptions to standardized USDA codes using semantic similarity search
 
-### 1. Data Processing
-- **Transaction Data**: Loads product transaction data from Excel files
-- **Data Cleaning**: Standardizes text, handles missing values, and normalizes descriptions
-- **Abbreviation Translation**: Converts industry-specific abbreviations to their full descriptions (e.g., "Bnls Rnd Stk" → "Boneless Round Steak")
-- **USDA Code Preservation**: Maintains original USDA code formats throughout processing
-- **Unique Products**: Extracts unique products and calculates metrics (avg price, quantity, etc.)
+## Project Structure
 
-### 2. Vector Embedding
-- **Model**: Uses Sentence Transformers (`all-mpnet-base-v2`) to convert text into high-dimensional vector embeddings
-- **Enhanced Descriptions**: Combines product text with price and quantity data for richer embeddings
-- **Example**: "almond milk, average price: $2.99, average quantity: 48.5" → [0.02, -0.04, ...]
-- **Abbreviation Translation**: Automatically expands meat cut abbreviations (e.g., "Bnls" → "Boneless", "Rst" → "Roast") for improved semantic matching
+The project has been organized into a modular structure:
 
-### 3. Vector Database
-- **Chroma DB**: Stores vectors in an efficient, searchable database
-- **Similarity Search**: Finds products with similar vector representations
-- **Matching**: Uses cosine similarity to rank product matches
+```
+VectorDB/
+├── product_clustering/         # Product clustering implementation
+│   ├── data_prep.py            # Data preparation for clustering
+│   ├── embed_products.py       # Embedding generation
+│   ├── clustering.py           # HDBSCAN clustering implementation
+│   ├── improved_clustering.py  # Enhanced clustering with parameters
+│   ├── reranking.py            # CrossEncoder refinement
+│   ├── evaluation.py           # Cluster quality assessment
+│   └── data/                   # Output directory for clustering results
+├── src/                        # Core implementation
+│   ├── VectorDB/               # Vector database modules
+│   │   ├── vectordb.py         # Main vector DB implementation
+│   │   ├── localEmbedder.py    # Local embedding generation
+│   │   ├── OpenAIEmbedder.py   # OpenAI embedding integration
+│   │   └── CrossEncoder.py     # CrossEncoder implementation
+│   ├── data_processing.py      # Data processing pipeline
+│   ├── excel.py                # Excel data processing utilities
+│   └── abbreviation_translator.py # Meat cut abbreviation translation
+├── tests/                      # Testing
+├── data/                       # Data files
+├── chroma_db/                  # Vector database storage
+├── requirements.txt            # Dependencies
+└── instructions.txt            # Project requirements
+```
 
-### 4. Evaluation
-- **Reference Mappings**: Compared against known product groupings
-- **Metrics**: Precision, recall, and F1 score to measure accuracy
-- **Performance**: Achieved 100% recall and 40% precision (F1 score of 0.58)
+## Detailed Implementation Steps
+
+### 1. Product Clustering Implementation
+
+The product clustering solution follows these detailed steps:
+
+#### 1.1 Data Preparation (`data_prep.py`)
+```python
+python -m product_clustering.data_prep
+```
+- Loads transaction data from Excel files using existing data processing pipeline
+- Extracts unique product descriptions and their associated product codes
+- Normalizes text by converting to lowercase, removing punctuation, and standardizing whitespace
+- Simplified approach that directly processes raw product descriptions without attribute extraction
+- Saves prepared data to CSV for the next stage
+
+#### 1.2 Embedding Generation (`embed_products.py`)
+```python
+python -m product_clustering.embed_products
+```
+- Utilizes the high-quality 'all-mpnet-base-v2' embedding model (upgraded from 'all-MiniLM-L6-v2')
+- Generates 768-dimensional vector embeddings for each product description
+- Uses existing embedding infrastructure (LocalEmbedder) with batch processing
+- Saves embeddings and product codes for clustering
+
+#### 1.3 Clustering (`clustering.py` and `improved_clustering.py`)
+```python
+python -m product_clustering.improved_clustering --min_cluster_size 3 --min_samples 2
+```
+- Implements HDBSCAN clustering algorithm optimized for product descriptions
+- Configurable parameters to control cluster granularity:
+  - min_cluster_size=3 (reduced from 5 for more granular clusters)
+  - min_samples=2 (reduced from 3 for more focused product groupings)
+- These optimized parameters work better with 'all-mpnet-base-v2' embeddings
+- Test mode for rapid experimentation on data subsets:
+  ```python
+  python -m product_clustering.improved_clustering --test --sample_size 1000
+  ```
+- Produces cluster assignments, statistics, and visualization outputs
+
+#### 1.4 CrossEncoder Refinement (`reranking.py`)
+```python
+python -m product_clustering.improved_clustering --rerank
+```
+- Optional refinement step using CrossEncoder for pairwise similarity judgments
+- More precise than embedding similarity for distinguishing similar but distinct products
+- Particularly effective at separating mixed product clusters (e.g., bananas and lettuce)
+- Configurable similarity threshold (default 0.6)
+- Creates refined clusters with improved coherence
+
+#### 1.5 Evaluation (`evaluation.py`)
+```python
+python -m product_clustering.evaluation --all
+```
+- Comprehensive assessment of cluster quality
+- Calculates cluster coherence scores using cosine similarity
+- Identifies "good" clusters based on size and coherence thresholds
+- Generates visualizations (coherence histogram, cluster size distribution)
+- Displays sample products from clusters for manual inspection
+
+### 2. USDA Code Mapping Implementation
+
+The USDA code mapping solution implements these detailed steps:
+
+#### 2.1 Data Processing (`data_processing.py`)
+```python
+from src.data_processing import process_transaction_data
+```
+- Loads transaction data from Excel files
+- Performs data cleaning and normalization
+- Extracts unique product codes and descriptions
+- Fixed code normalization logic to prevent incorrect USDA mappings:
+  - Disabled trailing number removal
+  - Disabled first digit removal patterns
+  - Added conflict warnings for multiple mappings
+
+#### 2.2 Vector Embedding (`VectorDB/localEmbedder.py` and `VectorDB/OpenAIEmbedder.py`)
+```python
+from src.VectorDB.localEmbedder import LocalEmbedder
+```
+- Uses 'all-mpnet-base-v2' model for high-quality embeddings
+- Generates vector representations of product descriptions
+- Supports both local sentence-transformers and OpenAI embeddings
+- Includes batch processing for efficient embedding generation
+
+#### 2.3 Vector Database (`VectorDB/vectordb.py`)
+```python
+from src.VectorDB.vectordb import create_product_vector_db, find_similar_products
+```
+- Builds vector database using ChromaDB
+- Stores embeddings with associated product metadata
+- Implements similarity search for efficient product matching
+- Creates mapping from product codes to USDA codes
+
+#### 2.4 Cross-Encoder Verification (`VectorDB/CrossEncoder.py`)
+```python
+from src.VectorDB.CrossEncoder import CrossEncoder
+```
+- Provides more accurate similarity scores for candidate matches
+- Re-ranks initial matches using pairwise comparison
+- Combines embedding similarity with cross-encoder scores
+- Especially useful for boundary cases and ambiguous matches
+
+## Quick Start Guide
+
+### Prerequisites
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Product Clustering
+
+```bash
+# Step 1: Prepare data
+python -m product_clustering.data_prep
+
+# Step 2: Generate embeddings
+python -m product_clustering.embed_products
+
+# Step 3: Run basic clustering
+python -m product_clustering.clustering
+
+# OR run improved clustering with granular parameters
+python -m product_clustering.improved_clustering --min_cluster_size 3 --min_samples 2
+
+# Step 4: Add CrossEncoder refinement (optional)
+python -m product_clustering.improved_clustering --rerank
+
+# Step 5: Evaluate clusters
+python -m product_clustering.evaluation --all
+```
+
+### USDA Code Mapping
+
+```python
+# Create and query the vector database
+from src.VectorDB.vectordb import create_product_vector_db, find_similar_products
+
+# Create/rebuild the database with the improved embedding model
+db = create_product_vector_db(recreate=True)
+
+# Find similar products using semantic search
+results = find_similar_products("boneless chicken breast", n_results=5)
+print(results)
+```
+
+## Implementation Details
+
+### Embedding Model
+- Uses 'all-mpnet-base-v2' model (upgraded from 'all-MiniLM-L6-v2')
+- Generates 768-dimensional vector embeddings
+- Provides higher quality semantic representations
+- Enables more accurate clustering and matching
+
+### HDBSCAN Clustering Configuration
+- min_cluster_size=3 (default was 5)
+- min_samples=2 (default was 3)
+- metric='euclidean'
+- These parameters create more granular, focused product groups
+- Particularly effective at separating similar but distinct product types
+
+### CrossEncoder Refinement
+- Uses 'cross-encoder/stsb-roberta-base' model
+- Performs pairwise similarity judgments within clusters
+- Similarity threshold of 0.6 for determining membership
+- Removes products that don't belong in a cluster
+
+## Example Results
+
+### Before Improvement (Mixed Produce Cluster)
+```
+50120136,30,cluster_30,0.9555,bananas 24ct green,bananas,24ct
+50133,30,cluster_30,0.9688,lettuce iceburg cello 24 ct,lettuce,24 ct
+50133109,30,cluster_30,0.9756,celery 30ct,celery,30ct
+50120145,30,cluster_30,0.9555,bananas green plaintain 40#,bananas,
+50134291,30,cluster_30,1.0000,lettuce iceburg liner premium 12ct,lettuce,12ct
+```
+
+### After CrossEncoder Refinement (Example Clusters)
+```
+# Beef Rib/Short Rib Cluster
+1016230: bf short rib pla-bi me lft
+1072106: bf short rib-chu-bi-z pr wre
+10049998: bf ribeye bi hvy pr ibp
+
+# Turkey Products Cluster
+11071: smoked turkey necks frzn
+341000: turkey thigh meat, b/s
+84035810: smoked necks, turkey alex deli
+
+# Bacon Products Cluster
+13435D: bacon-z$ daily sl14-16 37435 lf 15#
+13832015: bacon thm-pre-cooked-z #12500
+13879C: bacon celeb slab derind 4/7#-z
+```
+
+## Performance Metrics
+
+### Clustering Quality
+- Average coherence score: 0.83
+- Median coherence score: 0.84
+- Target precision: 80% (percentage of "good" clusters)
+- CrossEncoder refinement improves precision by removing outliers
+
+### USDA Code Mapping
+- High recall (100%) - finds all relevant matches
+- Moderate precision (40%) - some false positives
+- F1 score: 0.58
+- Response time: ~0.011 seconds per query
 
 ## Directory Structure
 
