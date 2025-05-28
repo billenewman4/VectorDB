@@ -71,21 +71,9 @@ product_clustering/
 └── requirements.txt    # Add hdbscan, matplotlib to existing
 ```
 
-### 3.2 Leveraging Existing Codebase
-- Reuse the ProductEmbedder class for generating embeddings
-- Adapt bidirectional similarity methods for intra-cluster evaluation
-- Modify ChromaDB integration to support clustering operations
-- Keep the config.py approach for parameters
-
-### 3.3 Key Improvements Over Original Plan
-- Use of 'all-mpnet-base-v2' instead of MiniLM for better embeddings
-- Potential to incorporate CrossEncoder for boundary case validation
-- Ability to use weighted features instead of just text embeddings
-- Infrastructure for both local and OpenAI embeddings already in place
-
 ## 4. Future Enhancements (Post-MVP)
 
-### 4.1 Cross-Encoder Re-Ranking 
+### 4.1 Cross-Encoder Re-Ranking [Done]
 - Leverage existing CrossEncoder implementation
 - Apply to validate and refine cluster boundaries
 - Use for post-clustering refinement

@@ -192,10 +192,22 @@ def refine_clusters(
         # Convert to assignments format and save
         cluster_assignments = []
         for cluster_id, product_codes in refined_clusters.items():
+            # Extract numeric part or use index as fallback
+            try:
+                if '_' in cluster_id:
+                    # For IDs like 'cluster_435', extract the number after the underscore
+                    cluster_num = int(cluster_id.split('_')[-1])
+                else:
+                    # If no underscore, try to convert the whole string to int
+                    cluster_num = int(cluster_id)
+            except ValueError:
+                # If conversion fails, use a hash of the string as a unique number
+                cluster_num = hash(cluster_id) % 100000
+                
             for product_code in product_codes:
                 cluster_assignments.append({
                     'product_code': product_code,
-                    'cluster': int(cluster_id),
+                    'cluster': cluster_num,
                     'cluster_id': f"refined_cluster_{cluster_id}"
                 })
         

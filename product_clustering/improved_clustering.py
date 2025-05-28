@@ -9,8 +9,11 @@ from typing import Optional
 # Add parent directory to path to import from src
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import base clustering module
-from product_clustering.clustering import main as base_clustering
+# Import required libraries
+import pandas as pd
+import hdbscan
+import json
+from collections import defaultdict
 
 def run_improved_clustering(data_dir: Optional[str] = None,
                            metric: str = 'euclidean',  # Using euclidean instead of cosine as HDBSCAN doesn't support cosine directly
@@ -88,18 +91,62 @@ def run_improved_clustering(data_dir: Optional[str] = None,
         print(f"  - test_mode: {test_mode} (using {sample_size} samples)")
     print(f"Output will be saved to: {output_dir}")
     
-    # Call the base clustering function with improved parameters
-    base_clustering(
-        embeddings_path=embeddings_path,
-        product_codes_path=product_codes_path,
-        prepared_data_path=prepared_data_path,
-        output_dir=output_dir,
+    # Implement clustering directly instead of calling base_clustering
+    
+    # Load embeddings and product codes
+    print(f"Loading embeddings from {embeddings_path}")
+    embeddings = np.load(embeddings_path)
+    
+    print(f"Loading product codes from {product_codes_path}")
+    with open(product_codes_path, 'r') as f:
+        product_codes = [line.strip() for line in f.readlines()]
+    
+    if len(embeddings) != len(product_codes):
+        print(f"Warning: Mismatch between embeddings ({len(embeddings)}) and product codes ({len(product_codes)})")
+    
+    print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+    
+    # Run HDBSCAN clustering
+    clusterer = hdbscan.HDBSCAN(
         min_cluster_size=min_cluster_size,
         min_samples=min_samples,
         metric=metric,
-        sample_size=5,
-        sample_interval=30
+        gen_min_span_tree=True,
+        cluster_selection_method='eom'
     )
+    
+    # Fit the clusterer
+    cluster_labels = clusterer.fit_predict(embeddings)
+    
+    # Count clusters and noise points
+    n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
+    n_noise = list(cluster_labels).count(-1)
+    
+    print(f"Clustering complete: {n_clusters} clusters formed with {n_noise} noise points")
+    
+    # Organize products into clusters
+    clusters = defaultdict(list)
+    for i, label in enumerate(cluster_labels):
+        if i < len(product_codes):
+            if label >= 0:
+                clusters[f"cluster_{label}"].append(product_codes[i])
+    
+    # Save clusters to file
+    clusters_path = os.path.join(output_dir, "clusters.json")
+    with open(clusters_path, 'w') as f:
+        json.dump(clusters, f, indent=2)
+    
+    print(f"Saved {len(clusters)} clusters to {clusters_path}")
+    
+    # Calculate basic statistics
+    total_clustered = sum(len(products) for products in clusters.values())
+    coverage = total_clustered / len(product_codes) * 100 if product_codes else 0
+    avg_size = total_clustered / len(clusters) if clusters else 0
+    
+    print(f"Clustering statistics:")
+    print(f"  - Total products: {len(product_codes)}")
+    print(f"  - Clustered products: {total_clustered} ({coverage:.1f}%)")
+    print(f"  - Average cluster size: {avg_size:.1f} products")
     
     # Apply CrossEncoder reranking if requested
     if use_reranking:

@@ -48,7 +48,14 @@ def run_data_preparation(data_dir: Optional[str] = None, force: bool = False):
         return output_path
     
     print("Running data preparation...")
-    prepare_data_for_clustering(output_path=output_path)
+    # Call the function with its correct signature (no output_path parameter)
+    prepared_data = prepare_data_for_clustering()
+    
+    # Create the output directory if it doesn't exist
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    # Save the prepared data
+    prepared_data.to_csv(output_path, index=False)
     print(f"Data preparation complete. Results saved to {output_path}")
     
     return output_path
@@ -66,7 +73,8 @@ def run_embedding_generation(data_dir: Optional[str] = None,
         model_name: Name of the embedding model to use
         force: Whether to force regeneration even if files exist
     """
-    from product_clustering.embed_products import embed_products
+    from product_clustering.embed_products import embed_products, save_embeddings
+    import pandas as pd
     
     if data_dir is None:
         data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -82,13 +90,26 @@ def run_embedding_generation(data_dir: Optional[str] = None,
         print("Use --force to regenerate")
         return embeddings_path, product_codes_path
     
+    # Load the prepared data
+    if not os.path.exists(prepared_data_path):
+        print(f"Error: Prepared data file not found at {prepared_data_path}")
+        print("Run data preparation first")
+        return None, None
+    
+    print(f"Loading prepared data from {prepared_data_path}")
+    df = pd.read_csv(prepared_data_path)
+    
     print(f"Generating embeddings using model {model_name}...")
-    embed_products(
-        prepared_data_path=prepared_data_path,
-        embeddings_path=embeddings_path,
-        product_codes_path=product_codes_path,
+    # Generate embeddings according to the function's actual signature
+    embeddings, product_codes = embed_products(
+        df=df,
+        embedding_type='sentence-transformer',
         model_name=model_name
     )
+    
+    # Save the embeddings to files
+    save_embeddings(embeddings, product_codes, data_dir)
+    
     print(f"Embedding generation complete. Results saved to {embeddings_path}")
     
     return embeddings_path, product_codes_path
