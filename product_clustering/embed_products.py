@@ -40,9 +40,25 @@ def embed_products(df: pd.DataFrame,
     if text_col not in df.columns:
         raise ValueError(f"Text column '{text_col}' not found in DataFrame")
     
-    # Extract text and product codes
-    texts = df[text_col].tolist()
-    product_codes = df['product_code'].tolist()
+    # Extract text and product codes, ensure all values are strings
+    texts = [str(text) for text in df[text_col].tolist()]
+    product_codes = [str(code) for code in df['product_code'].tolist()]
+    
+    # Filter out any empty or NaN strings
+    valid_indices = []
+    valid_texts = []
+    valid_codes = []
+    
+    for i, (text, code) in enumerate(zip(texts, product_codes)):
+        if text and text.strip() and code and code.strip():
+            valid_indices.append(i)
+            valid_texts.append(text.strip())
+            valid_codes.append(code.strip())
+    
+    texts = valid_texts
+    product_codes = valid_codes
+    
+    print(f"After filtering, using {len(texts)} valid products for embedding")
     
     print(f"Generating embeddings for {len(texts)} products...")
     
@@ -68,16 +84,30 @@ def embed_products(df: pd.DataFrame,
     embeddings = []
     
     for i in tqdm(range(0, len(texts), batch_size), desc="Embedding Batches"):
-        end_idx = min(i + batch_size, len(texts))
-        batch_texts = texts[i:end_idx]
-        
-        # Generate embeddings for batch
-        if embedding_type == 'openai':
-            batch_embeddings = [embedder.embed_query(text) for text in batch_texts]
-        else:
-            batch_embeddings = embedder(batch_texts)
-        
-        embeddings.extend(batch_embeddings)
+        try:
+            end_idx = min(i + batch_size, len(texts))
+            batch_texts = texts[i:end_idx]
+            
+            # Safety check - ensure all are strings
+            batch_texts = [str(text) if text is not None else "" for text in batch_texts]
+            
+            # Skip any empty batches
+            if not batch_texts or all(not text for text in batch_texts):
+                print(f"Skipping empty batch at index {i}")
+                continue
+            
+            # Generate embeddings for batch
+            if embedding_type == 'openai':
+                batch_embeddings = [embedder.embed_query(text) for text in batch_texts]
+            else:
+                batch_embeddings = embedder(batch_texts)
+            
+            embeddings.extend(batch_embeddings)
+        except Exception as e:
+            print(f"Error generating batch embeddings: {str(e)}")
+            print(f"Batch texts: {batch_texts}")
+            # Continue with next batch instead of failing completely
+            continue
     
     # Convert to numpy array for clustering
     embeddings_array = np.array(embeddings)

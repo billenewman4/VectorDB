@@ -40,10 +40,15 @@ def load_transaction_data(data_dir: Optional[str] = None):
         import pandas as pd
         import os
         
-        # Find transaction data file
+        # Find product data file
         if data_dir is None:
-            # Check multiple possible locations
+            # Check multiple possible locations with priority for CSV
             potential_paths = [
+                # First check for prepared_products.csv (highest priority)
+                os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "prepared_products.csv"),
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "prepared_products.csv"),
+                
+                # Then check for traditional transaction data formats
                 os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "Actuals", "Transaction_Report_Actual.xlsx"),
                 os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "Transaction_Report_Actual.xlsx"),
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "Transaction_Report_Actual.xlsx")
@@ -53,49 +58,74 @@ def load_transaction_data(data_dir: Optional[str] = None):
             for path in potential_paths:
                 if os.path.exists(path):
                     data_path = path
+                    print(f"Found data file: {path}")
                     break
             
             if data_path is None:
-                print("Error: Transaction data file not found in any of the expected locations")
+                print("Error: Product or transaction data file not found in expected locations")
                 
-                # Try to find any Excel files
-                print("Searching for alternative transaction data files...")
-                excel_files = []
+                # Try to find any product data files
+                print("Searching for alternative product data files...")
+                product_files = []
                 for root, _, files in os.walk(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))):
                     for file in files:
-                        if file.endswith(".xlsx") and "transaction" in file.lower():
-                            excel_files.append(os.path.join(root, file))
+                        if file.endswith(".csv") and ("product" in file.lower() or "prepared" in file.lower()):
+                            product_files.append(os.path.join(root, file))
+                        elif file.endswith(".xlsx") and "transaction" in file.lower():
+                            product_files.append(os.path.join(root, file))
                 
-                if excel_files:
-                    print(f"Found potential transaction files: {excel_files}")
-                    data_path = excel_files[0]
+                if product_files:
+                    print(f"Found potential product files: {product_files}")
+                    data_path = product_files[0]
                     print(f"Using: {data_path}")
                 else:
                     return {}
         else:
-            data_path = os.path.join(data_dir, "Transaction_Report_Actual.xlsx")
+            # Look for prepared_products.csv first
+            data_path = os.path.join(data_dir, "prepared_products.csv")
             if not os.path.exists(data_path):
-                print(f"Error: Transaction data file not found at {data_path}")
-                return {}
+                # Fall back to transaction data
+                data_path = os.path.join(data_dir, "Transaction_Report_Actual.xlsx")
+                if not os.path.exists(data_path):
+                    print(f"Error: Neither prepared_products.csv nor Transaction_Report_Actual.xlsx found in {data_dir}")
+                    
+                    # Try to find any product data file
+                    for root, _, files in os.walk(data_dir):
+                        for file in files:
+                            if "product" in file.lower() and (file.endswith(".csv") or file.endswith(".xlsx")):
+                                data_path = os.path.join(root, file)
+                                print(f"Found alternative product data: {data_path}")
+                                break
+                    
+                    if not os.path.exists(data_path):
+                        return {}
         
-        print(f"Loading transaction data from: {data_path}")
+        print(f"Loading product data from: {data_path}")
         
-        # Try to load with different sheet names
-        try:
-            df = pd.read_excel(data_path, sheet_name="Sheet1")
-        except Exception as e1:
+        # Try to load based on file extension
+        df = None
+        if data_path.lower().endswith(".csv"):
             try:
-                df = pd.read_excel(data_path)
-            except Exception as e2:
-                print(f"Error loading Excel file: {str(e1)}; {str(e2)}")
+                df = pd.read_csv(data_path)
+            except Exception as e:
+                print(f"Error loading CSV file: {str(e)}")
                 return {}
+        else:  # Excel format
+            try:
+                df = pd.read_excel(data_path, sheet_name="Sheet1")
+            except Exception as e1:
+                try:
+                    df = pd.read_excel(data_path)
+                except Exception as e2:
+                    print(f"Error loading Excel file: {str(e1)}; {str(e2)}")
+                    return {}
         
         # Create a product code to description mapping
         product_dict = {}
         
         # Handle different column name formats
         code_col = next((col for col in df.columns if col.lower() in ['product_code', 'productcode', 'code']), None)
-        desc_col = next((col for col in df.columns if col.lower() in ['description', 'product_description', 'productdescription', 'desc']), None)
+        desc_col = next((col for col in df.columns if col.lower() in ['product_description', 'productdescription', 'description', 'desc']), None)
         
         if code_col and desc_col:
             print(f"Using columns: {code_col} (code) and {desc_col} (description)")
@@ -103,7 +133,7 @@ def load_transaction_data(data_dir: Optional[str] = None):
                 if pd.notna(row[code_col]) and pd.notna(row[desc_col]):
                     product_dict[str(row[code_col])] = str(row[desc_col])
             
-            print(f"Loaded {len(product_dict)} product descriptions from transaction data")
+            print(f"Loaded {len(product_dict)} product descriptions from product data")
             return product_dict
         else:
             print(f"Required columns not found. Available columns: {list(df.columns)}")
@@ -120,7 +150,7 @@ def load_transaction_data(data_dir: Optional[str] = None):
             
             return {}
     except Exception as e:
-        print(f"Error loading transaction data: {str(e)}")
+        print(f"Error loading product data: {str(e)}")
         return {}
 
 def load_embeddings(data_dir: str):
