@@ -50,3 +50,6 @@ logs/
 
 # windsurf rules
 .windsurfrules
+model_cache/
+chroma_db_actuals/
+product_clustering/data/*.npy
