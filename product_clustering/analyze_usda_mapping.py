@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def load_usda_mapping(mapping_path: str) -> Dict[str, List[str]]:
     """
-    Load the USDA to product code mapping data.
+    Load the USDA to product code mapping data from the Corrected_mapping.xlsx file.
     
     Args:
         mapping_path: Path to the mapping Excel file
@@ -32,17 +32,30 @@ def load_usda_mapping(mapping_path: str) -> Dict[str, List[str]]:
         # Load the Excel file
         df = pd.read_excel(mapping_path)
         
-        # Create mapping from standardized name to product codes
+        # Create mapping from USDA code to product codes
         mapping = {}
+        
+        # The distributor code columns
+        distributor_columns = ['Fulton_code', 'Pritzlaff_code', 'Queen_code', 'Moesle_code', 'Anmar_code']
+        
         for _, row in df.iterrows():
-            std_name = row['Standardized Product Name']
-            # Convert product codes to strings and strip any whitespace
-            product_codes = [str(code).strip() for code in str(row['Product Codes']).split(';')]
+            usda_code = str(row['USDA_Code']).strip()
+            
+            # Get all product codes from the distributor columns
+            product_codes = []
+            for col in distributor_columns:
+                if pd.notna(row.get(col)) and str(row.get(col)).strip():
+                    code = str(row.get(col)).strip()
+                    # Strip the -1 or -2 suffix from product codes 
+                    if code.endswith('-1') or code.endswith('-2'):
+                        code = code.rsplit('-', 1)[0]
+                    product_codes.append(code)
+            
             # Filter out any empty strings
             product_codes = [code for code in product_codes if code]
             
-            if std_name and product_codes:
-                mapping[std_name] = product_codes
+            if usda_code and product_codes:
+                mapping[usda_code] = product_codes
                 
         return mapping
     
@@ -402,7 +415,7 @@ def main():
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     if not args.mapping_path:
-        args.mapping_path = os.path.join(project_root, "data", "CorrectMapping", "product_mapping_semantic.xlsx")
+        args.mapping_path = os.path.join(project_root, "Source_data", "Actuals", "Corrected_mapping.xlsx")
     
     if not args.clusters_path:
         # Default to refined category clusters
