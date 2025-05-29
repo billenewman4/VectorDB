@@ -1,0 +1,146 @@
+# VectorDB Project Setup Guide
+
+This document provides step-by-step instructions for setting up and running the VectorDB project, which includes product clustering, semantic similarity search, and USDA code mapping capabilities.
+
+## Prerequisites
+
+- Python 3.8 or higher
+- Git (for cloning the repository)
+- About 2GB of free disk space (for model caching and data storage)
+- Internet connection (for initial model download)
+
+## Installation Steps
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/billenewman4/VectorDB.git
+   cd VectorDB
+   ```
+
+2. **Create and Activate a Virtual Environment** (Recommended)
+   ```bash
+   # Using venv
+   python -m venv venv
+   
+   # On Windows
+   venv\Scripts\activate
+   
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
+
+3. **Install Required Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set Up Environment Variables**
+   Create a `.env` file in the project root with the following variables:
+   ```
+   # If using OpenAI API for embeddings (optional)
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+## Data Setup
+
+The project requires specific data files to function properly. Place them in the appropriate directories:
+
+1. **Transaction Data**
+   - Place your transaction data file (Excel format) in `data/Actuals/Transaction_Report_Actual.xlsx`
+   - Format should include columns for ProductCode and ProductDescription
+
+2. **Mapping Data**
+   - Place the product mapping file in `data/CorrectMapping/product_mapping_semantic.xlsx`
+   - Format should include Standardized Product Name, Product Codes, and Possible Descriptions
+
+3. **Optional: Use Sample Data**
+   If you don't have your own data, you can generate sample data using:
+   ```bash
+   python product_clustering/create_simple_mapping.py --products_path product_clustering/data/prepared_products.csv --output_path data/CorrectMapping/product_mapping_realistic.xlsx
+   ```
+
+## Running the Project
+
+### 1. Creating Embeddings
+
+Initialize the vector database with product embeddings:
+
+```bash
+python -c "from src.VectorDB.helper import initialize_vector_db; initialize_vector_db(recreate=True)"
+```
+
+### 2. Running Clustering Analysis
+
+```bash
+# Prepare data
+python product_clustering/data_prep.py
+
+# Generate embeddings
+python product_clustering/embed_products.py
+
+# Run clustering
+python product_clustering/run_clustering.py --all --categories --rerank
+
+# Analyze clusters
+python product_clustering/analyze_clusters.py
+```
+
+### 3. USDA Mapping Analysis
+
+To analyze how well clusters align with expected USDA groupings:
+
+```bash
+python product_clustering/analyze_usda_mapping.py --mapping_path data/CorrectMapping/product_mapping_realistic.xlsx --clusters_path product_clustering/data/refined_clustering/refined_clusters.json --products_path product_clustering/data/prepared_products.csv
+```
+
+### 4. Debugging and Troubleshooting
+
+If you encounter issues with USDA mapping:
+
+```bash
+python product_clustering/debug_usda_mapping.py
+```
+
+## Configuration Options
+
+You can modify the configuration settings in `src/config.py`:
+
+- Change embedding models between 'all-MiniLM-L6-v2' (faster) and 'all-mpnet-base-v2' (better quality)
+- Adjust clustering parameters (MIN_CLUSTER_SIZE, MIN_SAMPLES)
+- Set reranking parameters (SIMILARITY_THRESHOLD)
+
+## Project Structure
+
+- `/src`: Core functionality and configuration
+- `/product_clustering`: Product clustering implementation
+- `/data`: Data storage directory
+  - `/Actuals`: Transaction data
+  - `/CorrectMapping`: Ground truth mapping data
+- `/product_clustering/data`: Processed data and analysis results
+
+## Common Issues and Solutions
+
+1. **Large Model Downloads**
+   - On first run, the system will download embedding models (~400MB)
+   - These are cached in `model_cache/` directory
+
+2. **Memory Issues**
+   - For large datasets, increase available memory or reduce batch sizes in config.py
+
+3. **Missing USDA Codes**
+   - Run the debug_usda_mapping.py script to identify mismatches
+   - Use create_realistic_mapping.py to generate a mapping based on actual product codes
+
+4. **Performance Considerations**
+   - Use the faster 'all-MiniLM-L6-v2' model during development
+   - Switch to 'all-mpnet-base-v2' for production quality results
+
+## Next Steps
+
+After setup, explore the following capabilities:
+1. Bidirectional similarity search for product matching
+2. Cluster analysis for product categorization
+3. LLM-based pricing analysis for clusters
+4. USDA code mapping to standardize product names
+
+For more detailed information on specific components, refer to the README.md file in the project root.
