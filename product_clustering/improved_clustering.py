@@ -23,7 +23,9 @@ def run_improved_clustering(data_dir: Optional[str] = None,
                            sample_size: int = 1000,  # Sample size to use in test mode
                            use_reranking: bool = False,  # Whether to use CrossEncoder reranking
                            cross_encoder_model: str = 'cross-encoder/stsb-roberta-base',  # Model for reranking
-                           similarity_threshold: float = 0.5):  # Threshold for reranking
+                           similarity_threshold: float = 0.5,  # Threshold for reranking
+                           use_categories: bool = True,  # Whether to cluster by category first
+                           force: bool = False):  # Whether to force regeneration of embeddings/clusters
     """
     Run clustering with improved parameters.
     
@@ -104,32 +106,116 @@ def run_improved_clustering(data_dir: Optional[str] = None,
     if len(embeddings) != len(product_codes):
         print(f"Warning: Mismatch between embeddings ({len(embeddings)}) and product codes ({len(product_codes)})")
     
-    print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+    # Check for category information to enable category-based clustering
+    category_products_path = os.path.join(data_dir, "category_products.json")
+    category_mode = use_categories and os.path.exists(category_products_path)
     
-    # Run HDBSCAN clustering
-    clusterer = hdbscan.HDBSCAN(
-        min_cluster_size=min_cluster_size,
-        min_samples=min_samples,
-        metric=metric,
-        gen_min_span_tree=True,
-        cluster_selection_method='eom'
-    )
+    # Main clustering approach
+    if category_mode:
+        print("Using category-based clustering approach")
+        print(f"Loading category products from {category_products_path}")
+        
+        # Load category-to-products mapping
+        try:
+            with open(category_products_path, 'r') as f:
+                category_products = json.load(f)
+            print(f"Loaded {len(category_products)} product categories")
+            
+            # Load product code to embedding mapping
+            product_to_embedding = {}
+            for i, code in enumerate(product_codes):
+                if i < len(embeddings):
+                    product_to_embedding[code] = embeddings[i]
+            
+            # Perform clustering within each category separately
+            clusters = defaultdict(list)
+            cluster_counter = 0
+            category_stats = {}
+            
+            for category, products in category_products.items():
+                # Filter out products not in our embeddings
+                category_products = [p for p in products if p in product_to_embedding]
+                
+                if len(category_products) < min_cluster_size:
+                    print(f"Skipping category '{category}': too few products ({len(category_products)})")
+                    continue
+                    
+                print(f"Clustering category '{category}' with {len(category_products)} products")
+                
+                # Extract embeddings for this category
+                category_embeddings = np.array([product_to_embedding[p] for p in category_products])
+                
+                # Run HDBSCAN clustering on this category
+                clusterer = hdbscan.HDBSCAN(
+                    min_cluster_size=min_cluster_size,
+                    min_samples=min_samples,
+                    metric=metric,
+                    gen_min_span_tree=True,
+                    cluster_selection_method='eom'
+                )
+                
+                # Fit the clusterer
+                category_labels = clusterer.fit_predict(category_embeddings)
+                
+                # Count clusters and noise points for this category
+                cat_clusters = len(set(category_labels)) - (1 if -1 in category_labels else 0)
+                cat_noise = list(category_labels).count(-1)
+                
+                print(f"  - {cat_clusters} clusters formed with {cat_noise} noise points")
+                category_stats[category] = {
+                    "total_products": len(category_products),
+                    "clusters": cat_clusters,
+                    "noise": cat_noise
+                }
+                
+                # Organize products into clusters
+                for i, label in enumerate(category_labels):
+                    if label >= 0:
+                        # Use category prefix for cluster names to keep them separated
+                        cluster_id = f"cluster_{category}_{cluster_counter + label}"
+                        clusters[cluster_id].append(category_products[i])
+                
+                # Update the counter for the next category
+                cluster_counter += max(category_labels) + 1 if len(category_labels) > 0 and max(category_labels) >= 0 else 0
+            
+            # Print category statistics
+            print("\nCategory clustering statistics:")
+            for category, stats in category_stats.items():
+                print(f"  - {category}: {stats['clusters']} clusters, {stats['noise']} noise points")
+                
+        except Exception as e:
+            print(f"Error in category-based clustering: {e}")
+            print("Falling back to standard clustering")
+            category_mode = False
     
-    # Fit the clusterer
-    cluster_labels = clusterer.fit_predict(embeddings)
-    
-    # Count clusters and noise points
-    n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
-    n_noise = list(cluster_labels).count(-1)
-    
-    print(f"Clustering complete: {n_clusters} clusters formed with {n_noise} noise points")
-    
-    # Organize products into clusters
-    clusters = defaultdict(list)
-    for i, label in enumerate(cluster_labels):
-        if i < len(product_codes):
-            if label >= 0:
-                clusters[f"cluster_{label}"].append(product_codes[i])
+    # Standard clustering if not using categories or if category clustering failed
+    if not category_mode:
+        print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+        
+        # Run HDBSCAN clustering
+        clusterer = hdbscan.HDBSCAN(
+            min_cluster_size=min_cluster_size,
+            min_samples=min_samples,
+            metric=metric,
+            gen_min_span_tree=True,
+            cluster_selection_method='eom'
+        )
+        
+        # Fit the clusterer
+        cluster_labels = clusterer.fit_predict(embeddings)
+        
+        # Count clusters and noise points
+        n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
+        n_noise = list(cluster_labels).count(-1)
+        
+        print(f"Clustering complete: {n_clusters} clusters formed with {n_noise} noise points")
+        
+        # Organize products into clusters
+        clusters = defaultdict(list)
+        for i, label in enumerate(cluster_labels):
+            if i < len(product_codes):
+                if label >= 0:
+                    clusters[f"cluster_{label}"].append(product_codes[i])
     
     # Save clusters to file
     clusters_path = os.path.join(output_dir, "clusters.json")
@@ -192,6 +278,8 @@ if __name__ == "__main__":
                         help="CrossEncoder model to use for reranking")
     parser.add_argument("--similarity_threshold", type=float, default=0.5,
                         help="Similarity threshold for CrossEncoder reranking")
+    parser.add_argument("--use_categories", action="store_true",
+                        help="Cluster products by category first (products from different categories will never be in the same cluster)")
     
     args = parser.parse_args()
     

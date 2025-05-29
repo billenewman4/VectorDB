@@ -84,13 +84,26 @@ def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None) -> pd.Dat
     # Clean the product descriptions for clustering
     unique_products_df['clustering_description'] = unique_products_df['product_description'].apply(preprocess_text_for_clustering)
     
+    # Group products by category and save the mapping
+    from src.data_processing import group_products_by_category, save_category_products
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    print("\nGrouping products by category...")
+    category_groups = group_products_by_category(unique_products_df)
+    
+    # Save category products mapping for clustering
+    category_mapping_path = save_category_products(category_groups, output_dir)
+    if category_mapping_path:
+        print(f"Saved category-to-products mapping to {category_mapping_path}")
+    
     print("Data preparation complete.")
     print(f"Prepared {len(unique_products_df)} products for clustering.")
     
     # Display sample of prepared data
     print("\nSample of prepared data:")
-    sample_cols = ['product_code', 'product_description', 'clustering_description']
-    print(unique_products_df[sample_cols].head().to_string())
+    sample_cols = ['product_code', 'product_description', 'product_category', 'clustering_description']
+    print(unique_products_df[sample_cols[:3]].head().to_string())
     
     return unique_products_df
 

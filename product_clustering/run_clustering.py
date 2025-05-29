@@ -123,6 +123,7 @@ def run_clustering(data_dir: Optional[str] = None,
                   use_reranking: bool = False,
                   cross_encoder_model: str = "cross-encoder/stsb-roberta-base",
                   similarity_threshold: float = 0.6,
+                  use_categories: bool = True,
                   force: bool = False):
     """
     Run the clustering step with optional reranking.
@@ -170,7 +171,9 @@ def run_clustering(data_dir: Optional[str] = None,
         sample_size=sample_size,
         use_reranking=use_reranking,
         cross_encoder_model=cross_encoder_model,
-        similarity_threshold=similarity_threshold
+        similarity_threshold=similarity_threshold,
+        use_categories=use_categories,
+        force=force
     )
     
     end_time = time.time()
@@ -268,15 +271,18 @@ def main():
     # Reranking options
     parser.add_argument("--rerank", action="store_true",
                         help="Use CrossEncoder reranking to refine clusters")
-    parser.add_argument("--cross_encoder_model", default="cross-encoder/stsb-roberta-base",
+    parser.add_argument("--cross_encoder", default="cross-encoder/stsb-roberta-base",
                         help="CrossEncoder model to use for reranking")
     parser.add_argument("--similarity_threshold", type=float, default=0.6,
                         help="Similarity threshold for CrossEncoder reranking (higher = more strict)")
     
+    # Category options
+    parser.add_argument("--no_categories", action="store_true", help="Disable category-based clustering (allows mixing products across categories)")
+    
     # Analysis options
     parser.add_argument("--refined", action="store_true", default=True,
                         help="Analyze refined clusters (default)")
-    parser.add_argument("--no-refined", action="store_false", dest="refined",
+    parser.add_argument("--no_refined", action="store_false", dest="refined",
                         help="Analyze original clusters instead of refined")
     
     args = parser.parse_args()
@@ -313,7 +319,7 @@ def main():
             args.test,
             args.sample_size,
             args.rerank,
-            args.cross_encoder_model,
+            args.cross_encoder,
             args.similarity_threshold,
             args.force
         )

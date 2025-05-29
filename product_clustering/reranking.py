@@ -87,29 +87,34 @@ def refine_clusters(
         pair_indices = []
         
         # If there are too many potential pairs, sample a subset
-        if len(valid_codes) > 20:  # Arbitrary threshold for large clusters
+        # Use a much more aggressive sampling approach to prevent memory issues
+        if len(valid_codes) > 10:  # Lower threshold for large clusters
             # Sample pairs to avoid O(n²) explosion
             import random
             random.seed(42)  # For reproducibility
             
+            # For very large clusters, be even more aggressive
+            max_comparisons = 3 if len(valid_codes) > 50 else 5
+            max_pairs = min(100, max_pairs_per_cluster) if len(valid_codes) > 100 else max_pairs_per_cluster
+            
             # Generate representative pairs by comparing each item to a few others
             for i in range(len(valid_codes)):
-                # Select a few random items to compare against
+                # Select just a few random items to compare against
                 compare_indices = random.sample(
                     [j for j in range(len(valid_codes)) if j != i],
-                    min(5, len(valid_codes) - 1)  # Compare with at most 5 other items
+                    min(max_comparisons, len(valid_codes) - 1)  # Compare with fewer items
                 )
                 
                 for j in compare_indices:
                     pairs.append([descriptions[i], descriptions[j]])
                     pair_indices.append((i, j))
                     
-                    # Limit total pairs to avoid memory issues
-                    if len(pairs) >= max_pairs_per_cluster:
+                    # More aggressive limit on total pairs
+                    if len(pairs) >= max_pairs:
                         break
                 
-                if len(pairs) >= max_pairs_per_cluster:
-                    print(f"  Limiting cluster {cluster_id} to {max_pairs_per_cluster} pairs for evaluation")
+                if len(pairs) >= max_pairs:
+                    print(f"  Limiting cluster {cluster_id} to {len(pairs)} pairs for evaluation")
                     break
         else:
             # For small clusters, evaluate all pairs
