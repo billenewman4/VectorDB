@@ -47,3 +47,19 @@ logs/
 
 # OS specific files
 .DS_Store
+
+# Large data files
+*.xlsx
+*.csv
+*.npy
+*.pkl
+!requirements.txt
+
+# Data directories to exclude from tracking
+data/Actuals/
+data/Transactions/
+data/CorrectMapping/large_files/
+Source_data/
+
+# Generated large files
+product_clustering/data/product_embeddings.npy
