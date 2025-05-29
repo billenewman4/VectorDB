@@ -63,3 +63,4 @@ Source_data/
 
 # Generated large files
 product_clustering/data/product_embeddings.npy
+model_cache/
