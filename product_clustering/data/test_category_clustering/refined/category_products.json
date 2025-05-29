@@ -1,0 +1,1642 @@
+{
+  "bacon": {
+    "clustered": [],
+    "noise": [
+      "138871",
+      "13818123",
+      "1387430"
+    ],
+    "total": 3
+  },
+  "bagged dry": {
+    "clustered": [],
+    "noise": [
+      "88000",
+      "84222",
+      "84283"
+    ],
+    "total": 3
+  },
+  "baking": {
+    "clustered": [],
+    "noise": [
+      "82330",
+      "95420",
+      "95403"
+    ],
+    "total": 3
+  },
+  "ball tip / tri tip": {
+    "clustered": [],
+    "noise": [
+      "13810400",
+      "13808000",
+      "13800102"
+    ],
+    "total": 3
+  },
+  "beef brisket": {
+    "clustered": [],
+    "noise": [
+      "12211024",
+      "12013600",
+      "12013693"
+    ],
+    "total": 3
+  },
+  "beef chuck": {
+    "clustered": [],
+    "noise": [
+      "13011204",
+      "10871274",
+      "100892"
+    ],
+    "total": 3
+  },
+  "beef flank": {
+    "clustered": [],
+    "noise": [
+      "13191120",
+      "10324430",
+      "1060A223"
+    ],
+    "total": 3
+  },
+  "beef ground": {
+    "clustered": [],
+    "noise": [
+      "10486CP",
+      "10500001",
+      "50088B"
+    ],
+    "total": 3
+  },
+  "beef loin": {
+    "clustered": [],
+    "noise": [
+      "1031087",
+      "16061076",
+      "10660944"
+    ],
+    "total": 3
+  },
+  "beef main": {
+    "clustered": [],
+    "noise": [
+      "41951",
+      "44300",
+      "40011"
+    ],
+    "total": 3
+  },
+  "beef other": {
+    "clustered": [],
+    "noise": [
+      "10429980",
+      "10439980",
+      "19192620"
+    ],
+    "total": 3
+  },
+  "beef plate": {
+    "clustered": [],
+    "noise": [
+      "16021074",
+      "16049980",
+      "16021050"
+    ],
+    "total": 3
+  },
+  "beef rib": {
+    "clustered": [],
+    "noise": [
+      "10040002",
+      "17201176",
+      "17111130"
+    ],
+    "total": 3
+  },
+  "beef round": {
+    "clustered": [],
+    "noise": [
+      "1710A2H",
+      "11264496",
+      "11291310"
+    ],
+    "total": 3
+  },
+  "beef variety": {
+    "clustered": [],
+    "noise": [
+      "10049984",
+      "47001",
+      "10095470"
+    ],
+    "total": 3
+  },
+  "beef variety & misc": {
+    "clustered": [],
+    "noise": [
+      "10440158",
+      "10177B",
+      "10440957"
+    ],
+    "total": 3
+  },
+  "beverage": {
+    "clustered": [],
+    "noise": [
+      "96000",
+      "95071",
+      "95130"
+    ],
+    "total": 3
+  },
+  "breaded chicken": {
+    "clustered": [],
+    "noise": [
+      "22546900",
+      "SP3041",
+      "22562200"
+    ],
+    "total": 3
+  },
+  "breaded seafood": {
+    "clustered": [],
+    "noise": [
+      "84200",
+      "84300",
+      "20703"
+    ],
+    "total": 3
+  },
+  "brisket": {
+    "clustered": [],
+    "noise": [
+      "SP1214",
+      "15110200",
+      "15110100"
+    ],
+    "total": 3
+  },
+  "canned goods": {
+    "clustered": [],
+    "noise": [
+      "82310",
+      "84372",
+      "82440"
+    ],
+    "total": 3
+  },
+  "carry out container": {
+    "clustered": [],
+    "noise": [
+      "99911",
+      "89021",
+      "84140"
+    ],
+    "total": 3
+  },
+  "cheese": {
+    "clustered": [],
+    "noise": [
+      "85237",
+      "85240",
+      "407316"
+    ],
+    "total": 3
+  },
+  "chicken airline breast": {
+    "clustered": [],
+    "noise": [
+      "21122120",
+      "21112100",
+      "21152060"
+    ],
+    "total": 3
+  },
+  "chicken breast": {
+    "clustered": [],
+    "noise": [
+      "23144061",
+      "23112006",
+      "23355001"
+    ],
+    "total": 3
+  },
+  "chicken drumstic": {
+    "clustered": [],
+    "noise": [
+      "57001640",
+      "57001280",
+      "57019980"
+    ],
+    "total": 3
+  },
+  "chicken duck": {
+    "clustered": [
+      "93009980",
+      "930199800"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "chicken leg": {
+    "clustered": [],
+    "noise": [
+      "55001010",
+      "55011280",
+      "55109980"
+    ],
+    "total": 3
+  },
+  "chicken leg meat": {
+    "clustered": [],
+    "noise": [
+      "24565868",
+      "24478000",
+      "24565869"
+    ],
+    "total": 3
+  },
+  "chicken main": {
+    "clustered": [],
+    "noise": [
+      "10250",
+      "10005",
+      "10220"
+    ],
+    "total": 3
+  },
+  "chicken miscellaneous": {
+    "clustered": [],
+    "noise": [
+      "29094249",
+      "29606001",
+      "29604000"
+    ],
+    "total": 3
+  },
+  "chicken pulled and diced": {
+    "clustered": [],
+    "noise": [
+      "27115291",
+      "27510000",
+      "27120120"
+    ],
+    "total": 3
+  },
+  "chicken sausage": {
+    "clustered": [],
+    "noise": [
+      "38173188",
+      "28000122",
+      "28175459"
+    ],
+    "total": 3
+  },
+  "chicken smoked": {
+    "clustered": [],
+    "noise": [
+      "59124240",
+      "59029980",
+      "83005810"
+    ],
+    "total": 3
+  },
+  "chicken tender": {
+    "clustered": [],
+    "noise": [
+      "52011340",
+      "52015540",
+      "52011640"
+    ],
+    "total": 3
+  },
+  "chicken tenders": {
+    "clustered": [],
+    "noise": [
+      "25002000",
+      "25015000",
+      "25005020"
+    ],
+    "total": 3
+  },
+  "chicken thigh": {
+    "clustered": [],
+    "noise": [
+      "56019980",
+      "56005540",
+      "56001220"
+    ],
+    "total": 3
+  },
+  "chicken variety": {
+    "clustered": [],
+    "noise": [
+      "52011250",
+      "50031850",
+      "90132"
+    ],
+    "total": 3
+  },
+  "chicken whole": {
+    "clustered": [],
+    "noise": [
+      "52184800",
+      "52101280",
+      "52161220"
+    ],
+    "total": 3
+  },
+  "chicken wing": {
+    "clustered": [],
+    "noise": [
+      "54055510",
+      "54021340",
+      "54121470"
+    ],
+    "total": 3
+  },
+  "chicken wings": {
+    "clustered": [],
+    "noise": [
+      "26405010",
+      "SP3043",
+      "26405020"
+    ],
+    "total": 3
+  },
+  "chuck": {
+    "clustered": [],
+    "noise": [
+      "11310422",
+      "11300006",
+      "11100500"
+    ],
+    "total": 3
+  },
+  "crab": {
+    "clustered": [],
+    "noise": [
+      "50060",
+      "51011",
+      "51130"
+    ],
+    "total": 3
+  },
+  "cream cheese": {
+    "clustered": [],
+    "noise": [
+      "85000",
+      "84000",
+      "84000"
+    ],
+    "total": 3
+  },
+  "dairy": {
+    "clustered": [],
+    "noise": [
+      "84202",
+      "32005",
+      "84311"
+    ],
+    "total": 3
+  },
+  "dairy other": {
+    "clustered": [],
+    "noise": [
+      "30337",
+      "3151476",
+      "30010010"
+    ],
+    "total": 3
+  },
+  "delete items": {
+    "clustered": [],
+    "noise": [
+      "13540408",
+      "10151400",
+      "34924889"
+    ],
+    "total": 3
+  },
+  "deli meat beef": {
+    "clustered": [],
+    "noise": [
+      "1832609",
+      "20023",
+      "22059465"
+    ],
+    "total": 3
+  },
+  "deli meat charcuterie": {
+    "clustered": [],
+    "noise": [
+      "22102",
+      "22694",
+      "22230412"
+    ],
+    "total": 3
+  },
+  "deli meat ham": {
+    "clustered": [],
+    "noise": [
+      "1831821Z",
+      "13485080",
+      "13529012"
+    ],
+    "total": 3
+  },
+  "deli meat other": {
+    "clustered": [],
+    "noise": [
+      "224410",
+      "17002B",
+      "1834240Z"
+    ],
+    "total": 3
+  },
+  "deli meat turkey": {
+    "clustered": [],
+    "noise": [
+      "1220",
+      "183PE64",
+      "183PE16"
+    ],
+    "total": 3
+  },
+  "dim sum": {
+    "clustered": [],
+    "noise": [
+      "43340",
+      "25380",
+      "24770"
+    ],
+    "total": 3
+  },
+  "discontinued items": {
+    "clustered": [],
+    "noise": [
+      "12830006",
+      "22654601",
+      "14910112"
+    ],
+    "total": 3
+  },
+  "duck": {
+    "clustered": [],
+    "noise": [
+      "11004",
+      "11120",
+      "42100500"
+    ],
+    "total": 3
+  },
+  "eggroll": {
+    "clustered": [],
+    "noise": [
+      "25440",
+      "25300",
+      "25280"
+    ],
+    "total": 3
+  },
+  "eggs": {
+    "clustered": [],
+    "noise": [
+      "10900",
+      "10901",
+      "10901"
+    ],
+    "total": 3
+  },
+  "fish": {
+    "clustered": [],
+    "noise": [
+      "80345",
+      "80346",
+      "80061"
+    ],
+    "total": 3
+  },
+  "flank": {
+    "clustered": [],
+    "noise": [
+      "17100200",
+      "17100500",
+      "17100515"
+    ],
+    "total": 3
+  },
+  "flour": {
+    "clustered": [],
+    "noise": [
+      "82660",
+      "85260",
+      "85250"
+    ],
+    "total": 3
+  },
+  "frog": {
+    "clustered": [],
+    "noise": [
+      "50080",
+      "50082",
+      "50081"
+    ],
+    "total": 3
+  },
+  "frozen foods": {
+    "clustered": [],
+    "noise": [
+      "22088010",
+      "105409",
+      "22019"
+    ],
+    "total": 3
+  },
+  "game meat": {
+    "clustered": [],
+    "noise": [
+      "91279955",
+      "20218",
+      "22058B"
+    ],
+    "total": 3
+  },
+  "general seafood": {
+    "clustered": [
+      "70690",
+      "71690"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "goat": {
+    "clustered": [],
+    "noise": [
+      "30520",
+      "1200079",
+      "37036"
+    ],
+    "total": 3
+  },
+  "ground beef": {
+    "clustered": [],
+    "noise": [
+      "SP11025",
+      "18100121",
+      "SP1101"
+    ],
+    "total": 3
+  },
+  "ground beef anmar production": {
+    "clustered": [],
+    "noise": [
+      "18200106",
+      "SP1033",
+      "1810091"
+    ],
+    "total": 3
+  },
+  "halal": {
+    "clustered": [],
+    "noise": [
+      "92295",
+      "94219",
+      "92356"
+    ],
+    "total": 3
+  },
+  "hot dogs": {
+    "clustered": [],
+    "noise": [
+      "18480041",
+      "25064",
+      "18481041"
+    ],
+    "total": 3
+  },
+  "lamb": {
+    "clustered": [],
+    "noise": [
+      "34226",
+      "30208",
+      "30218"
+    ],
+    "total": 3
+  },
+  "lamb breast": {
+    "clustered": [],
+    "noise": [
+      "1204512",
+      "20085960",
+      "121427"
+    ],
+    "total": 3
+  },
+  "lamb goat": {
+    "clustered": [],
+    "noise": [
+      "91059980",
+      "91019980",
+      "91049980"
+    ],
+    "total": 3
+  },
+  "lamb leg": {
+    "clustered": [],
+    "noise": [
+      "21009980",
+      "122105",
+      "12205"
+    ],
+    "total": 3
+  },
+  "lamb loin": {
+    "clustered": [],
+    "noise": [
+      "24029980",
+      "123296",
+      "12329"
+    ],
+    "total": 3
+  },
+  "lamb nz + aus": {
+    "clustered": [],
+    "noise": [
+      "59550023",
+      "59550030",
+      "59890110"
+    ],
+    "total": 3
+  },
+  "lamb other": {
+    "clustered": [],
+    "noise": [
+      "121217",
+      "120001",
+      "1201113"
+    ],
+    "total": 3
+  },
+  "lamb parts": {
+    "clustered": [],
+    "noise": [
+      "54735780",
+      "59885200",
+      "59568970"
+    ],
+    "total": 3
+  },
+  "lamb rack": {
+    "clustered": [],
+    "noise": [
+      "12017",
+      "12071",
+      "12010"
+    ],
+    "total": 3
+  },
+  "lamb sheep": {
+    "clustered": [],
+    "noise": [
+      "92003930",
+      "92029980",
+      "92003500"
+    ],
+    "total": 3
+  },
+  "lamb variety": {
+    "clustered": [],
+    "noise": [
+      "20009980",
+      "20045960",
+      "20041230"
+    ],
+    "total": 3
+  },
+  "lamb whole": {
+    "clustered": [
+      "50000000",
+      "50000000"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "legumes": {
+    "clustered": [
+      "84054",
+      "85361"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "lobster": {
+    "clustered": [],
+    "noise": [
+      "99999",
+      "99999",
+      "60051"
+    ],
+    "total": 3
+  },
+  "loin": {
+    "clustered": [],
+    "noise": [
+      "11111407",
+      "62144704",
+      "SP130"
+    ],
+    "total": 3
+  },
+  "michigan turkey products": {
+    "clustered": [],
+    "noise": [
+      "43447151",
+      "46602",
+      "22048214"
+    ],
+    "total": 3
+  },
+  "misc": {
+    "clustered": [],
+    "noise": [
+      "101258A",
+      "99517012",
+      "99511"
+    ],
+    "total": 3
+  },
+  "miscellaneous beef": {
+    "clustered": [],
+    "noise": [
+      "SP1402",
+      "19320041",
+      "19301000"
+    ],
+    "total": 3
+  },
+  "miscellaneous items": {
+    "clustered": [],
+    "noise": [
+      "13320324",
+      "80141",
+      "74771000"
+    ],
+    "total": 3
+  },
+  "miscellaneous other": {
+    "clustered": [],
+    "noise": [
+      "930099801",
+      "93009984",
+      "93019980"
+    ],
+    "total": 3
+  },
+  "miscellaneous rabbit": {
+    "clustered": [
+      "98009980"
+    ],
+    "noise": [],
+    "total": 1
+  },
+  "miscellaneous smoked": {
+    "clustered": [
+      "84021350"
+    ],
+    "noise": [],
+    "total": 1
+  },
+  "miscellaneous turkey": {
+    "clustered": [],
+    "noise": [
+      "63011770",
+      "61019980",
+      "63014310"
+    ],
+    "total": 3
+  },
+  "miscellaneous variety": {
+    "clustered": [],
+    "noise": [
+      "94695080",
+      "94084730",
+      "94054890"
+    ],
+    "total": 3
+  },
+  "move list": {
+    "clustered": [],
+    "noise": [
+      "48000123",
+      "85800002",
+      "80363900"
+    ],
+    "total": 3
+  },
+  "noodle": {
+    "clustered": [],
+    "noise": [
+      "22005",
+      "84420",
+      "22010"
+    ],
+    "total": 3
+  },
+  "octopus": {
+    "clustered": [],
+    "noise": [
+      "62052",
+      "62094",
+      "62090"
+    ],
+    "total": 3
+  },
+  "oil": {
+    "clustered": [],
+    "noise": [
+      "86030",
+      "93282",
+      "93214"
+    ],
+    "total": 3
+  },
+  "other dry goods": {
+    "clustered": [],
+    "noise": [
+      "9620161",
+      "20386",
+      "40171009"
+    ],
+    "total": 3
+  },
+  "other fruit": {
+    "clustered": [],
+    "noise": [
+      "99999916",
+      "99999940",
+      "99999925"
+    ],
+    "total": 3
+  },
+  "other other": {
+    "clustered": [],
+    "noise": [
+      "99990001",
+      "999999999",
+      "95032680"
+    ],
+    "total": 3
+  },
+  "other variety": {
+    "clustered": [],
+    "noise": [
+      "97415840",
+      "98475870",
+      "96715890"
+    ],
+    "total": 3
+  },
+  "plate": {
+    "clustered": [],
+    "noise": [
+      "SP135",
+      "16140208",
+      "16330000"
+    ],
+    "total": 3
+  },
+  "pork bacalao": {
+    "clustered": [
+      "41271530",
+      "41279990"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "pork bacon": {
+    "clustered": [],
+    "noise": [
+      "37680203",
+      "37880502",
+      "37190103"
+    ],
+    "total": 3
+  },
+  "pork butt": {
+    "clustered": [],
+    "noise": [
+      "46091010",
+      "46083350",
+      "48029990"
+    ],
+    "total": 3
+  },
+  "pork chops": {
+    "clustered": [],
+    "noise": [
+      "32010060",
+      "32211140",
+      "33701650"
+    ],
+    "total": 3
+  },
+  "pork ham": {
+    "clustered": [],
+    "noise": [
+      "40142080",
+      "41269980",
+      "82212060"
+    ],
+    "total": 3
+  },
+  "pork hams": {
+    "clustered": [],
+    "noise": [
+      "SP239",
+      "34751220",
+      "SP2382"
+    ],
+    "total": 3
+  },
+  "pork leg": {
+    "clustered": [],
+    "noise": [
+      "13003",
+      "13136984",
+      "13135604"
+    ],
+    "total": 3
+  },
+  "pork loin": {
+    "clustered": [],
+    "noise": [
+      "44031060",
+      "13066107",
+      "1301801"
+    ],
+    "total": 3
+  },
+  "pork loins": {
+    "clustered": [],
+    "noise": [
+      "33960000",
+      "33990002",
+      "33959000"
+    ],
+    "total": 3
+  },
+  "pork main": {
+    "clustered": [],
+    "noise": [
+      "20105",
+      "20265",
+      "21715"
+    ],
+    "total": 3
+  },
+  "pork miscellaneous": {
+    "clustered": [],
+    "noise": [
+      "91259900",
+      "35210000",
+      "SP2412"
+    ],
+    "total": 3
+  },
+  "pork other": {
+    "clustered": [],
+    "noise": [
+      "40164730",
+      "40169980",
+      "43011190"
+    ],
+    "total": 3
+  },
+  "pork picnic": {
+    "clustered": [],
+    "noise": [
+      "47061010",
+      "47061920",
+      "47043570"
+    ],
+    "total": 3
+  },
+  "pork rib": {
+    "clustered": [],
+    "noise": [
+      "1355704",
+      "1316410",
+      "13176"
+    ],
+    "total": 3
+  },
+  "pork ribs": {
+    "clustered": [],
+    "noise": [
+      "2000211",
+      "32200201",
+      "SP282"
+    ],
+    "total": 3
+  },
+  "pork sausage": {
+    "clustered": [],
+    "noise": [
+      "38201049",
+      "38221331",
+      "38782500"
+    ],
+    "total": 3
+  },
+  "pork shoulder": {
+    "clustered": [],
+    "noise": [
+      "31020102",
+      "46089990",
+      "31021120"
+    ],
+    "total": 3
+  },
+  "pork smoked": {
+    "clustered": [],
+    "noise": [
+      "82051440",
+      "82051441",
+      "971121599"
+    ],
+    "total": 3
+  },
+  "pork sparerib": {
+    "clustered": [],
+    "noise": [
+      "1315712",
+      "1317910",
+      "43019990"
+    ],
+    "total": 3
+  },
+  "pork supplies": {
+    "clustered": [],
+    "noise": [
+      "99999914",
+      "49012620",
+      "49013620"
+    ],
+    "total": 3
+  },
+  "pork trim": {
+    "clustered": [],
+    "noise": [
+      "49002430",
+      "48052080",
+      "48259980"
+    ],
+    "total": 3
+  },
+  "pork variety": {
+    "clustered": [],
+    "noise": [
+      "98039980",
+      "82331060",
+      "20760"
+    ],
+    "total": 3
+  },
+  "pork variety & misc": {
+    "clustered": [],
+    "noise": [
+      "13208I",
+      "1320868",
+      "40071190"
+    ],
+    "total": 3
+  },
+  "pork whole": {
+    "clustered": [],
+    "noise": [
+      "1300283",
+      "13299",
+      "132991"
+    ],
+    "total": 3
+  },
+  "pot sticker": {
+    "clustered": [
+      "24990"
+    ],
+    "noise": [],
+    "total": 1
+  },
+  "poultry breast": {
+    "clustered": [],
+    "noise": [
+      "1781799",
+      "17001C1",
+      "1700594"
+    ],
+    "total": 3
+  },
+  "poultry drumstic": {
+    "clustered": [],
+    "noise": [
+      "17857330",
+      "17857022",
+      "17857305"
+    ],
+    "total": 3
+  },
+  "poultry ground": {
+    "clustered": [],
+    "noise": [
+      "17850412",
+      "17843B",
+      "13198801"
+    ],
+    "total": 3
+  },
+  "poultry leg": {
+    "clustered": [],
+    "noise": [
+      "17844900",
+      "17851777",
+      "17081581"
+    ],
+    "total": 3
+  },
+  "poultry other": {
+    "clustered": [],
+    "noise": [
+      "18228SB",
+      "182044",
+      "18230B"
+    ],
+    "total": 3
+  },
+  "poultry tender": {
+    "clustered": [],
+    "noise": [
+      "17844013",
+      "1784510",
+      "17843"
+    ],
+    "total": 3
+  },
+  "poultry thigh": {
+    "clustered": [],
+    "noise": [
+      "1769998",
+      "17863D",
+      "17863CW"
+    ],
+    "total": 3
+  },
+  "poultry variety & misc": {
+    "clustered": [],
+    "noise": [
+      "1788112",
+      "17877988",
+      "17877999"
+    ],
+    "total": 3
+  },
+  "poultry whole": {
+    "clustered": [],
+    "noise": [
+      "182223",
+      "15005A",
+      "18266"
+    ],
+    "total": 3
+  },
+  "poultry whole cut-ups": {
+    "clustered": [],
+    "noise": [
+      "15212A",
+      "15231A",
+      "15000S"
+    ],
+    "total": 3
+  },
+  "poultry wing": {
+    "clustered": [],
+    "noise": [
+      "1787014",
+      "17864048",
+      "17866978"
+    ],
+    "total": 3
+  },
+  "produce": {
+    "clustered": [],
+    "noise": [
+      "50130570",
+      "50PT54",
+      "70174501"
+    ],
+    "total": 3
+  },
+  "quail": {
+    "clustered": [
+      "10200",
+      "10201"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "rabbit": {
+    "clustered": [
+      "32110"
+    ],
+    "noise": [],
+    "total": 1
+  },
+  "rib": {
+    "clustered": [],
+    "noise": [
+      "12131414",
+      "12500412",
+      "12410400"
+    ],
+    "total": 3
+  },
+  "round": {
+    "clustered": [],
+    "noise": [
+      "14300420",
+      "14401414",
+      "14010400"
+    ],
+    "total": 3
+  },
+  "sauce": {
+    "clustered": [],
+    "noise": [
+      "85770",
+      "85710",
+      "83810"
+    ],
+    "total": 3
+  },
+  "sausage": {
+    "clustered": [],
+    "noise": [
+      "13989",
+      "72087N",
+      "1402906"
+    ],
+    "total": 3
+  },
+  "scallop": {
+    "clustered": [],
+    "noise": [
+      "70872",
+      "61020",
+      "71801"
+    ],
+    "total": 3
+  },
+  "seafood": {
+    "clustered": [],
+    "noise": [
+      "80212500",
+      "80569971",
+      "70010"
+    ],
+    "total": 3
+  },
+  "seafood catfish": {
+    "clustered": [],
+    "noise": [
+      "70415829",
+      "70009980",
+      "70165809"
+    ],
+    "total": 3
+  },
+  "seafood crab": {
+    "clustered": [],
+    "noise": [
+      "77129989",
+      "21053",
+      "210544"
+    ],
+    "total": 3
+  },
+  "seafood leg": {
+    "clustered": [],
+    "noise": [
+      "78101529",
+      "78111529",
+      "78112109"
+    ],
+    "total": 3
+  },
+  "seafood octopus": {
+    "clustered": [],
+    "noise": [
+      "73159989",
+      "73021106",
+      "73121869"
+    ],
+    "total": 3
+  },
+  "seafood other": {
+    "clustered": [],
+    "noise": [
+      "71011669",
+      "21060CL",
+      "78219980"
+    ],
+    "total": 3
+  },
+  "seafood perch": {
+    "clustered": [],
+    "noise": [
+      "73052020",
+      "73005809",
+      "78293470"
+    ],
+    "total": 3
+  },
+  "seafood pollock": {
+    "clustered": [],
+    "noise": [
+      "78319989",
+      "78801649",
+      "78915829"
+    ],
+    "total": 3
+  },
+  "seafood shrimp": {
+    "clustered": [],
+    "noise": [
+      "74335309",
+      "74564759",
+      "74572769"
+    ],
+    "total": 3
+  },
+  "seafood smelt": {
+    "clustered": [],
+    "noise": [
+      "78604360",
+      "78402109",
+      "78409989"
+    ],
+    "total": 3
+  },
+  "seafood swai": {
+    "clustered": [],
+    "noise": [
+      "79014759",
+      "79021509",
+      "79185829"
+    ],
+    "total": 3
+  },
+  "seafood tilapia": {
+    "clustered": [],
+    "noise": [
+      "76001109",
+      "76074369",
+      "76019980"
+    ],
+    "total": 3
+  },
+  "seafood variety": {
+    "clustered": [],
+    "noise": [
+      "78482218",
+      "78071509",
+      "78399989"
+    ],
+    "total": 3
+  },
+  "seafood whiting": {
+    "clustered": [],
+    "noise": [
+      "78431619",
+      "78682609",
+      "78469969"
+    ],
+    "total": 3
+  },
+  "seafood whole": {
+    "clustered": [],
+    "noise": [
+      "72051389",
+      "72061789",
+      "78204369"
+    ],
+    "total": 3
+  },
+  "shipping other": {
+    "clustered": [],
+    "noise": [
+      "53154",
+      "53151",
+      "53152"
+    ],
+    "total": 3
+  },
+  "short loin": {
+    "clustered": [],
+    "noise": [
+      "13101100",
+      "13320618",
+      "13310624"
+    ],
+    "total": 3
+  },
+  "shrimp": {
+    "clustered": [],
+    "noise": [
+      "72360",
+      "72993",
+      "71570"
+    ],
+    "total": 3
+  },
+  "spices": {
+    "clustered": [],
+    "noise": [
+      "84030",
+      "83219",
+      "83793"
+    ],
+    "total": 3
+  },
+  "squid": {
+    "clustered": [],
+    "noise": [
+      "62080",
+      "62323",
+      "62160"
+    ],
+    "total": 3
+  },
+  "stock ground beef": {
+    "clustered": [],
+    "noise": [
+      "18180090",
+      "18180041",
+      "18119002"
+    ],
+    "total": 3
+  },
+  "strip": {
+    "clustered": [],
+    "noise": [
+      "13410600",
+      "SP131",
+      "13420511"
+    ],
+    "total": 3
+  },
+  "sugar": {
+    "clustered": [
+      "83631",
+      "88060"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "supplies": {
+    "clustered": [],
+    "noise": [
+      "99901",
+      "19991",
+      "84941"
+    ],
+    "total": 3
+  },
+  "sushi": {
+    "clustered": [
+      "83305",
+      "82520"
+    ],
+    "noise": [],
+    "total": 2
+  },
+  "tenderloin / filet": {
+    "clustered": [],
+    "noise": [
+      "13101412",
+      "13000950",
+      "13001604"
+    ],
+    "total": 3
+  },
+  "top butt": {
+    "clustered": [],
+    "noise": [
+      "13641508",
+      "13610607",
+      "13610608"
+    ],
+    "total": 3
+  },
+  "turkey": {
+    "clustered": [],
+    "noise": [
+      "11401",
+      "11080",
+      "11070"
+    ],
+    "total": 3
+  },
+  "turkey items": {
+    "clustered": [],
+    "noise": [
+      "42301146",
+      "41548870",
+      "41799900"
+    ],
+    "total": 3
+  },
+  "veal": {
+    "clustered": [],
+    "noise": [
+      "11342304",
+      "11188",
+      "1121473"
+    ],
+    "total": 3
+  },
+  "veal provimi": {
+    "clustered": [],
+    "noise": [
+      "66966977",
+      "62221207",
+      "64700100"
+    ],
+    "total": 3
+  },
+  "veal strauss": {
+    "clustered": [],
+    "noise": [
+      "11399000",
+      "63348040",
+      "64200194"
+    ],
+    "total": 3
+  },
+  "veal variety": {
+    "clustered": [],
+    "noise": [
+      "30119980",
+      "30202220",
+      "30149980"
+    ],
+    "total": 3
+  },
+  "vegetables": {
+    "clustered": [],
+    "noise": [
+      "31200",
+      "31361",
+      "31020"
+    ],
+    "total": 3
+  },
+  "whole pigs and goats": {
+    "clustered": [],
+    "noise": [
+      "39000130",
+      "30113040",
+      "30118095"
+    ],
+    "total": 3
+  },
+  "whole turkeys": {
+    "clustered": [],
+    "noise": [
+      "41803400",
+      "41801300",
+      "41802024"
+    ],
+    "total": 3
+  },
+  "wild game": {
+    "clustered": [],
+    "noise": [
+      "72710001",
+      "76111000",
+      "74770012"
+    ],
+    "total": 3
+  },
+  "wogs and cut ups": {
+    "clustered": [],
+    "noise": [
+      "20005362",
+      "20270212",
+      "20005361"
+    ],
+    "total": 3
+  }
+}

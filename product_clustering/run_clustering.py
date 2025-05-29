@@ -35,7 +35,7 @@ def run_data_preparation(data_dir: Optional[str] = None, force: bool = False):
         data_dir: Directory to store prepared data
         force: Whether to force reprocessing even if files exist
     """
-    from product_clustering.data_prep import prepare_data_for_clustering
+    from data_prep.processor import prepare_unified_product_data
     
     if data_dir is None:
         data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -49,7 +49,7 @@ def run_data_preparation(data_dir: Optional[str] = None, force: bool = False):
     
     print("Running data preparation...")
     # Call the function with its correct signature (no output_path parameter)
-    prepared_data = prepare_data_for_clustering()
+    prepared_data = prepare_unified_product_data()
     
     # Create the output directory if it doesn't exist
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -123,6 +123,7 @@ def run_clustering(data_dir: Optional[str] = None,
                   use_reranking: bool = False,
                   cross_encoder_model: str = "cross-encoder/stsb-roberta-base",
                   similarity_threshold: float = 0.6,
+                  use_categories: bool = True,
                   force: bool = False):
     """
     Run the clustering step with optional reranking.
@@ -137,89 +138,164 @@ def run_clustering(data_dir: Optional[str] = None,
         use_reranking: Whether to use CrossEncoder reranking
         cross_encoder_model: Model for reranking
         similarity_threshold: Threshold for reranking
+        use_categories: Whether to use hierarchical category-based clustering
         force: Whether to force reprocessing even if files exist
     """
-    from product_clustering.improved_clustering import run_improved_clustering
-    
     if data_dir is None:
         data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     
-    # Determine output directory
-    suffix = "_subset" if test_mode else ""
-    output_dir = os.path.join(data_dir, f"improved_clustering{suffix}")
+    # Prepare data file path
+    prepared_data_path = os.path.join(data_dir, "prepared_products.csv")
     
-    # Refined clusters path
-    refined_dir = os.path.join(data_dir, "refined_clusters")
-    refined_path = os.path.join(refined_dir, "refined_clusters.json")
-    
-    # Check if results already exist
-    if os.path.exists(refined_path) and not force:
-        print(f"Clustering results already exist at {refined_path}")
-        print("Use --force to reprocess")
-        return refined_path
-    
-    print("Running clustering...")
-    start_time = time.time()
-    
-    run_improved_clustering(
-        data_dir=data_dir,
-        metric=metric,
-        min_cluster_size=min_cluster_size,
-        min_samples=min_samples,
-        test_mode=test_mode,
-        sample_size=sample_size,
-        use_reranking=use_reranking,
-        cross_encoder_model=cross_encoder_model,
-        similarity_threshold=similarity_threshold
-    )
-    
-    end_time = time.time()
-    print(f"Clustering complete in {end_time - start_time:.2f} seconds")
-    
-    # Copy final results to standard location
-    if use_reranking:
-        os.makedirs(refined_dir, exist_ok=True)
-        import shutil
+    # Determine which clustering approach to use
+    if use_categories:
+        from product_clustering.category_clustering import run_category_clustering
+        
+        # Determine output directory for category-based clustering
+        suffix = "_subset" if test_mode else ""
+        output_dir = os.path.join(data_dir, f"category_clustering{suffix}")
+        
+        # Define path for final results
+        if use_reranking:
+            final_dir = os.path.join(output_dir, "refined")
+            final_path = os.path.join(final_dir, "refined_category_clusters.json")
+        else:
+            final_dir = output_dir
+            final_path = os.path.join(final_dir, "category_clusters.json")
+        
+        # Check if results already exist
+        if os.path.exists(final_path) and not force:
+            print(f"Category-based clustering results already exist at {final_path}")
+            print("Use --force to reprocess")
+            return final_path
+        
+        print("Running category-based hierarchical clustering...")
+        start_time = time.time()
+        
+        # Run category-based clustering
+        clusters_path = run_category_clustering(
+            prepared_data_path=prepared_data_path,
+            output_dir=output_dir,
+            model_name="all-mpnet-base-v2",
+            metric=metric,
+            min_cluster_size=min_cluster_size,
+            min_samples=min_samples,
+            use_reranking=use_reranking,
+            cross_encoder_model=cross_encoder_model,
+            similarity_threshold=similarity_threshold
+        )
+        
+        end_time = time.time()
+        minutes, seconds = divmod(end_time - start_time, 60)
+        print(f"Category-based clustering complete in {int(minutes)}m {seconds:.1f}s")
+        
+        # Load and print basic stats from the final results
         import json
+        with open(clusters_path, 'r') as f:
+            clusters = json.load(f)
         
-        refined_output_path = os.path.join(output_dir, "refined", "refined_clusters.json")
+        total_products = sum(len(products) for products in clusters.values())
+        print(f"Created {len(clusters)} clusters with {total_products} total products")
+        print(f"Final results saved to {clusters_path}")
         
-        if os.path.exists(refined_output_path):
-            shutil.copy(refined_output_path, refined_path)
-            
-            # Load and print basic stats
-            with open(refined_path, 'r') as f:
-                clusters = json.load(f)
-            
-            total_products = sum(len(products) for products in clusters.values())
-            print(f"Created {len(clusters)} clusters with {total_products} total products")
-            print(f"Final results saved to {refined_path}")
-            
+        return clusters_path
+    else:
+        # Use the original improved clustering approach
+        from product_clustering.improved_clustering import run_improved_clustering
+        
+        # Determine output directory for regular clustering
+        suffix = "_subset" if test_mode else ""
+        output_dir = os.path.join(data_dir, f"improved_clustering{suffix}")
+        
+        # Refined clusters path
+        refined_dir = os.path.join(data_dir, "refined_clusters")
+        refined_path = os.path.join(refined_dir, "refined_clusters.json")
+        
+        # Check if results already exist
+        if os.path.exists(refined_path) and not force:
+            print(f"Clustering results already exist at {refined_path}")
+            print("Use --force to reprocess")
             return refined_path
+        
+        print("Running standard clustering...")
+        start_time = time.time()
+        
+        run_improved_clustering(
+            data_dir=data_dir,
+            metric=metric,
+            min_cluster_size=min_cluster_size,
+            min_samples=min_samples,
+            test_mode=test_mode,
+            sample_size=sample_size,
+            use_reranking=use_reranking,
+            cross_encoder_model=cross_encoder_model,
+            similarity_threshold=similarity_threshold
+        )
+        
+        end_time = time.time()
+        print(f"Clustering complete in {end_time - start_time:.2f} seconds")
+        
+        # Copy final results to standard location
+        if use_reranking:
+            os.makedirs(refined_dir, exist_ok=True)
+            import shutil
+            import json
+            
+            refined_output_path = os.path.join(output_dir, "refined", "refined_clusters.json")
+            
+            if os.path.exists(refined_output_path):
+                shutil.copy(refined_output_path, refined_path)
+                
+                # Load and print basic stats
+                with open(refined_path, 'r') as f:
+                    clusters = json.load(f)
+                
+                total_products = sum(len(products) for products in clusters.values())
+                print(f"Created {len(clusters)} clusters with {total_products} total products")
+                print(f"Final results saved to {refined_path}")
+                
+                return refined_path
     
     return output_dir
 
-def run_analysis(data_dir: Optional[str] = None, refined: bool = True):
+def run_analysis(data_dir: Optional[str] = None, refined: bool = True, use_categories: bool = True):
     """
     Run the analysis step.
     
     Args:
         data_dir: Directory containing clustering results
         refined: Whether to analyze refined clusters
+        use_categories: Whether to analyze category-based clustering results
     """
     from product_clustering.analyze_clusters import analyze_clusters
     
     if data_dir is None:
         data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     
-    if refined:
-        clusters_path = os.path.join(data_dir, "refined_clusters", "refined_clusters.json")
-        if not os.path.exists(clusters_path):
-            print(f"Refined clusters not found at {clusters_path}")
-            print("Run clustering with reranking first or use --refined=False")
-            return None
+    if use_categories:
+        # Paths for category-based clustering results
+        if refined:
+            clusters_path = os.path.join(data_dir, "category_clustering", "refined", "refined_category_clusters.json")
+            if not os.path.exists(clusters_path):
+                print(f"Refined category clusters not found at {clusters_path}")
+                print("Run category clustering with reranking first or use --refined=False")
+                return None
+        else:
+            clusters_path = os.path.join(data_dir, "category_clustering", "category_clusters.json")
+            if not os.path.exists(clusters_path):
+                print(f"Category clusters not found at {clusters_path}")
+                print("Run category clustering first")
+                return None
     else:
-        clusters_path = os.path.join(data_dir, "improved_clustering", "clusters.json")
+        # Paths for regular clustering results
+        if refined:
+            clusters_path = os.path.join(data_dir, "refined_clusters", "refined_clusters.json")
+            if not os.path.exists(clusters_path):
+                print(f"Refined clusters not found at {clusters_path}")
+                print("Run clustering with reranking first or use --refined=False")
+                return None
+        else:
+            clusters_path = os.path.join(data_dir, "improved_clustering", "clusters.json")
         if not os.path.exists(clusters_path):
             print(f"Clusters not found at {clusters_path}")
             print("Run clustering first")
@@ -264,6 +340,10 @@ def main():
                         help="Run in test mode with a subset of data")
     parser.add_argument("--sample_size", type=int, default=1000, 
                         help="Number of samples to use in test mode")
+    parser.add_argument("--categories", action="store_true", default=True,
+                        help="Use category-based hierarchical clustering (default)")
+    parser.add_argument("--no-categories", action="store_false", dest="categories",
+                        help="Use standard clustering without category hierarchy")
     
     # Reranking options
     parser.add_argument("--rerank", action="store_true",
@@ -315,11 +395,12 @@ def main():
             args.rerank,
             args.cross_encoder_model,
             args.similarity_threshold,
+            args.categories,
             args.force
         )
     
     if args.all or args.analyze:
-        analysis_path = run_analysis(data_dir, args.refined)
+        analysis_path = run_analysis(data_dir, args.refined, args.categories)
     
     print("\nProduct clustering pipeline completed successfully!")
 

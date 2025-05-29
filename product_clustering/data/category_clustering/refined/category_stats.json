@@ -1,0 +1,1106 @@
+{
+  "bacon": {
+    "total_products": 94,
+    "original_clusters": 9,
+    "refined_clusters": 11,
+    "skipped_clusters": 0
+  },
+  "bagged dry": {
+    "total_products": 31,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "baking": {
+    "total_products": 19,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "ball tip / tri tip": {
+    "total_products": 14,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "beef brisket": {
+    "total_products": 23,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "beef chuck": {
+    "total_products": 230,
+    "original_clusters": 20,
+    "refined_clusters": 25,
+    "skipped_clusters": 0
+  },
+  "beef flank": {
+    "total_products": 429,
+    "original_clusters": 20,
+    "refined_clusters": 27,
+    "skipped_clusters": 0
+  },
+  "beef ground": {
+    "total_products": 181,
+    "original_clusters": 21,
+    "refined_clusters": 31,
+    "skipped_clusters": 0
+  },
+  "beef loin": {
+    "total_products": 424,
+    "original_clusters": 28,
+    "refined_clusters": 44,
+    "skipped_clusters": 0
+  },
+  "beef main": {
+    "total_products": 194,
+    "original_clusters": 16,
+    "refined_clusters": 23,
+    "skipped_clusters": 0
+  },
+  "beef other": {
+    "total_products": 63,
+    "original_clusters": 7,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "beef plate": {
+    "total_products": 84,
+    "original_clusters": 5,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "beef rib": {
+    "total_products": 246,
+    "original_clusters": 19,
+    "refined_clusters": 25,
+    "skipped_clusters": 0
+  },
+  "beef round": {
+    "total_products": 277,
+    "original_clusters": 18,
+    "refined_clusters": 26,
+    "skipped_clusters": 0
+  },
+  "beef variety": {
+    "total_products": 368,
+    "original_clusters": 34,
+    "refined_clusters": 46,
+    "skipped_clusters": 0
+  },
+  "beef variety & misc": {
+    "total_products": 147,
+    "original_clusters": 16,
+    "refined_clusters": 20,
+    "skipped_clusters": 0
+  },
+  "beverage": {
+    "total_products": 122,
+    "original_clusters": 13,
+    "refined_clusters": 19,
+    "skipped_clusters": 0
+  },
+  "breaded chicken": {
+    "total_products": 38,
+    "original_clusters": 2,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "breaded seafood": {
+    "total_products": 9,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "brisket": {
+    "total_products": 20,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "canned goods": {
+    "total_products": 72,
+    "original_clusters": 5,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "carry out container": {
+    "total_products": 86,
+    "original_clusters": 12,
+    "refined_clusters": 13,
+    "skipped_clusters": 0
+  },
+  "cheese": {
+    "total_products": 84,
+    "original_clusters": 8,
+    "refined_clusters": 12,
+    "skipped_clusters": 0
+  },
+  "chicken airline breast": {
+    "total_products": 42,
+    "original_clusters": 4,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "chicken breast": {
+    "total_products": 153,
+    "original_clusters": 12,
+    "refined_clusters": 18,
+    "skipped_clusters": 0
+  },
+  "chicken drumstic": {
+    "total_products": 18,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "chicken duck": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "chicken leg": {
+    "total_products": 26,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "chicken leg meat": {
+    "total_products": 57,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "chicken main": {
+    "total_products": 82,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "chicken miscellaneous": {
+    "total_products": 45,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "chicken pulled and diced": {
+    "total_products": 20,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "chicken sausage": {
+    "total_products": 6,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "chicken smoked": {
+    "total_products": 7,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "chicken tender": {
+    "total_products": 14,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "chicken tenders": {
+    "total_products": 10,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "chicken thigh": {
+    "total_products": 19,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "chicken variety": {
+    "total_products": 103,
+    "original_clusters": 5,
+    "refined_clusters": 8,
+    "skipped_clusters": 0
+  },
+  "chicken whole": {
+    "total_products": 53,
+    "original_clusters": 7,
+    "refined_clusters": 11,
+    "skipped_clusters": 0
+  },
+  "chicken wing": {
+    "total_products": 50,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "chicken wings": {
+    "total_products": 20,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "chuck": {
+    "total_products": 67,
+    "original_clusters": 6,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "crab": {
+    "total_products": 11,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "cream cheese": {
+    "total_products": 4,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "dairy": {
+    "total_products": 23,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "dairy other": {
+    "total_products": 32,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "delete items": {
+    "total_products": 492,
+    "original_clusters": 35,
+    "refined_clusters": 42,
+    "skipped_clusters": 0
+  },
+  "deli meat beef": {
+    "total_products": 65,
+    "original_clusters": 4,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "deli meat charcuterie": {
+    "total_products": 60,
+    "original_clusters": 7,
+    "refined_clusters": 10,
+    "skipped_clusters": 0
+  },
+  "deli meat ham": {
+    "total_products": 84,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "deli meat other": {
+    "total_products": 36,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "deli meat turkey": {
+    "total_products": 56,
+    "original_clusters": 6,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "dim sum": {
+    "total_products": 18,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "discontinued items": {
+    "total_products": 82,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "duck": {
+    "total_products": 41,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "eggroll": {
+    "total_products": 26,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "eggs": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "fish": {
+    "total_products": 54,
+    "original_clusters": 7,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "flank": {
+    "total_products": 10,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "flour": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "frog": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "frozen foods": {
+    "total_products": 107,
+    "original_clusters": 12,
+    "refined_clusters": 14,
+    "skipped_clusters": 0
+  },
+  "game meat": {
+    "total_products": 14,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "general seafood": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "goat": {
+    "total_products": 21,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "ground beef": {
+    "total_products": 28,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "ground beef anmar production": {
+    "total_products": 75,
+    "original_clusters": 4,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "halal": {
+    "total_products": 88,
+    "original_clusters": 10,
+    "refined_clusters": 13,
+    "skipped_clusters": 0
+  },
+  "hot dogs": {
+    "total_products": 77,
+    "original_clusters": 12,
+    "refined_clusters": 15,
+    "skipped_clusters": 0
+  },
+  "lamb": {
+    "total_products": 33,
+    "original_clusters": 2,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "lamb breast": {
+    "total_products": 10,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "lamb goat": {
+    "total_products": 15,
+    "original_clusters": 2,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "lamb leg": {
+    "total_products": 30,
+    "original_clusters": 2,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "lamb loin": {
+    "total_products": 20,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "lamb nz + aus": {
+    "total_products": 24,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "lamb other": {
+    "total_products": 70,
+    "original_clusters": 7,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "lamb parts": {
+    "total_products": 52,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "lamb rack": {
+    "total_products": 26,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "lamb sheep": {
+    "total_products": 8,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "lamb variety": {
+    "total_products": 20,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "lamb whole": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "legumes": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "lobster": {
+    "total_products": 6,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "loin": {
+    "total_products": 5,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "michigan turkey products": {
+    "total_products": 56,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "misc": {
+    "total_products": 198,
+    "original_clusters": 23,
+    "refined_clusters": 25,
+    "skipped_clusters": 0
+  },
+  "miscellaneous beef": {
+    "total_products": 122,
+    "original_clusters": 13,
+    "refined_clusters": 17,
+    "skipped_clusters": 0
+  },
+  "miscellaneous items": {
+    "total_products": 122,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "miscellaneous other": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "miscellaneous rabbit": {
+    "total_products": 1,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "miscellaneous smoked": {
+    "total_products": 1,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "miscellaneous turkey": {
+    "total_products": 75,
+    "original_clusters": 12,
+    "refined_clusters": 14,
+    "skipped_clusters": 0
+  },
+  "miscellaneous variety": {
+    "total_products": 83,
+    "original_clusters": 12,
+    "refined_clusters": 14,
+    "skipped_clusters": 0
+  },
+  "move list": {
+    "total_products": 33,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "noodle": {
+    "total_products": 35,
+    "original_clusters": 4,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "octopus": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "oil": {
+    "total_products": 29,
+    "original_clusters": 4,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "other dry goods": {
+    "total_products": 325,
+    "original_clusters": 37,
+    "refined_clusters": 42,
+    "skipped_clusters": 0
+  },
+  "other fruit": {
+    "total_products": 31,
+    "original_clusters": 6,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "other other": {
+    "total_products": 12,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "other variety": {
+    "total_products": 228,
+    "original_clusters": 26,
+    "refined_clusters": 34,
+    "skipped_clusters": 0
+  },
+  "plate": {
+    "total_products": 57,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "pork bacalao": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "pork bacon": {
+    "total_products": 33,
+    "original_clusters": 5,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "pork butt": {
+    "total_products": 23,
+    "original_clusters": 3,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "pork chops": {
+    "total_products": 39,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "pork ham": {
+    "total_products": 26,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "pork hams": {
+    "total_products": 63,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "pork leg": {
+    "total_products": 53,
+    "original_clusters": 5,
+    "refined_clusters": 8,
+    "skipped_clusters": 0
+  },
+  "pork loin": {
+    "total_products": 261,
+    "original_clusters": 23,
+    "refined_clusters": 26,
+    "skipped_clusters": 0
+  },
+  "pork loins": {
+    "total_products": 40,
+    "original_clusters": 5,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "pork main": {
+    "total_products": 89,
+    "original_clusters": 2,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "pork miscellaneous": {
+    "total_products": 60,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "pork other": {
+    "total_products": 12,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "pork picnic": {
+    "total_products": 16,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "pork rib": {
+    "total_products": 34,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "pork ribs": {
+    "total_products": 34,
+    "original_clusters": 5,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "pork sausage": {
+    "total_products": 76,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "pork shoulder": {
+    "total_products": 86,
+    "original_clusters": 5,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "pork smoked": {
+    "total_products": 65,
+    "original_clusters": 5,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "pork sparerib": {
+    "total_products": 121,
+    "original_clusters": 10,
+    "refined_clusters": 13,
+    "skipped_clusters": 0
+  },
+  "pork supplies": {
+    "total_products": 4,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "pork trim": {
+    "total_products": 5,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "pork variety": {
+    "total_products": 253,
+    "original_clusters": 21,
+    "refined_clusters": 31,
+    "skipped_clusters": 0
+  },
+  "pork variety & misc": {
+    "total_products": 118,
+    "original_clusters": 12,
+    "refined_clusters": 20,
+    "skipped_clusters": 0
+  },
+  "pork whole": {
+    "total_products": 34,
+    "original_clusters": 3,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "pot sticker": {
+    "total_products": 1,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "poultry breast": {
+    "total_products": 408,
+    "original_clusters": 43,
+    "refined_clusters": 58,
+    "skipped_clusters": 0
+  },
+  "poultry drumstic": {
+    "total_products": 40,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "poultry ground": {
+    "total_products": 31,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "poultry leg": {
+    "total_products": 126,
+    "original_clusters": 6,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "poultry other": {
+    "total_products": 51,
+    "original_clusters": 8,
+    "refined_clusters": 10,
+    "skipped_clusters": 0
+  },
+  "poultry tender": {
+    "total_products": 53,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "poultry thigh": {
+    "total_products": 106,
+    "original_clusters": 8,
+    "refined_clusters": 12,
+    "skipped_clusters": 0
+  },
+  "poultry variety & misc": {
+    "total_products": 112,
+    "original_clusters": 12,
+    "refined_clusters": 20,
+    "skipped_clusters": 0
+  },
+  "poultry whole": {
+    "total_products": 148,
+    "original_clusters": 10,
+    "refined_clusters": 13,
+    "skipped_clusters": 0
+  },
+  "poultry whole cut-ups": {
+    "total_products": 50,
+    "original_clusters": 6,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "poultry wing": {
+    "total_products": 131,
+    "original_clusters": 4,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "produce": {
+    "total_products": 226,
+    "original_clusters": 29,
+    "refined_clusters": 33,
+    "skipped_clusters": 0
+  },
+  "quail": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "rabbit": {
+    "total_products": 1,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "rib": {
+    "total_products": 110,
+    "original_clusters": 11,
+    "refined_clusters": 15,
+    "skipped_clusters": 0
+  },
+  "round": {
+    "total_products": 34,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "sauce": {
+    "total_products": 34,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "sausage": {
+    "total_products": 168,
+    "original_clusters": 16,
+    "refined_clusters": 18,
+    "skipped_clusters": 0
+  },
+  "scallop": {
+    "total_products": 22,
+    "original_clusters": 3,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "seafood": {
+    "total_products": 30,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "seafood catfish": {
+    "total_products": 36,
+    "original_clusters": 4,
+    "refined_clusters": 6,
+    "skipped_clusters": 0
+  },
+  "seafood crab": {
+    "total_products": 45,
+    "original_clusters": 6,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "seafood leg": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "seafood octopus": {
+    "total_products": 45,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "seafood other": {
+    "total_products": 204,
+    "original_clusters": 24,
+    "refined_clusters": 30,
+    "skipped_clusters": 0
+  },
+  "seafood perch": {
+    "total_products": 19,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "seafood pollock": {
+    "total_products": 14,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "seafood shrimp": {
+    "total_products": 328,
+    "original_clusters": 38,
+    "refined_clusters": 46,
+    "skipped_clusters": 0
+  },
+  "seafood smelt": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "seafood swai": {
+    "total_products": 26,
+    "original_clusters": 4,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "seafood tilapia": {
+    "total_products": 72,
+    "original_clusters": 8,
+    "refined_clusters": 10,
+    "skipped_clusters": 0
+  },
+  "seafood variety": {
+    "total_products": 35,
+    "original_clusters": 4,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "seafood whiting": {
+    "total_products": 7,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "seafood whole": {
+    "total_products": 6,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "shipping other": {
+    "total_products": 3,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "short loin": {
+    "total_products": 36,
+    "original_clusters": 6,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "shrimp": {
+    "total_products": 121,
+    "original_clusters": 9,
+    "refined_clusters": 12,
+    "skipped_clusters": 0
+  },
+  "spices": {
+    "total_products": 32,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "squid": {
+    "total_products": 10,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "stock ground beef": {
+    "total_products": 23,
+    "original_clusters": 3,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "strip": {
+    "total_products": 57,
+    "original_clusters": 5,
+    "refined_clusters": 7,
+    "skipped_clusters": 0
+  },
+  "sugar": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "supplies": {
+    "total_products": 23,
+    "original_clusters": 3,
+    "refined_clusters": 4,
+    "skipped_clusters": 0
+  },
+  "sushi": {
+    "total_products": 2,
+    "original_clusters": 1,
+    "refined_clusters": 1,
+    "skipped_clusters": 1
+  },
+  "tenderloin / filet": {
+    "total_products": 69,
+    "original_clusters": 8,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "top butt": {
+    "total_products": 43,
+    "original_clusters": 5,
+    "refined_clusters": 5,
+    "skipped_clusters": 0
+  },
+  "turkey": {
+    "total_products": 22,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "turkey items": {
+    "total_products": 72,
+    "original_clusters": 6,
+    "refined_clusters": 11,
+    "skipped_clusters": 0
+  },
+  "veal": {
+    "total_products": 109,
+    "original_clusters": 16,
+    "refined_clusters": 19,
+    "skipped_clusters": 0
+  },
+  "veal provimi": {
+    "total_products": 26,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "veal strauss": {
+    "total_products": 20,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "veal variety": {
+    "total_products": 22,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "vegetables": {
+    "total_products": 121,
+    "original_clusters": 7,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  },
+  "whole pigs and goats": {
+    "total_products": 6,
+    "original_clusters": 0,
+    "refined_clusters": 0,
+    "skipped_clusters": 0
+  },
+  "whole turkeys": {
+    "total_products": 33,
+    "original_clusters": 2,
+    "refined_clusters": 2,
+    "skipped_clusters": 0
+  },
+  "wild game": {
+    "total_products": 29,
+    "original_clusters": 2,
+    "refined_clusters": 3,
+    "skipped_clusters": 0
+  },
+  "wogs and cut ups": {
+    "total_products": 66,
+    "original_clusters": 6,
+    "refined_clusters": 9,
+    "skipped_clusters": 0
+  }
+}

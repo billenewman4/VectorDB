@@ -166,8 +166,8 @@ if __name__ == "__main__":
         prepared_data = pd.read_csv(prepared_data_path)
     else:
         print("Prepared data not found. Running data preparation...")
-        from product_clustering.data_prep import prepare_data_for_clustering
-        prepared_data = prepare_data_for_clustering()
+        from data_prep.processor import prepare_unified_product_data
+        prepared_data = prepare_unified_product_data()
         
         # Save prepared data
         prepared_data.to_csv(prepared_data_path, index=False)

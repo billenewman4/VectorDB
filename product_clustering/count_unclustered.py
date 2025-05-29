@@ -39,7 +39,7 @@ def main():
     
     # Load transaction data to get total unique products
     try:
-        from src.data_processing import load_transaction_data
+        from data_prep.processor import load_transaction_data
         
         df = load_transaction_data()
         if df is not None:

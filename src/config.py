@@ -33,11 +33,12 @@ GROUND_TRUTH_USDA_COL = "USDA_Code" # The target value for evaluation
 
 # --- Embedding Model Configuration ---
 # Choose which embedding model to use: 'openai', 'sentence-transformer'
-EMBEDDING_TYPE = 'openai'  # Change to 'sentence-transformer' to use Sentence Transformer embeddings
+EMBEDDING_TYPE = 'sentence-transformer'  # Default to sentence-transformer for easier local testing
 
 # SentenceTransformer model options
-# Options: 'all-MiniLM-L6-v2' (baseline), 'all-mpnet-base-v2' (previously tested & improved performance)
+# Options: 'all-MiniLM-L6-v2' (baseline, faster for testing), 'all-mpnet-base-v2' (better quality for production)
 SENTENCE_TRANSFORMER_MODEL = 'all-mpnet-base-v2'  # Default to our current best model
+SENTENCE_TRANSFORMER_MODEL_TESTING = 'all-MiniLM-L6-v2'  # Faster model for testing
 EMBEDDING_MODEL = SENTENCE_TRANSFORMER_MODEL  # For backward compatibility
 
 # OpenAI embedding model options
@@ -49,6 +50,24 @@ OPENAI_API_KEY = ''  # Set your API key here or use environment variable
 
 # --- Vector Database (ChromaDB) ---
 CHROMA_DB_PATH = PROJECT_ROOT / "chroma_db_actuals" # New path for actuals data
+
+# --- Category-Based Clustering Configuration ---
+# Whether to use category-based clustering by default
+USE_CATEGORY_CLUSTERING = True
+
+# Clustering parameters
+CLUSTERING_METRIC = "euclidean"  # Distance metric for HDBSCAN
+MIN_CLUSTER_SIZE = 2  # Minimum size of clusters (reduced from 3 for better coverage)
+MIN_SAMPLES = 2  # HDBSCAN min_samples parameter
+
+# Re-ranking parameters
+USE_RERANKING = True  # Whether to use CrossEncoder reranking by default
+CROSS_ENCODER_MODEL = "cross-encoder/stsb-roberta-base"  # Model for reranking
+SIMILARITY_THRESHOLD = 0.6  # Threshold for reranking
+
+# Testing parameters
+TESTING_MODE = False  # Whether to run in testing mode by default
+TEST_SAMPLE_SIZE = 20  # Number of products per category to use for testing
 
 # Use different collection names for different embedding types to avoid conflicts
 if EMBEDDING_TYPE == 'openai':

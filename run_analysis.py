@@ -43,7 +43,7 @@ except ImportError:
     print("Warning: GPT4Selector import failed - LLM verification may not be available")
 
 import src.config as config
-from src.data_processing import load_transaction_data, process_transaction_data
+from data_prep.processor import load_transaction_data, process_transaction_data
 
 # Helper function to get USDA code lookup map
 def get_usda_lookup():
