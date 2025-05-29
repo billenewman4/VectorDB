@@ -12,17 +12,29 @@ except ImportError:
 class LocalEmbedder:
     """Handles embedding generation using local models via sentence-transformers."""
     
-    def __init__(self, model_name: str = SENTENCE_TRANSFORMER_MODEL):
+    def __init__(self, model_name: str = SENTENCE_TRANSFORMER_MODEL, cache_dir: str = None):
         """
         Initialize local embedder with model name.
         
         Args:
             model_name: Name of the sentence-transformers model to use
+            cache_dir: Directory to store cached models. If None, uses 'model_cache' in project root.
         """
         try:
             self.model_name = model_name
-            self.model = SentenceTransformer(model_name)
-            print(f"Initialized local embedder with model: {model_name}")
+            
+            # Set up cache directory
+            if cache_dir is None:
+                # Create cache directory in project root
+                project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                cache_dir = os.path.join(project_root, 'model_cache')
+                
+            # Create cache directory if it doesn't exist
+            os.makedirs(cache_dir, exist_ok=True)
+            
+            # Initialize model with cache directory
+            self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
+            print(f"Initialized local embedder with model: {model_name} (cached in {cache_dir})")
         except Exception as e:
             print(f"Error initializing sentence-transformer model: {e}")
             raise

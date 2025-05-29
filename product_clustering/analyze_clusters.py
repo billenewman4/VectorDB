@@ -790,9 +790,69 @@ def analyze_clusters(clusters_path: str,
     print("Generating visualizations...")
     viz_paths = generate_visualizations(output_dir, stats, coherence_scores)
     
+    # 8. Perform USDA mapping analysis to evaluate how well expected groups are clustered
+    print("Analyzing USDA mapping alignment...")
+    try:
+        from product_clustering.analyze_usda_mapping import load_usda_mapping, analyze_usda_grouping_alignment, generate_usda_mapping_report
+        
+        # Path to USDA mapping file
+        usda_mapping_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                        "data", "CorrectMapping", "product_mapping_semantic.xlsx")
+        
+        if os.path.exists(usda_mapping_path):
+            # Load category to product mapping if available
+            category_products = None
+            category_products_path = os.path.join(os.path.dirname(clusters_path), "category_products.json")
+            if os.path.exists(category_products_path):
+                try:
+                    with open(category_products_path, 'r') as f:
+                        category_products = json.load(f)
+                    print(f"Loaded category-product mapping from {category_products_path}")
+                except Exception as e:
+                    print(f"Error loading category-product mapping: {e}")
+            
+            # Load USDA mapping
+            usda_mapping = load_usda_mapping(usda_mapping_path)
+            print(f"Loaded {len(usda_mapping)} product groupings from USDA mapping file")
+            
+            # Load prepared products data for reference
+            prepared_df_path = os.path.join(data_dir, "prepared_products.csv")
+            if os.path.exists(prepared_df_path):
+                prepared_df = pd.read_csv(prepared_df_path)
+                
+                # Extract flat clusters from the hierarchy
+                flat_clusters = {}
+                if isinstance(clusters, dict) and 'clusters' in next(iter(clusters.values()), {}):
+                    # This is a category-based cluster format
+                    for category, data in clusters.items():
+                        for cluster_id, products in data.get('clusters', {}).items():
+                            flat_clusters[f"{category}_{cluster_id}"] = products
+                else:
+                    # This is a flat cluster format
+                    flat_clusters = clusters
+                
+                # Run the analysis
+                usda_analysis = analyze_usda_grouping_alignment(
+                    flat_clusters, usda_mapping, prepared_df, category_products)
+                
+                # Generate and save the report
+                usda_report = generate_usda_mapping_report(usda_analysis)
+                usda_report_path = os.path.join(output_dir, f"usda_mapping_analysis{'_refined' if refined else ''}.md")
+                with open(usda_report_path, 'w') as f:
+                    f.write(usda_report)
+                
+                print(f"USDA mapping analysis complete. Report saved to {usda_report_path}")
+            else:
+                print(f"Warning: Prepared products data not found at {prepared_df_path}. USDA mapping analysis skipped.")
+        else:
+            print(f"Warning: USDA mapping file not found at {usda_mapping_path}. USDA mapping analysis skipped.")
+    except Exception as e:
+        print(f"Warning: USDA mapping analysis failed: {e}")
+    
     print(f"\nAnalysis complete!")
     print(f"- Report: {report_path}")
     print(f"- Visualizations: {', '.join(os.path.basename(p) for p in viz_paths)}")
+    print(f"- USDA Mapping Analysis: {os.path.basename(usda_report_path) if 'usda_report_path' in locals() else 'Not available'}")
     
     return report_path
 

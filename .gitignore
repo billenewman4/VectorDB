@@ -47,3 +47,6 @@ logs/
 
 # OS specific files
 .DS_Store
+
+# windsurf rules
+.windsurfrules

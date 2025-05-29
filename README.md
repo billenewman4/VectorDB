@@ -15,14 +15,15 @@ This project solves two key challenges in retail product data management:
 ### Product Clustering Workflow
 
 ```
-Transaction Data → Data Cleaning → Vector Embedding → HDBSCAN Clustering → CrossEncoder Refinement → Evaluation
+Transaction Data → Data Preparation → Category Grouping → Vector Embedding → HDBSCAN Clustering → CrossEncoder Refinement → Evaluation
 ```
 
-1. **Data Preparation**: Clean and normalize product descriptions
-2. **Embedding Generation**: Convert text descriptions to vector embeddings using a powerful neural model (all-mpnet-base-v2)
-3. **Initial Clustering**: Group similar products using HDBSCAN algorithm with optimized parameters
-4. **CrossEncoder Refinement**: Apply pairwise similarity judgments to improve cluster coherence
-5. **Evaluation**: Measure cluster quality using coherence metrics and manual inspection
+1. **Data Preparation**: Clean and normalize product descriptions, including category and warehouse information
+2. **Category Grouping**: Group products by their category description for hierarchical organization
+3. **Embedding Generation**: Convert text descriptions to vector embeddings using a powerful neural model (all-mpnet-base-v2)
+4. **Initial Clustering**: Group similar products within each category using HDBSCAN algorithm with optimized parameters
+5. **CrossEncoder Refinement**: Apply pairwise similarity judgments to improve cluster coherence
+6. **Evaluation**: Measure cluster quality using category-specific coherence metrics and manual inspection
 
 ### USDA Code Mapping Workflow
 
@@ -42,6 +43,13 @@ Transaction Data → Data Cleaning → Abbreviation Translation → Vector Embed
 - Upgraded from 'all-MiniLM-L6-v2' to 'all-mpnet-base-v2'
 - Provides higher quality vector representations for better semantic understanding
 - Significantly improves clustering quality and USDA code matching accuracy
+- Support for smaller 'all-MiniLM-L6-v2' model option for faster testing
+
+### Hierarchical Category-Based Clustering
+- **Category-Based Grouping**: Groups products by category before clustering, preventing mixing of unrelated products
+- **Two-Level Organization**: Organizes products in a hierarchy (category → similarity cluster) for better organization
+- **Category-Specific Parameters**: Allows fine-tuning clustering parameters for each product category
+- **Enhanced Data Integration**: Incorporates product category and warehouse information from multiple sources
 
 ### Clustering Enhancements
 - **Simplified Data Preparation**: Removed attribute extraction, using normalized product descriptions directly
@@ -78,11 +86,13 @@ VectorDB/
 │   ├── data_processing.py      # Data processing pipeline
 │   ├── excel.py                # Excel data processing utilities
 │   └── abbreviation_translator.py # Meat cut abbreviation translation
-├── tests/                      # Testing
-├── data/                       # Data files
-├── chroma_db/                  # Vector database storage
-├── requirements.txt            # Dependencies
-└── instructions.txt            # Project requirements
+├── data/                      # Data files
+├── data_prep/                 # Data preparation modules
+├── product_clustering/        # Product clustering module
+├── analysis_results/          # Analysis outputs
+├── chroma_db/                 # Vector database storage
+├── requirements.txt           # Dependencies
+└── instructions.txt           # Project requirements
 ```
 
 ## Detailed Implementation Steps
@@ -91,15 +101,16 @@ VectorDB/
 
 The product clustering solution follows these detailed steps:
 
-#### 1.1 Data Preparation (`data_prep.py`)
+#### 1.1 Unified Data Preparation (`data_prep/processor.py`)
 ```python
-python -m product_clustering.data_prep
+python -m data_prep.processor
 ```
-- Loads transaction data from Excel files using existing data processing pipeline
-- Extracts unique product descriptions and their associated product codes
-- Normalizes text by converting to lowercase, removing punctuation, and standardizing whitespace
-- Simplified approach that directly processes raw product descriptions without attribute extraction
-- Saves prepared data to CSV for the next stage
+- Consolidated data preparation module that handles all preprocessing needs
+- Loads transaction data and inventory valuation files from multiple warehouses
+- Integrates product codes, descriptions, categories, and warehouse information
+- Normalizes text and expands abbreviations using the built-in abbreviation translator
+- Produces a unified product dataset with all relevant attributes
+- Saves prepared data to CSV for subsequent stages
 
 #### 1.2 Embedding Generation (`embed_products.py`)
 ```python
@@ -110,7 +121,18 @@ python -m product_clustering.embed_products
 - Uses existing embedding infrastructure (LocalEmbedder) with batch processing
 - Saves embeddings and product codes for clustering
 
-#### 1.3 Clustering (`clustering.py` and `improved_clustering.py`)
+#### 1.2.1 Category Filtering (`data_prep/category_filter.py`)
+```python
+python -m data_prep.category_filter
+```
+- Filters products to include only those with valid category descriptions
+- Normalizes category names for consistent grouping
+- Groups products by category to enable hierarchical clustering
+- Saves category-product mappings for the clustering stage
+
+#### 1.3 Clustering Options
+
+##### 1.3.1 Standard Clustering (`product_clustering/improved_clustering.py`)
 ```python
 python -m product_clustering.improved_clustering --min_cluster_size 3 --min_samples 2
 ```
@@ -125,15 +147,37 @@ python -m product_clustering.improved_clustering --min_cluster_size 3 --min_samp
   ```
 - Produces cluster assignments, statistics, and visualization outputs
 
+##### 1.3.2 Category-Based Clustering (`product_clustering/category_clustering.py`)
+```python
+python -m product_clustering.run_clustering --use_category_clustering
+```
+- Hierarchical clustering approach that first groups products by category
+- Prevents irrelevant product types from being mixed in the same cluster
+- Creates embeddings and clusters for each product category separately
+- Configurable parameters through `src/config.py`:
+  - `USE_CATEGORY_CLUSTERING`: Toggle for category-based clustering
+  - `MIN_CLUSTER_SIZE`: Minimum number of products to form a cluster
+  - `MIN_SAMPLES`: HDBSCAN density parameter
+  - `CLUSTERING_METRIC`: Distance metric for clustering (cosine, euclidean, etc.)
+- Test mode for faster development and validation:
+  ```python
+  python -m product_clustering.test_category_clustering --test_size 10
+  ```
+- Produces hierarchical cluster assignments organized by category
+
 #### 1.4 CrossEncoder Refinement (`reranking.py`)
 ```python
-python -m product_clustering.improved_clustering --rerank
+python -m product_clustering.run_clustering --rerank
 ```
 - Optional refinement step using CrossEncoder for pairwise similarity judgments
+- Supports both standard clustering and category-based clustering approaches
 - More precise than embedding similarity for distinguishing similar but distinct products
 - Particularly effective at separating mixed product clusters (e.g., bananas and lettuce)
-- Configurable similarity threshold (default 0.6)
-- Creates refined clusters with improved coherence
+- Configurable similarity threshold through `src/config.py`:
+  - `USE_RERANKING`: Toggle to enable/disable reranking
+  - `CROSS_ENCODER_MODEL`: Model to use for pairwise similarity scoring
+  - `SIMILARITY_THRESHOLD`: Minimum similarity score (default 0.6) to consider products in the same cluster
+- Creates refined clusters with improved coherence, preserving category hierarchy when using category-based clustering
 
 #### 1.5 Evaluation (`evaluation.py`)
 ```python

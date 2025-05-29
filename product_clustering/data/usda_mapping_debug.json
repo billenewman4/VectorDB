@@ -1,0 +1,122 @@
+{
+  "Premium Beef Frozen": {
+    "codes": [
+      "1001"
+    ],
+    "matching_codes": []
+  },
+  "Organic Chicken Breast": {
+    "codes": [
+      "1002"
+    ],
+    "matching_codes": []
+  },
+  "Fresh Salmon Fillet": {
+    "codes": [
+      "1003"
+    ],
+    "matching_codes": []
+  },
+  "Frozen Jumbo Shrimp": {
+    "codes": [
+      "1004"
+    ],
+    "matching_codes": []
+  },
+  "Ground Turkey Frozen": {
+    "codes": [
+      "1005"
+    ],
+    "matching_codes": []
+  },
+  "Fresh Pork Loin": {
+    "codes": [
+      "1006"
+    ],
+    "matching_codes": []
+  },
+  "Whole Milk Organic": {
+    "codes": [
+      "1007"
+    ],
+    "matching_codes": []
+  },
+  "Cage-Free Eggs Large": {
+    "codes": [
+      "1008"
+    ],
+    "matching_codes": []
+  },
+  "Greek Yogurt Plain": {
+    "codes": [
+      "1009"
+    ],
+    "matching_codes": []
+  },
+  "Butter Unsalted": {
+    "codes": [
+      "1010"
+    ],
+    "matching_codes": []
+  },
+  "Italian Olive Oil Extra Virgin": {
+    "codes": [
+      "1011"
+    ],
+    "matching_codes": []
+  },
+  "Fresh Strawberries": {
+    "codes": [
+      "1012"
+    ],
+    "matching_codes": []
+  },
+  "Avocado Hass": {
+    "codes": [
+      "1013"
+    ],
+    "matching_codes": []
+  },
+  "Organic Bananas": {
+    "codes": [
+      "1014"
+    ],
+    "matching_codes": []
+  },
+  "Roma Tomatoes": {
+    "codes": [
+      "1015"
+    ],
+    "matching_codes": []
+  },
+  "Almond Milk Unsweetened": {
+    "codes": [
+      "1016"
+    ],
+    "matching_codes": []
+  },
+  "Cheddar Cheese Sharp": {
+    "codes": [
+      "1017"
+    ],
+    "matching_codes": []
+  },
+  "White Bread Loaf": {
+    "codes": [
+      "1018"
+    ],
+    "matching_codes": []
+  },
+  "Brown Rice Long Grain": {
+    "codes": [
+      "1019"
+    ],
+    "matching_codes": []
+  },
+  "Orange Juice Fresh Squeezed": {
+    "codes": [
+      "1020"
+    ],
+    "matching_codes": []
+  }
+}

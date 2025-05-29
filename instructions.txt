@@ -37,6 +37,11 @@
   - min_samples=2 (for more focused product groupings)
   - Added test mode capability for rapid parameter tuning
 - Implemented helper functions to analyze cluster statistics
+- Added hierarchical category-based clustering (category_clustering.py):
+  - Groups products by category before clustering
+  - Prevents mixing of unrelated product types
+  - Implements configurable parameters through config.py
+  - Includes testing capabilities for faster validation
 
 ### 2.4 Outlier Handling [Done]
 - Identified unclustered products (assigned to noise cluster -1 by HDBSCAN)
@@ -105,6 +110,16 @@ min_cluster_size | 5 | raise to 8 if clusters too small
 min_samples | 3 | controls sensitivity to noise
 metric | "euclidean" | cosine also works well with embeddings
 embed_model | all-mpnet-base-v2 | already using a strong model
+
+## LLM to pre-process the text into a more structured format for the embeddings
+
+## Future Enhancements
+
+1. Implement warehouse code filtering as an additional layer in the hierarchical clustering
+   - This will allow filtering products by warehouse before or after category grouping
+   - Could create more specific clusters for products that exist in multiple warehouses
+   - Should be implemented after the category-based clustering is stabilized
+
 
 ## 6. CLI Example
 
