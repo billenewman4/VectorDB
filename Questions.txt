@@ -1,0 +1,62 @@
+2. Why are some coherence scores 0? 
+3. What is the LLM doing? 
+4. Can we name the clusters something other than Cluster_123? 
+5. Why are we only preprocessing text for clustering with category descriptons? 
+
+def run_data_preparation(data_dir: Optional[str] = None, 
+                      force: bool = False,
+                      use_category_descriptions: bool = True,
+                      normalize_text: bool = True,
+                      expand_abbreviations: bool = True):
+    """
+    Run the data preparation step.
+    
+    Args:
+        data_dir: Directory to store prepared data
+        force: Whether to force reprocessing even if files exist
+        use_category_descriptions: Whether to use category descriptions in clustering
+        normalize_text: Whether to normalize text descriptions
+        expand_abbreviations: Whether to expand abbreviations in descriptions
+    """
+    from product_clustering.data_prep import prepare_data_for_clustering
+    import pandas as pd
+    
+    if data_dir is None:
+        data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    
+    output_path = os.path.join(data_dir, "prepared_products.csv")
+    
+    if os.path.exists(output_path) and not force:
+        print(f"Prepared data already exists at {output_path}")
+        print("Use --force to reprocess")
+        return output_path
+    
+    print("Running data preparation...")
+    # Call the function to prepare data for clustering
+    prepared_data = prepare_data_for_clustering()
+    
+    # Create the output directory if it doesn't exist
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    # Modify the clustering description based on options
+    if not use_category_descriptions:
+        print("Excluding category descriptions from clustering...")
+        # Remove category information from clustering description if requested
+        prepared_data['clustering_description'] = prepared_data['product_description']
+        # Re-apply normalization if needed
+        if normalize_text:
+            from product_clustering.data_prep import preprocess_text_for_clustering
+            prepared_data['clustering_description'] = prepared_data['clustering_description'].apply(
+                lambda x: preprocess_text_for_clustering(x, expand_abbreviations=expand_abbreviations)
+            )
+
+6. Can we store teh expanded abbreviations version somewhere? Expand Abbreviations (Y)
+Function: Expands common abbreviations in product descriptions (e.g., "oz" to "ounce") ... like a new column in our data frame
+
+7. Can we not filter out products without category descriptions if we are not using the category description to cluster?
+
+8. Why was COSINE not reconized
+
+9. What are tehse? 
+Distance threshold for cluster merging (min: 0.0) [default: 0.0]: 
+HDBSCAN alpha parameter for point weighting (min: 0.0) [default: 1.0]

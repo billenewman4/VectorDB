@@ -16,9 +16,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src import config
 from src.data_processing import load_transaction_data, clean_text
-from src.abbreviation_translator import expand_abbreviations
+from src.abbreviation_translator import expand_abbreviations as expand_abbreviations_func
 
-def preprocess_text_for_clustering(text: str) -> str:
+def preprocess_text_for_clustering(text: str, expand_abbreviations: bool = True) -> str:
     """
     Enhanced preprocessing function optimized for product clustering.
     Normalizes text by expanding abbreviations, removing special characters, 
@@ -26,6 +26,7 @@ def preprocess_text_for_clustering(text: str) -> str:
     
     Args:
         text: Input text to preprocess
+        expand_abbreviations: Whether to expand abbreviations in the text
         
     Returns:
         Preprocessed text optimized for clustering
@@ -36,8 +37,9 @@ def preprocess_text_for_clustering(text: str) -> str:
     # Convert to lowercase
     text = text.lower()
     
-    # Expand abbreviations using existing function
-    text = expand_abbreviations(text)
+    # Expand abbreviations using existing function (if enabled)
+    if expand_abbreviations:
+        text = expand_abbreviations_func(text)
     
     # Remove special characters but keep numbers (unlike USDA matching)
     # Numbers are important for package sizes and weights

@@ -25,7 +25,9 @@ def refine_clusters(
     similarity_threshold: float = 0.5,
     batch_size: int = 32,
     max_pairs_per_cluster: int = 1000,
-    rerank_weight: float = 0.5
+    rerank_weight: float = 0.5,
+    test_clusters: int = 0,
+    min_cluster_size_for_reranking: int = 3
 ) -> Dict[str, List[str]]:
     """
     print("DEBUG RERANKING START: Function entered")
@@ -40,6 +42,8 @@ def refine_clusters(
         batch_size: Batch size for CrossEncoder predictions
         max_pairs_per_cluster: Maximum number of pairs to evaluate per cluster
         rerank_weight: Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)
+        test_clusters: Number of clusters to test reranking on (0 = all clusters)
+        min_cluster_size_for_reranking: Minimum cluster size to consider for reranking
         
     Returns:
         Dictionary mapping cluster IDs to lists of product codes
@@ -86,7 +90,33 @@ def refine_clusters(
             print(f"DEBUG RERANKING CRITICAL ERROR: Could not initialize CrossEncoder: {e}")
             raise
     
-    refined_clusters = {}
+    # Filter clusters for testing if requested
+    if test_clusters > 0:
+        print(f"Testing reranking on {test_clusters} clusters only")
+        # Filter clusters by size (prioritize larger clusters for more meaningful testing)
+        eligible_clusters = {}
+        for cluster_id, products in clusters.items():
+            if len(products) >= min_cluster_size_for_reranking:
+                eligible_clusters[cluster_id] = products
+        
+        # Sort clusters by size (descending) to prioritize larger clusters for testing
+        sorted_clusters = sorted(eligible_clusters.items(), key=lambda x: len(x[1]), reverse=True)
+        
+        # Select the top N clusters for testing
+        test_cluster_ids = [cluster_id for cluster_id, _ in sorted_clusters[:test_clusters]]
+        test_cluster_count = len(test_cluster_ids)
+        print(f"Selected {test_cluster_count} clusters for testing")
+        
+        # Create a new dictionary with only the test clusters
+        test_clusters_dict = {cluster_id: clusters[cluster_id] for cluster_id in test_cluster_ids}
+        clusters = test_clusters_dict
+        
+        # For non-test clusters, just copy them directly to refined_clusters
+        refined_clusters = {cluster_id: products for cluster_id, products in clusters.items() 
+                           if cluster_id not in test_cluster_ids}
+    else:
+        refined_clusters = {}
+    
     total_removed = 0
     total_products = 0
     cluster_count = 0

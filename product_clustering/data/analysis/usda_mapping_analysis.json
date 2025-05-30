@@ -1,39 +1,47 @@
 {
+  "summary": {
+    "total_usda_groups": 67,
+    "fully_aligned_groups": 13,
+    "partially_aligned_groups": 0,
+    "misaligned_groups": 18,
+    "empty_groups": 5,
+    "total_products_analyzed": 67,
+    "products_in_same_cluster": 26,
+    "products_in_different_clusters": 0,
+    "products_not_clustered": 36,
+    "reason_no_category": 36,
+    "reason_refinement": 0,
+    "reason_different_cluster": 0,
+    "percent_in_same_cluster": 38.80597014925373,
+    "percent_in_different_clusters": 0.0,
+    "percent_not_clustered": 53.73134328358209
+  },
   "grouping_analysis": [
     {
-      "standardized_name": "Ground beef 73%",
-      "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 2,
-      "clustered_ratio": 0.5,
-      "dominant_cluster": "cluster_695",
+      "standardized_name": "1",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_1001",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_695": [
-          "1040948"
-        ],
         "cluster_1001": [
           "19161010"
         ]
       },
-      "not_clustered": [
-        "190750",
-        "41230"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "190750",
-          "41230"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "174 3 Loin short loin 0x1_Select",
+      "standardized_name": "2",
       "status": "MISALIGNED",
-      "total_products": 2,
+      "total_products": 1,
       "clustered_products": 0,
       "clustered_ratio": 0.0,
       "dominant_cluster": null,
@@ -41,12 +49,10 @@
       "dominant_cluster_ratio": 0.0,
       "cluster_assignments": {},
       "not_clustered": [
-        "46000",
         "15021875"
       ],
       "reason_analysis": {
         "no_category": [
-          "46000",
           "15021875"
         ],
         "refinement_removed": [],
@@ -54,32 +60,20 @@
       }
     },
     {
-      "standardized_name": "175 3 Loin strip loin 1x1_Choice",
+      "standardized_name": "3",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 3,
-      "clustered_ratio": 0.6,
-      "dominant_cluster": "cluster_193",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_193": [
-          "144142"
-        ],
-        "cluster_1294": [
-          "40460"
-        ],
-        "cluster_1000": [
-          "15041874"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "10660981",
         "SP131"
       ],
       "reason_analysis": {
         "no_category": [
-          "10660981",
           "SP131"
         ],
         "refinement_removed": [],
@@ -87,115 +81,36 @@
       }
     },
     {
-      "standardized_name": "174 3 Loin short loin 0x1_Choice",
-      "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 4,
-      "clustered_ratio": 0.8,
+      "standardized_name": "4",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
       "dominant_cluster": "cluster_1286",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.4,
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_906": [
-          "10260840"
-        ],
-        "cluster_905": [
-          "144012"
-        ],
         "cluster_1286": [
-          "46020",
           "13305416"
         ]
       },
-      "not_clustered": [
-        "15021874"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "15021874"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "184B 3 Loin top butt CC_Choice",
+      "standardized_name": "7",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 3,
-      "clustered_ratio": 0.75,
-      "dominant_cluster": "cluster_557",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_557": [
-          "1030A2GO"
-        ],
-        "cluster_1149": [
-          "144008"
-        ],
-        "cluster_820": [
-          "44200"
-        ]
-      },
-      "not_clustered": [
-        "15103563"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "15103563"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "189A 4 Loin tndrloin trmdheavy_Choice",
-      "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 2,
-      "clustered_ratio": 0.5,
-      "dominant_cluster": "cluster_553",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_553": [
-          "1035A2GO"
-        ],
-        "cluster_1157": [
-          "40010"
-        ]
-      },
-      "not_clustered": [
-        "144053",
-        "15225723"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "144053",
-          "15225723"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "180 3 Loin strip bnls 0x1_Choice",
-      "status": "MISALIGNED",
-      "total_products": 3,
-      "clustered_products": 2,
-      "clustered_ratio": 0.6666666666666666,
-      "dominant_cluster": "cluster_1291",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.3333333333333333,
-      "cluster_assignments": {
-        "cluster_1291": [
-          "40410"
-        ],
-        "cluster_1000": [
-          "15041875"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
         "13400201"
       ],
@@ -208,29 +123,20 @@
       }
     },
     {
-      "standardized_name": "112a DN Lipon Ribeye",
+      "standardized_name": "8",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 2,
-      "clustered_ratio": 0.5,
-      "dominant_cluster": "cluster_682",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_682": [
-          "164165"
-        ],
-        "cluster_655": [
-          "43720"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "1056A2IB",
         "12100514"
       ],
       "reason_analysis": {
         "no_category": [
-          "1056A2IB",
           "12100514"
         ],
         "refinement_removed": [],
@@ -238,65 +144,41 @@
       }
     },
     {
-      "standardized_name": "112a HVY Lipon Ribeye",
-      "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 4,
-      "clustered_ratio": 0.8,
-      "dominant_cluster": "cluster_1021",
+      "standardized_name": "9",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_716",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_1021": [
-          "10065864"
-        ],
-        "cluster_682": [
-          "164167"
-        ],
-        "cluster_655": [
-          "43720"
-        ],
         "cluster_716": [
           "17093574"
         ]
       },
-      "not_clustered": [
-        "12100514"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "12100514"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "114 A 3 shoulder clod",
+      "standardized_name": "10",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 2,
-      "clustered_ratio": 0.4,
-      "dominant_cluster": "cluster_743",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_743": [
-          "10081223"
-        ],
-        "cluster_461": [
-          "13021014"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "124004",
-        "46700",
         "11100500"
       ],
       "reason_analysis": {
         "no_category": [
-          "124004",
-          "46700",
           "11100500"
         ],
         "refinement_removed": [],
@@ -304,28 +186,20 @@
       }
     },
     {
-      "standardized_name": "114f Clod Tender (teres major)",
+      "standardized_name": "11",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 1,
-      "clustered_ratio": 0.25,
-      "dominant_cluster": "cluster_744",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_744": [
-          "100743"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "124003",
-        "46450",
         "11400400"
       ],
       "reason_analysis": {
         "no_category": [
-          "124003",
-          "46450",
           "11400400"
         ],
         "refinement_removed": [],
@@ -333,31 +207,20 @@
       }
     },
     {
-      "standardized_name": "116 A 3 chuck roll",
+      "standardized_name": "12",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 2,
-      "clustered_ratio": 0.4,
-      "dominant_cluster": "cluster_738",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_738": [
-          "1087AAIB"
-        ],
-        "cluster_884": [
-          "42600"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "124002",
-        "13081014",
         "11200500"
       ],
       "reason_analysis": {
         "no_category": [
-          "124002",
-          "13081014",
           "11200500"
         ],
         "refinement_removed": [],
@@ -365,21 +228,15 @@
       }
     },
     {
-      "standardized_name": "116g Chuck Flap",
-      "status": "MISALIGNED",
-      "total_products": 3,
-      "clustered_products": 3,
+      "standardized_name": "13",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_732",
+      "dominant_cluster": "cluster_627",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.3333333333333333,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_732": [
-          "10388NXL"
-        ],
-        "cluster_628": [
-          "120005"
-        ],
         "cluster_627": [
           "11300490"
         ]
@@ -392,26 +249,15 @@
       }
     },
     {
-      "standardized_name": "120 1 brisket deckle off",
+      "standardized_name": "14",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 4,
-      "clustered_ratio": 0.8,
-      "dominant_cluster": "cluster_1069",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.4,
-      "cluster_assignments": {
-        "cluster_769": [
-          "10060155"
-        ],
-        "cluster_1069": [
-          "114001",
-          "40367"
-        ],
-        "cluster_1072": [
-          "12011014"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
         "15000500"
       ],
@@ -424,71 +270,30 @@
       }
     },
     {
-      "standardized_name": "121 C 4 Outside skirt",
-      "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 2,
-      "clustered_ratio": 0.4,
-      "dominant_cluster": "cluster_1033",
+      "standardized_name": "15",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_611",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_1033": [
-          "46671"
-        ],
         "cluster_611": [
           "16280500"
         ]
       },
-      "not_clustered": [
-        "101236",
-        "150006",
-        "16021014"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "101236",
-          "150006",
-          "16021014"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "121 D 4 Inside skirt",
+      "standardized_name": "17",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 2,
-      "clustered_ratio": 0.5,
-      "dominant_cluster": "cluster_1033",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_1033": [
-          "46610"
-        ],
-        "cluster_839": [
-          "16041014"
-        ]
-      },
-      "not_clustered": [
-        "1014A1IB",
-        "150060"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "1014A1IB",
-          "150060"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "123 A 3 short rib choice",
-      "status": "MISALIGNED",
-      "total_products": 4,
+      "total_products": 1,
       "clustered_products": 0,
       "clustered_ratio": 0.0,
       "dominant_cluster": null,
@@ -496,16 +301,10 @@
       "dominant_cluster_ratio": 0.0,
       "cluster_assignments": {},
       "not_clustered": [
-        "10086",
-        "160003",
-        "41501",
         "16300500"
       ],
       "reason_analysis": {
         "no_category": [
-          "10086",
-          "160003",
-          "41501",
           "16300500"
         ],
         "refinement_removed": [],
@@ -513,28 +312,20 @@
       }
     },
     {
-      "standardized_name": "130 4 chuck short rib",
+      "standardized_name": "18",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 1,
-      "clustered_ratio": 0.25,
-      "dominant_cluster": "cluster_1014",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_1014": [
-          "10151"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "160004",
-        "41500",
         "11310500"
       ],
       "reason_analysis": {
         "no_category": [
-          "160004",
-          "41500",
           "11310500"
         ],
         "refinement_removed": [],
@@ -542,32 +333,20 @@
       }
     },
     {
-      "standardized_name": "167 A 4 knuckles",
+      "standardized_name": "19",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 3,
-      "clustered_ratio": 0.6,
-      "dominant_cluster": "cluster_517",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_517": [
-          "10206"
-        ],
-        "cluster_421": [
-          "194830"
-        ],
-        "cluster_515": [
-          "11121014"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "41600",
         "14240500"
       ],
       "reason_analysis": {
         "no_category": [
-          "41600",
           "14240500"
         ],
         "refinement_removed": [],
@@ -575,58 +354,41 @@
       }
     },
     {
-      "standardized_name": "168 1 top round inside",
-      "status": "MISALIGNED",
-      "total_products": 3,
+      "standardized_name": "20",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
       "clustered_products": 1,
-      "clustered_ratio": 0.3333333333333333,
+      "clustered_ratio": 1.0,
       "dominant_cluster": "cluster_662",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.3333333333333333,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
         "cluster_662": [
           "14510100"
         ]
       },
-      "not_clustered": [
-        "10214B",
-        "174171"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "10214B",
-          "174171"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "168 3 top round inside XT",
+      "standardized_name": "21",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 2,
-      "clustered_ratio": 0.4,
-      "dominant_cluster": "cluster_727",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_727": [
-          "1021A1IB"
-        ],
-        "cluster_1045": [
-          "41300"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "174171",
-        "11193574",
         "14500500"
       ],
       "reason_analysis": {
         "no_category": [
-          "174171",
-          "11193574",
           "14500500"
         ],
         "refinement_removed": [],
@@ -634,28 +396,20 @@
       }
     },
     {
-      "standardized_name": "171 B 3 Round outside round flat",
+      "standardized_name": "22",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 1,
-      "clustered_ratio": 0.25,
-      "dominant_cluster": "cluster_790",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_790": [
-          "43330"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "154080",
-        "11301014",
         "14400500"
       ],
       "reason_analysis": {
         "no_category": [
-          "154080",
-          "11301014",
           "14400500"
         ],
         "refinement_removed": [],
@@ -663,54 +417,16 @@
       }
     },
     {
-      "standardized_name": "171 C 3 Eye of round",
-      "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 2,
-      "clustered_ratio": 0.5,
-      "dominant_cluster": "cluster_901",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_901": [
-          "45300"
-        ],
-        "cluster_390": [
-          "11261014"
-        ]
-      },
-      "not_clustered": [
-        "1023A2IB",
-        "174360"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "1023A2IB",
-          "174360"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "174 3 Short loin Choice",
-      "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 5,
+      "standardized_name": "24",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_905",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.4,
+      "dominant_cluster": "cluster_1286",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_906": [
-          "1026ARI"
-        ],
-        "cluster_905": [
-          "144012",
-          "15023574"
-        ],
         "cluster_1286": [
-          "46020",
           "13301501"
         ]
       },
@@ -722,32 +438,20 @@
       }
     },
     {
-      "standardized_name": "180 3 Strip loin",
+      "standardized_name": "25",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 3,
-      "clustered_ratio": 0.6,
-      "dominant_cluster": "cluster_886",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_886": [
-          "1027767"
-        ],
-        "cluster_1294": [
-          "40460"
-        ],
-        "cluster_999": [
-          "15041014"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "144010",
         "13400501"
       ],
       "reason_analysis": {
         "no_category": [
-          "144010",
           "13400501"
         ],
         "refinement_removed": [],
@@ -755,25 +459,15 @@
       }
     },
     {
-      "standardized_name": "184 3 Top butt bnls",
+      "standardized_name": "26",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 3,
-      "clustered_ratio": 0.75,
-      "dominant_cluster": "cluster_557",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_557": [
-          "1030A2IB"
-        ],
-        "cluster_820": [
-          "44200"
-        ],
-        "cluster_1149": [
-          "15103574"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
         "13600513"
       ],
@@ -786,23 +480,15 @@
       }
     },
     {
-      "standardized_name": "185 1 Ball tips",
-      "status": "PARTIALLY_ALIGNED",
-      "total_products": 5,
-      "clustered_products": 5,
+      "standardized_name": "27",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1003",
-      "dominant_cluster_size": 3,
-      "dominant_cluster_ratio": 0.6,
+      "dominant_cluster": "cluster_1002",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_557": [
-          "1030A2IB"
-        ],
-        "cluster_1003": [
-          "144021",
-          "44300",
-          "15191014"
-        ],
         "cluster_1002": [
           "13800403"
         ]
@@ -815,26 +501,15 @@
       }
     },
     {
-      "standardized_name": "185 A 4 Bottom sirloin or \u201cflap meat\u201d",
+      "standardized_name": "28",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 4,
-      "clustered_ratio": 0.8,
-      "dominant_cluster": "cluster_636",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.4,
-      "cluster_assignments": {
-        "cluster_552": [
-          "10016D"
-        ],
-        "cluster_636": [
-          "140006",
-          "15183574"
-        ],
-        "cluster_628": [
-          "41210"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
         "13808000"
       ],
@@ -847,21 +522,17 @@
       }
     },
     {
-      "standardized_name": "185b Ball Tip",
-      "status": "PARTIALLY_ALIGNED",
-      "total_products": 3,
-      "clustered_products": 3,
+      "standardized_name": "30",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1003",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.6666666666666666,
+      "dominant_cluster": "cluster_1099",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_1003": [
-          "144021",
-          "44300"
-        ],
-        "cluster_1002": [
-          "13800403"
+        "cluster_1099": [
+          "15221014"
         ]
       },
       "not_clustered": [],
@@ -872,55 +543,16 @@
       }
     },
     {
-      "standardized_name": "189a Psmo tenderloin",
-      "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 3,
-      "clustered_ratio": 0.75,
-      "dominant_cluster": "cluster_553",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_553": [
-          "1035A2BP"
-        ],
-        "cluster_1157": [
-          "40010"
-        ],
-        "cluster_1099": [
-          "15221014"
-        ]
-      },
-      "not_clustered": [
-        "144053"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "144053"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "193 Flank",
-      "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 5,
+      "standardized_name": "31",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1229",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.4,
+      "dominant_cluster": "cluster_1230",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_612": [
-          "10390544"
-        ],
-        "cluster_1229": [
-          "134000",
-          "14193574"
-        ],
         "cluster_1230": [
-          "40820",
           "17100500"
         ]
       },
@@ -932,60 +564,41 @@
       }
     },
     {
-      "standardized_name": "Cap & Wedge",
-      "status": "MISALIGNED",
-      "total_products": 3,
-      "clustered_products": 2,
-      "clustered_ratio": 0.6666666666666666,
-      "dominant_cluster": "cluster_506",
+      "standardized_name": "32",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_791",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.3333333333333333,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_506": [
-          "1060A100"
-        ],
         "cluster_791": [
           "12400400"
         ]
       },
-      "not_clustered": [
-        "190050"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "190050"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "Ground beef 81%",
+      "standardized_name": "33",
       "status": "MISALIGNED",
-      "total_products": 5,
-      "clustered_products": 3,
-      "clustered_ratio": 0.6,
-      "dominant_cluster": "cluster_695",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.2,
-      "cluster_assignments": {
-        "cluster_695": [
-          "10416G"
-        ],
-        "cluster_1275": [
-          "190805"
-        ],
-        "cluster_1253": [
-          "42300"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "19101010",
         "18260001"
       ],
       "reason_analysis": {
         "no_category": [
-          "19101010",
           "18260001"
         ],
         "refinement_removed": [],
@@ -993,28 +606,20 @@
       }
     },
     {
-      "standardized_name": "Pectoral",
+      "standardized_name": "34",
       "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 1,
-      "clustered_ratio": 0.25,
-      "dominant_cluster": "cluster_578",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
-      "cluster_assignments": {
-        "cluster_578": [
-          "10163XL"
-        ]
-      },
+      "total_products": 1,
+      "clustered_products": 0,
+      "clustered_ratio": 0.0,
+      "dominant_cluster": null,
+      "dominant_cluster_size": 0,
+      "dominant_cluster_ratio": 0.0,
+      "cluster_assignments": {},
       "not_clustered": [
-        "120006",
-        "41950",
         "11910000"
       ],
       "reason_analysis": {
         "no_category": [
-          "120006",
-          "41950",
           "11910000"
         ],
         "refinement_removed": [],
@@ -1022,84 +627,37 @@
       }
     },
     {
-      "standardized_name": "1/4 trim boneless Pork butt VAC",
-      "status": "MISALIGNED",
-      "total_products": 4,
-      "clustered_products": 3,
-      "clustered_ratio": 0.75,
-      "dominant_cluster": "cluster_1190",
+      "standardized_name": "36",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_902",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 0.25,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_1190": [
-          "13034IN"
-        ],
-        "cluster_1168": [
-          "20080"
-        ],
-        "cluster_1267": [
-          "46091010"
-        ]
-      },
-      "not_clustered": [
-        "260003"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "260003"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "Trimmed pork sparerib MED",
-      "status": "PARTIALLY_ALIGNED",
-      "total_products": 4,
-      "clustered_products": 3,
-      "clustered_ratio": 0.75,
-      "dominant_cluster": "cluster_1254",
-      "dominant_cluster_size": 2,
-      "dominant_cluster_ratio": 0.5,
-      "cluster_assignments": {
-        "cluster_1254": [
-          "20167",
-          "45011010"
-        ],
         "cluster_902": [
           "32200201"
         ]
       },
-      "not_clustered": [
-        "250015"
-      ],
+      "not_clustered": [],
       "reason_analysis": {
-        "no_category": [
-          "250015"
-        ],
+        "no_category": [],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "109E 1 Rib ribeye lip-on bn-in_Choice",
-      "status": "PARTIALLY_ALIGNED",
-      "total_products": 5,
-      "clustered_products": 5,
+      "standardized_name": "37",
+      "status": "FULLY_ALIGNED",
+      "total_products": 1,
+      "clustered_products": 1,
       "clustered_ratio": 1.0,
       "dominant_cluster": "cluster_655",
-      "dominant_cluster_size": 3,
-      "dominant_cluster_ratio": 0.6,
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 1.0,
       "cluster_assignments": {
-        "cluster_1021": [
-          "1003A2GO"
-        ],
-        "cluster_682": [
-          "164165"
-        ],
         "cluster_655": [
-          "43720",
-          "17111874",
           "12101514"
         ]
       },
@@ -1111,21 +669,5 @@
       }
     }
   ],
-  "summary": {
-    "total_usda_groups": 37,
-    "fully_aligned_groups": 0,
-    "partially_aligned_groups": 4,
-    "misaligned_groups": 33,
-    "empty_groups": 0,
-    "total_products_analyzed": 157,
-    "products_in_same_cluster": 46,
-    "products_in_different_clusters": 50,
-    "products_not_clustered": 61,
-    "reason_no_category": 61,
-    "reason_refinement": 0,
-    "reason_different_cluster": 0,
-    "percent_in_same_cluster": 29.29936305732484,
-    "percent_in_different_clusters": 31.84713375796178,
-    "percent_not_clustered": 38.853503184713375
-  }
+  "groups": {}
 }

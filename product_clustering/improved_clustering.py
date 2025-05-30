@@ -29,6 +29,8 @@ def run_improved_clustering(data_dir: Optional[str] = None,
                            cross_encoder_batch_size: int = 32,  # Batch size for cross-encoder inference
                            similarity_threshold: float = 0.5,  # Threshold for reranking
                            rerank_weight: float = 0.5,  # Weight between embeddings and cross-encoder
+                           test_clusters: int = 0,  # Number of clusters to test reranking on (0 = all clusters)
+                           min_cluster_size_for_reranking: int = 3,  # Minimum cluster size to consider for reranking
                            use_categories: bool = True,  # Whether to cluster by category first
                            category_exclusivity: float = 1.0,  # How strictly to keep products within categories
                            force: bool = False,  # Whether to force regeneration of embeddings/clusters
@@ -292,6 +294,12 @@ def run_improved_clustering(data_dir: Optional[str] = None,
         # Run refinement
         print("DEBUG: About to call refine_clusters function")
         try:
+            # In test mode, use the provided test_clusters parameter
+            # If not explicitly set but in test mode, default to 10 clusters
+            test_clusters_param = test_clusters
+            if test_mode and test_clusters_param == 0:
+                test_clusters_param = 10  # Default to 10 clusters when in test mode
+            
             refine_clusters(
                 clusters_path=clusters_path,
                 prepared_data_path=prepared_data_path,
@@ -299,7 +307,9 @@ def run_improved_clustering(data_dir: Optional[str] = None,
                 model_name=cross_encoder_model,
                 similarity_threshold=similarity_threshold,
                 batch_size=cross_encoder_batch_size,
-                rerank_weight=rerank_weight
+                rerank_weight=rerank_weight,
+                test_clusters=test_clusters_param,
+                min_cluster_size_for_reranking=min_cluster_size_for_reranking
             )
             print("DEBUG: Successfully completed refine_clusters function")
         except Exception as e:

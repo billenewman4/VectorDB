@@ -38,7 +38,7 @@ from typing import Optional, Dict, Any
 import json
 
 # Local module for interactive input
-from interactive_input import (
+from product_clustering.interactive_input import (
     get_yes_no_input,
     get_string_input, 
     get_int_input, 
@@ -181,6 +181,8 @@ def run_clustering(data_dir: Optional[str] = None,
                   cross_encoder_batch_size: int = 32,
                   similarity_threshold: float = 0.6,
                   rerank_weight: float = 0.5,  # Weight between original embeddings and cross-encoder scores
+                  test_clusters: int = 0,  # Number of clusters to test reranking on (0 = all clusters)
+                  min_cluster_size_for_reranking: int = 3,  # Minimum cluster size to consider for reranking
                   # Category handling
                   use_categories: bool = True,
                   category_exclusivity: float = 1.0,  # How strict to keep products within categories
@@ -209,9 +211,10 @@ def run_clustering(data_dir: Optional[str] = None,
         use_reranking: Whether to use CrossEncoder reranking
         cross_encoder_model: Model for reranking
         cross_encoder_batch_size: Batch size for cross-encoder inference
-        similarity_threshold: Threshold for reranking (higher = more strict matching)
-        rerank_weight: Weight between original embeddings and cross-encoder scores
-                      (0 = only embeddings, 1 = only cross-encoder)
+        similarity_threshold: Threshold for similarity (higher = more strict matching)
+        rerank_weight: Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)
+        test_clusters: Number of clusters to test reranking on (0 = all clusters)
+        min_cluster_size_for_reranking: Minimum cluster size to consider for reranking scores
         
         # Category handling
         use_categories: Whether to cluster by categories
@@ -244,7 +247,7 @@ def run_clustering(data_dir: Optional[str] = None,
     print("Running clustering...")
     start_time = time.time()
     
-    run_improved_clustering(
+    clusters_path = run_improved_clustering(
         data_dir=data_dir,
         # HDBSCAN parameters
         metric=metric,
@@ -262,14 +265,15 @@ def run_clustering(data_dir: Optional[str] = None,
         cross_encoder_batch_size=cross_encoder_batch_size,
         similarity_threshold=similarity_threshold,
         rerank_weight=rerank_weight,
+        test_clusters=test_clusters,
+        min_cluster_size_for_reranking=min_cluster_size_for_reranking,
         # Category parameters
         use_categories=use_categories,
         category_exclusivity=category_exclusivity,
         # Processing parameters
         force=force,
         n_jobs=n_jobs
-    )
-    
+    )  
     end_time = time.time()
     print(f"Clustering complete in {end_time - start_time:.2f} seconds")
     
@@ -324,7 +328,7 @@ def run_analysis(data_dir: Optional[str] = None,
     Returns:
         Dictionary of paths to the generated analysis files
     """
-    from product_clustering.analyze_clusters import analyze_clusters
+    from product_clustering.analyze_clusters import run_cluster_analysis
     import importlib.util
     
     if data_dir is None:
@@ -350,9 +354,9 @@ def run_analysis(data_dir: Optional[str] = None,
     # Run the basic cluster analysis
     if run_basic_analysis:
         print(f"Running basic analysis on {'refined ' if refined else ''}clusters...")
-        # Note: analyze_clusters does not accept 'detailed' or 'min_cluster_size' parameters
+        # Note: run_cluster_analysis does not accept 'detailed' or 'min_cluster_size' parameters
         # so we will just use the parameters it does accept
-        output_path = analyze_clusters(
+        output_path = run_cluster_analysis(
             clusters_path=clusters_path,
             data_dir=data_dir,
             refined=refined
@@ -518,6 +522,10 @@ def main():
                         help="Similarity threshold (higher = more strict matching)")
     rerank_group.add_argument("--rerank_weight", type=float, default=0.5,
                         help="Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)")
+    rerank_group.add_argument("--test_clusters", type=int, default=0,
+                        help="Number of clusters to test reranking on (0 = all clusters)")
+    rerank_group.add_argument("--min_cluster_size_for_reranking", type=int, default=3,
+                        help="Minimum cluster size to consider for reranking")
     
     # Category options
     category_group = parser.add_argument_group('Category Options')
