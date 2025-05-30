@@ -269,10 +269,96 @@ def calculate_cluster_stats(clusters: Dict[str, List[str]], product_dict: Dict[s
     
     return stats
 
+def calculate_single_cluster_coherence(cluster_id: str, 
+                                  product_codes: List[str],
+                                  embedding_dict: Dict[str, np.ndarray],
+                                  debug: bool = False) -> float:
+    """
+    Calculate coherence score for a single cluster.
+    
+    Args:
+        cluster_id: ID of the cluster
+        product_codes: List of product codes in the cluster
+        embedding_dict: Dictionary mapping product codes to embeddings
+        debug: Whether to print debug information
+        
+    Returns:
+        Coherence score for the cluster
+    """
+    from sklearn.metrics.pairwise import cosine_similarity
+    
+    if len(product_codes) <= 1:
+        return 0.0
+    
+    # Get embeddings for products in this cluster
+    cluster_embeddings = []
+    found_codes = []
+    missing_in_cluster = []
+    
+    for code in product_codes:
+        # Try direct lookup
+        if code in embedding_dict:
+            cluster_embeddings.append(embedding_dict[code])
+            found_codes.append(code)
+            continue
+            
+        # Try normalized code (remove trailing spaces)
+        norm_code = str(code).strip()
+        if norm_code != code and norm_code in embedding_dict:
+            cluster_embeddings.append(embedding_dict[norm_code])
+            found_codes.append(f"{code} → {norm_code}")
+            continue
+            
+        # Try common variants
+        variants = [
+            code.lstrip('0'),  # Remove leading zeros
+            code.zfill(8) if len(code) < 8 else code,  # Pad to 8 digits
+            code.replace('-', '')  # Remove dashes
+        ]
+            
+        found = False
+        for variant in variants:
+            if variant in embedding_dict:
+                cluster_embeddings.append(embedding_dict[variant])
+                found_codes.append(f"{code} → {variant}")
+                found = True
+                break
+                    
+        if not found:
+            missing_in_cluster.append(code)
+    
+    # Debug output if requested
+    if debug:
+        print(f"\nCalculating coherence for {cluster_id}:")
+        print(f"  Total products: {len(product_codes)}")
+        print(f"  Found embeddings: {len(cluster_embeddings)} ({len(cluster_embeddings)/len(product_codes):.1%})")
+        if missing_in_cluster:
+            print(f"  Missing embeddings: {len(missing_in_cluster)} ({len(missing_in_cluster)/len(product_codes):.1%})")
+    
+    if len(cluster_embeddings) <= 1:
+        return 0.0
+        
+    # Calculate pairwise similarities
+    cluster_embeddings = np.array(cluster_embeddings)
+    sim_matrix = cosine_similarity(cluster_embeddings)
+    
+    # Remove self-similarity
+    np.fill_diagonal(sim_matrix, 0)
+    
+    # Average pairwise similarity as coherence score
+    avg_similarity = sim_matrix.sum() / (len(cluster_embeddings) * (len(cluster_embeddings) - 1))
+    
+    if debug:
+        print(f"  Calculated coherence score: {float(avg_similarity):.3f}")
+    
+    return float(avg_similarity)
+
 def analyze_cluster_coherence(clusters: Dict[str, List[str]], 
-                             embedding_dict: Dict[str, np.ndarray],
-                             sample_clusters: bool = True,
-                             max_clusters: int = 100):
+                              embedding_dict: Dict[str, np.ndarray],
+                              sample_clusters: bool = True,
+                              max_clusters: int = 100,
+                              required_clusters: List[str] = None,
+                              debug_clusters: List[str] = None):
     """
     Analyze the coherence of clusters using embeddings.
     
@@ -281,10 +367,24 @@ def analyze_cluster_coherence(clusters: Dict[str, List[str]],
         embedding_dict: Dictionary mapping product codes to embeddings
         sample_clusters: Whether to sample clusters for analysis
         max_clusters: Maximum number of clusters to analyze
+        required_clusters: List of cluster IDs that must be analyzed
+        debug_clusters: Optional list of cluster IDs to debug in detail
         
     Returns:
         Dictionary mapping cluster IDs to coherence scores
     """
+    # Default debug clusters to monitor closely
+    if debug_clusters is None:
+        debug_clusters = ['cluster_1149', 'cluster_789']
+        
+    # Initialize required_clusters if None
+    if required_clusters is None:
+        required_clusters = []
+        
+    # Print sample of embedding dictionary keys for debugging
+    if embedding_dict:
+        print(f"\nEmbedding dictionary contains {len(embedding_dict)} keys")
+        print(f"Sample embedding keys: {list(embedding_dict.keys())[:5]}")
     if not clusters or not embedding_dict:
         return {}
     
@@ -306,12 +406,20 @@ def analyze_cluster_coherence(clusters: Dict[str, List[str]],
             if bin_ids and bin_sample_size > 0:
                 sampled_ids.extend(random.sample(bin_ids, bin_sample_size))
         
+        # Always include debug and required clusters if they exist
+        for special_cluster in set(debug_clusters + required_clusters):
+            if special_cluster in clusters and special_cluster not in sampled_ids:
+                if special_cluster in debug_clusters:
+                    print(f"Forcing inclusion of debug cluster: {special_cluster}")
+                sampled_ids.append(special_cluster)
+        
         cluster_ids = sampled_ids
     
     # Calculate coherence for each selected cluster
     coherence_scores = {}
     missing_products = 0
     total_products = 0
+    clusters_with_missing_embeddings = {}
     
     for cluster_id in cluster_ids:
         product_codes = clusters[cluster_id]
@@ -321,13 +429,89 @@ def analyze_cluster_coherence(clusters: Dict[str, List[str]],
         
         # Get embeddings for products in this cluster
         cluster_embeddings = []
+        missing_in_cluster = []
+        found_codes = []
         total_products += len(product_codes)
         
         for code in product_codes:
+            # Try direct lookup
             if code in embedding_dict:
                 cluster_embeddings.append(embedding_dict[code])
-            else:
-                missing_products += 1
+                found_codes.append(code)
+                continue
+                
+            # Try normalized code
+            norm_code = normalize_product_code(code)
+            if norm_code != code and norm_code in embedding_dict:
+                cluster_embeddings.append(embedding_dict[norm_code])
+                found_codes.append(f"{code} → {norm_code}")
+                continue
+                
+            # If we're at cluster_1149, try some common transformations
+            if cluster_id == 'cluster_1149':
+                # Try code variants (without leading zeros, etc.)
+                variants = [
+                    code.lstrip('0'),  # Remove leading zeros
+                    code.zfill(8) if len(code) < 8 else code,  # Pad to 8 digits
+                    code.replace('-', '')  # Remove dashes
+                ]
+                
+                found = False
+                for variant in variants:
+                    if variant in embedding_dict:
+                        cluster_embeddings.append(embedding_dict[variant])
+                        found_codes.append(f"{code} → {variant}")
+                        found = True
+                        break
+                        
+                if found:
+                    continue
+            
+            # If all attempts failed, mark as missing
+            missing_products += 1
+            missing_in_cluster.append(code)
+        
+        # Track clusters with missing embeddings
+        if missing_in_cluster:
+            clusters_with_missing_embeddings[cluster_id] = {
+                'total_products': len(product_codes),
+                'missing_products': len(missing_in_cluster),
+                'missing_codes': missing_in_cluster
+            }
+        
+        # Detailed logging for debug clusters
+        if cluster_id in debug_clusters:
+            print(f"\nDEBUG - {cluster_id}:")
+            print(f"  Total products: {len(product_codes)}")
+            
+            # Always print this info whether or not there are missing embeddings
+            print(f"  Found embeddings: {len(cluster_embeddings)} ({len(cluster_embeddings)/len(product_codes):.1%})")
+            if found_codes:
+                print(f"  Found product codes: {found_codes}")
+                
+            if missing_in_cluster:
+                print(f"  Missing embeddings: {len(missing_in_cluster)} ({len(missing_in_cluster)/len(product_codes):.1%})")
+                print(f"  Missing product codes: {missing_in_cluster}")
+                
+                # Show the available keys in embedding_dict that are similar to the missing codes
+                if embedding_dict and missing_in_cluster:
+                    sample_missing = missing_in_cluster[0]
+                    potential_matches = [k for k in embedding_dict.keys() 
+                                       if len(k) >= 3 and len(sample_missing) >= 3 and 
+                                       (k[:3] == sample_missing[:3] or 
+                                        k[-3:] == sample_missing[-3:] or
+                                        sample_missing in k or
+                                        k in sample_missing)][:10]
+                    if potential_matches:
+                        print(f"  Potential matching embedding keys: {potential_matches}")
+                        
+            # Check the coherence calculation for this cluster
+            if len(cluster_embeddings) > 1:
+                cluster_embeddings_array = np.array(cluster_embeddings)
+                sim_matrix = cosine_similarity(cluster_embeddings_array)
+                np.fill_diagonal(sim_matrix, 0)
+                avg_similarity = sim_matrix.sum() / (len(cluster_embeddings_array) * (len(cluster_embeddings_array) - 1))
+                print(f"  Calculated coherence score: {avg_similarity:.3f}")
         
         if len(cluster_embeddings) <= 1:
             coherence_scores[cluster_id] = 0.0
@@ -346,6 +530,14 @@ def analyze_cluster_coherence(clusters: Dict[str, List[str]],
     
     if missing_products > 0:
         print(f"Warning: {missing_products} out of {total_products} products ({missing_products/total_products:.1%}) were not found in the embeddings")
+        
+        # Report top 5 clusters with most missing embeddings
+        if clusters_with_missing_embeddings:
+            top_missing = sorted(clusters_with_missing_embeddings.items(), 
+                                key=lambda x: x[1]['missing_products'], reverse=True)[:5]
+            print("\nTop 5 clusters with missing embeddings:")
+            for cluster_id, data in top_missing:
+                print(f"  {cluster_id}: {data['missing_products']}/{data['total_products']} products missing embeddings")
     
     return coherence_scores
 
@@ -420,6 +612,9 @@ def sample_clusters(clusters: Dict[str, List[str]],
     """
     Sample clusters for manual inspection.
     
+    IMPORTANT: If you specify a cluster in the result, make sure it has a valid
+    coherence score in the coherence_scores dictionary or it will default to 0.0
+    
     Args:
         clusters: Dictionary mapping cluster IDs to lists of product codes
         product_dict: Dictionary mapping product codes to descriptions
@@ -453,10 +648,17 @@ def sample_clusters(clusters: Dict[str, List[str]],
         if cluster_ids:
             sample_size = min(num_clusters // 3, len(cluster_ids))
             for cluster_id in random.sample(cluster_ids, sample_size):
+                # Calculate coherence on-demand if not available
+                cluster_coherence = coherence_scores.get(cluster_id)
+                if cluster_coherence is None:
+                    product_codes = clusters[cluster_id]
+                    cluster_coherence = calculate_single_cluster_coherence(
+                        cluster_id, product_codes, embedding_dict)
+                
                 sampled_clusters[f"{category}_size_{cluster_id}"] = {
                     'cluster_id': cluster_id,
                     'size': len(clusters[cluster_id]),
-                    'coherence': coherence_scores.get(cluster_id, 0.0),
+                    'coherence': cluster_coherence,
                     'category': f"{category} size",
                     'products': [(code, product_dict.get(code, "Unknown")) 
                                for code in clusters[cluster_id]]
@@ -468,10 +670,17 @@ def sample_clusters(clusters: Dict[str, List[str]],
             sample_size = min(num_clusters // 3, len(cluster_ids))
             for cluster_id in random.sample(cluster_ids, sample_size):
                 if cluster_id not in [c.split('_')[-1] for c in sampled_clusters.keys()]:
+                    # Calculate coherence on-demand if not available
+                    cluster_coherence = coherence_scores.get(cluster_id)
+                    if cluster_coherence is None:
+                        product_codes = clusters[cluster_id]
+                        cluster_coherence = calculate_single_cluster_coherence(
+                            cluster_id, product_codes, embedding_dict)
+                    
                     sampled_clusters[f"{category}_coherence_{cluster_id}"] = {
                         'cluster_id': cluster_id,
                         'size': len(clusters[cluster_id]),
-                        'coherence': coherence_scores.get(cluster_id, 0.0),
+                        'coherence': cluster_coherence,
                         'category': f"{category} coherence",
                         'products': [(code, product_dict.get(code, "Unknown")) 
                                    for code in clusters[cluster_id]]
@@ -636,12 +845,33 @@ def generate_visualizations(output_dir: str,
     if coherence_scores:
         plt.figure(figsize=(10, 6))
         
-        # Create histogram
-        plt.hist(list(coherence_scores.values()), bins=20, alpha=0.7, color='green')
+        # Create histogram - ensure we properly include zeros
+        values = list(coherence_scores.values())
+        zero_count = sum(1 for v in values if v == 0.0)
+        non_zero_values = [v for v in values if v > 0.0]
+        
+        # Print information about zero values
+        print(f"\nCoherence distribution: {zero_count} clusters with zero coherence out of {len(values)} total clusters")
+        
+        # Create the histogram with separate handling for zeros
+        if non_zero_values:
+            plt.hist(non_zero_values, bins=20, alpha=0.7, color='green')
+        
+        # Add a bar for zero values if there are any
+        if zero_count > 0:
+            # Use a different color for zero values
+            plt.bar([-0.025], [zero_count], width=0.05, color='red', alpha=0.7)
+            plt.annotate(f'{zero_count} clusters', xy=(-0.025, zero_count), 
+                         xytext=(0.05, zero_count), 
+                         arrowprops=dict(arrowstyle="->"))
+        
         plt.title('Distribution of Cluster Coherence Scores', fontsize=15)
         plt.xlabel('Coherence Score', fontsize=12)
         plt.ylabel('Number of Clusters', fontsize=12)
         plt.grid(True, alpha=0.3)
+        
+        # Ensure range starts at 0
+        plt.xlim(-0.05, 1.0)
         
         # Add vertical lines for thresholds
         plt.axvline(x=0.6, color='orange', linestyle='--', label='Good (0.6)')
@@ -695,11 +925,12 @@ def generate_visualizations(output_dir: str,
     
     return viz_paths
 
-def analyze_clusters(clusters_path: str, 
+def run_cluster_analysis(clusters_path: str, 
                     data_dir: Optional[str] = None, 
                     refined: bool = True,
                     output_dir: Optional[str] = None,
-                    transaction_data_path: Optional[str] = None):
+                    transaction_data_path: Optional[str] = None,
+                    calculate_all_coherence: bool = False):
     """
     Run comprehensive cluster analysis.
     
@@ -708,6 +939,8 @@ def analyze_clusters(clusters_path: str,
         data_dir: Directory containing data files
         refined: Whether analyzing refined clusters
         output_dir: Directory to save analysis results
+        transaction_data_path: Path to transaction data file (Excel or CSV)
+        calculate_all_coherence: Whether to calculate coherence for all clusters
         
     Returns:
         Path to analysis report
@@ -768,15 +1001,45 @@ def analyze_clusters(clusters_path: str,
     stats = calculate_cluster_stats(clusters, product_dict)
     stats['clusters'] = clusters  # Add clusters to stats for later use
     
-    # 3. Analyze coherence
+    # Get all cluster IDs for mixed clusters and potentially large clusters that will be in report
+    # This is a more comprehensive approach to identify all clusters we'll need scores for
+    all_potentially_displayed_clusters = set()
+    
+    # Large clusters are always of interest (size > 15)
+    for cluster_id, cluster_products in clusters.items():
+        if len(cluster_products) > 15:  # Large clusters shown in report
+            all_potentially_displayed_clusters.add(cluster_id)
+    
+    # Medium clusters might be shown too
+    medium_clusters = [cid for cid, products in clusters.items() 
+                     if 8 <= len(products) <= 15]
+    if len(medium_clusters) < 10:  # If we have fewer than 10 medium clusters, we'll show them all
+        all_potentially_displayed_clusters.update(medium_clusters)
+    else:
+        # Otherwise we might sample some - to be safe, include all potential medium clusters
+        all_potentially_displayed_clusters.update(medium_clusters)
+        
+    print(f"Identified {len(all_potentially_displayed_clusters)} clusters that may appear in the report")
+    
+    # 3. Analyze coherence for all clusters that might appear in the report
     print("Analyzing cluster coherence...")
-    coherence_scores = analyze_cluster_coherence(clusters, embedding_dict)
+    if calculate_all_coherence:
+        print("Calculating coherence for ALL clusters (may take time)...")
+        coherence_scores = analyze_cluster_coherence(clusters, embedding_dict, sample_clusters=False)
+    else:
+        # Always include debug clusters + all potentially displayed clusters
+        debug_clusters = ['cluster_1149', 'cluster_789', 'cluster_1017']
+        required_clusters = list(all_potentially_displayed_clusters) + debug_clusters
+        print(f"Will calculate coherence for {len(required_clusters)} clusters (including all that may appear in the report)")
+        coherence_scores = analyze_cluster_coherence(clusters, embedding_dict, 
+                                                sample_clusters=False, 
+                                                required_clusters=required_clusters)
     
     # 4. Identify potentially mixed clusters
     print("Identifying potentially mixed clusters...")
     mixed_clusters = identify_mixed_clusters(clusters, product_dict, coherence_scores)
     
-    # 5. Sample clusters for inspection
+    # 5. Sample clusters for inspection (with coherence scores)
     print("Sampling clusters for inspection...")
     sampled_clusters = sample_clusters(clusters, product_dict, coherence_scores)
     
@@ -784,6 +1047,15 @@ def analyze_clusters(clusters_path: str,
     print("Generating report...")
     report_filename = f"cluster_analysis{'_refined' if refined else ''}.md"
     report_path = os.path.join(output_dir, report_filename)
+    
+    # Special debug for any zero coherence clusters
+    zero_coherence_clusters = {cid: score for cid, score in coherence_scores.items() if score == 0.0}
+    if zero_coherence_clusters:
+        print(f"\nFound {len(zero_coherence_clusters)} clusters with zero coherence:")
+        for cid, score in zero_coherence_clusters.items():
+            products_in_cluster = len(clusters.get(cid, []))
+            print(f"  {cid}: {score:.3f} coherence, {products_in_cluster} products")
+            
     generate_report(report_path, stats, coherence_scores, mixed_clusters, sampled_clusters, product_dict)
     
     # 7. Generate visualizations
@@ -800,37 +1072,30 @@ def main():
     """Main function to run cluster analysis."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Analyze product clustering results")
-    parser.add_argument("--clusters_path", help="Path to clusters JSON file")
-    parser.add_argument("--data_dir", help="Directory containing data files")
-    parser.add_argument("--transaction_data", help="Path to transaction data Excel file")
-    parser.add_argument("--refined", action="store_true", default=True, help="Analyze refined clusters (default)")
-    parser.add_argument("--no-refined", action="store_false", dest="refined", help="Analyze original clusters")
-    parser.add_argument("--output_dir", help="Directory to save analysis results")
+    parser = argparse.ArgumentParser(description="Analyze product clusters")
+    
+    parser.add_argument("--clusters_path", type=str, required=True,
+                        help="Path to the clusters JSON file")
+    parser.add_argument("--data_dir", type=str, default=None,
+                        help="Directory containing data files")
+    parser.add_argument("--refined", action="store_true",
+                        help="Whether the clusters are refined")
+    parser.add_argument("--output_dir", type=str, default=None,
+                        help="Directory to save analysis results")
+    parser.add_argument("--transaction_data", type=str, default=None,
+                        help="Path to transaction data file (Excel or CSV)")
+    parser.add_argument("--all_coherence", action="store_true",
+                        help="Calculate coherence for all clusters, not just sampled ones")
     
     args = parser.parse_args()
     
-    # Set default clusters path
-    clusters_path = args.clusters_path
-    if clusters_path is None:
-        data_dir = args.data_dir
-        if data_dir is None:
-            data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-        
-        if args.refined:
-            clusters_path = os.path.join(data_dir, "refined_clusters", "refined_clusters.json")
-            if not os.path.exists(clusters_path):
-                clusters_path = os.path.join(data_dir, "improved_clustering", "refined", "refined_clusters.json")
-        else:
-            clusters_path = os.path.join(data_dir, "improved_clustering", "clusters.json")
-    
-    # Run analysis
-    analyze_clusters(
-        clusters_path=clusters_path, 
+    run_cluster_analysis(
+        clusters_path=args.clusters_path,
         data_dir=args.data_dir,
         refined=args.refined,
         output_dir=args.output_dir,
-        transaction_data_path=args.transaction_data
+        transaction_data_path=args.transaction_data,
+        calculate_all_coherence=args.all_coherence
     )
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ Utilizes the existing CrossEncoder implementation to improve cluster quality.
 import os
 import sys
 import json
+import time
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Optional, Tuple
@@ -23,9 +24,13 @@ def refine_clusters(
     model_name: str = 'cross-encoder/stsb-roberta-base',
     similarity_threshold: float = 0.5,
     batch_size: int = 32,
-    max_pairs_per_cluster: int = 1000
+    max_pairs_per_cluster: int = 1000,
+    rerank_weight: float = 0.5,
+    test_clusters: int = 0,
+    min_cluster_size_for_reranking: int = 3
 ) -> Dict[str, List[str]]:
     """
+    print("DEBUG RERANKING START: Function entered")
     Refine clusters using CrossEncoder similarity scoring.
     
     Args:
@@ -36,32 +41,95 @@ def refine_clusters(
         similarity_threshold: Minimum similarity threshold to keep product in cluster
         batch_size: Batch size for CrossEncoder predictions
         max_pairs_per_cluster: Maximum number of pairs to evaluate per cluster
+        rerank_weight: Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)
+        test_clusters: Number of clusters to test reranking on (0 = all clusters)
+        min_cluster_size_for_reranking: Minimum cluster size to consider for reranking
         
     Returns:
         Dictionary mapping cluster IDs to lists of product codes
     """
-    print(f"Loading clusters from {clusters_path}")
-    with open(clusters_path, 'r') as f:
-        clusters = json.load(f)
+    print(f"DEBUG RERANKING: Loading clusters from {clusters_path}")
+    try:
+        with open(clusters_path, 'r') as f:
+            clusters = json.load(f)
+        print(f"DEBUG RERANKING: Successfully loaded {len(clusters)} clusters")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Failed to load clusters: {str(e)}")
+        raise
     
-    print(f"Loading product data from {prepared_data_path}")
-    products_df = pd.read_csv(prepared_data_path)
+    print(f"DEBUG RERANKING: Loading product data from {prepared_data_path}")
+    try:
+        products_df = pd.read_csv(prepared_data_path)
+        print(f"DEBUG RERANKING: Successfully loaded {len(products_df)} products")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Failed to load product data: {str(e)}")
+        raise
     
     # Create a lookup dictionary for quick access to product descriptions
     product_lookup = {}
     for _, row in products_df.iterrows():
         product_lookup[row['product_code']] = row['product_description']
     
-    # Initialize CrossEncoder
-    print(f"Initializing CrossEncoder with model: {model_name}")
-    cross_encoder = CrossEncoder(model_name=model_name)
+    # Initialize CrossEncoder with more conservative settings
+    print(f"DEBUG RERANKING: Initializing CrossEncoder with model: {model_name}")
+    try:
+        import torch
+        # Clear CUDA cache if using GPU
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        # Use a smaller max seq length to reduce memory usage
+        cross_encoder = CrossEncoder(model_name=model_name, max_length=128)
+        print("DEBUG RERANKING: CrossEncoder initialized successfully")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Error initializing CrossEncoder: {e}")
+        print("DEBUG RERANKING: Falling back to default initialization")
+        try:
+            cross_encoder = CrossEncoder(model_name=model_name)
+            print("DEBUG RERANKING: Default CrossEncoder initialized successfully")
+        except Exception as e:
+            print(f"DEBUG RERANKING CRITICAL ERROR: Could not initialize CrossEncoder: {e}")
+            raise
     
-    refined_clusters = {}
+    # Filter clusters for testing if requested
+    if test_clusters > 0:
+        print(f"Testing reranking on {test_clusters} clusters only")
+        # Filter clusters by size (prioritize larger clusters for more meaningful testing)
+        eligible_clusters = {}
+        for cluster_id, products in clusters.items():
+            if len(products) >= min_cluster_size_for_reranking:
+                eligible_clusters[cluster_id] = products
+        
+        # Sort clusters by size (descending) to prioritize larger clusters for testing
+        sorted_clusters = sorted(eligible_clusters.items(), key=lambda x: len(x[1]), reverse=True)
+        
+        # Select the top N clusters for testing
+        test_cluster_ids = [cluster_id for cluster_id, _ in sorted_clusters[:test_clusters]]
+        test_cluster_count = len(test_cluster_ids)
+        print(f"Selected {test_cluster_count} clusters for testing")
+        
+        # Create a new dictionary with only the test clusters
+        test_clusters_dict = {cluster_id: clusters[cluster_id] for cluster_id in test_cluster_ids}
+        clusters = test_clusters_dict
+        
+        # For non-test clusters, just copy them directly to refined_clusters
+        refined_clusters = {cluster_id: products for cluster_id, products in clusters.items() 
+                           if cluster_id not in test_cluster_ids}
+    else:
+        refined_clusters = {}
+    
     total_removed = 0
     total_products = 0
+    cluster_count = 0
+    start_time = time.time()
     
-    print(f"Refining {len(clusters)} clusters...")
-    for cluster_id, product_codes in tqdm(clusters.items()):
+    print(f"DEBUG RERANKING: Starting refinement of {len(clusters)} clusters...")
+    print(f"DEBUG RERANKING: First cluster ID: {next(iter(clusters.keys()))}")
+    print(f"DEBUG RERANKING: Press Ctrl+C if nothing happens for more than 30 seconds...")
+    
+    for i, (cluster_id, product_codes) in enumerate(clusters.items()):
+        cluster_count = i + 1
+        cluster_start = time.time()
+        print(f"\nDEBUG RERANKING: [{cluster_count}/{len(clusters)}] Processing cluster: {cluster_id} with {len(product_codes)} products")
         if len(product_codes) <= 2:
             # Keep very small clusters as is
             refined_clusters[cluster_id] = product_codes
@@ -82,34 +150,40 @@ def refine_clusters(
             total_products += len(valid_codes)
             continue
             
+        print(f"DEBUG RERANKING: Creating pairs for evaluation in cluster {cluster_id}")
         # Create pairs for CrossEncoder evaluation
         pairs = []
         pair_indices = []
         
         # If there are too many potential pairs, sample a subset
-        if len(valid_codes) > 20:  # Arbitrary threshold for large clusters
+        # Use a much more aggressive sampling approach to prevent memory issues
+        if len(valid_codes) > 10:  # Lower threshold for large clusters
             # Sample pairs to avoid O(n²) explosion
             import random
             random.seed(42)  # For reproducibility
             
+            # For very large clusters, be even more aggressive
+            max_comparisons = 3 if len(valid_codes) > 50 else 5
+            max_pairs = min(100, max_pairs_per_cluster) if len(valid_codes) > 100 else max_pairs_per_cluster
+            
             # Generate representative pairs by comparing each item to a few others
             for i in range(len(valid_codes)):
-                # Select a few random items to compare against
+                # Select just a few random items to compare against
                 compare_indices = random.sample(
                     [j for j in range(len(valid_codes)) if j != i],
-                    min(5, len(valid_codes) - 1)  # Compare with at most 5 other items
+                    min(max_comparisons, len(valid_codes) - 1)  # Compare with fewer items
                 )
                 
                 for j in compare_indices:
                     pairs.append([descriptions[i], descriptions[j]])
                     pair_indices.append((i, j))
                     
-                    # Limit total pairs to avoid memory issues
-                    if len(pairs) >= max_pairs_per_cluster:
+                    # More aggressive limit on total pairs
+                    if len(pairs) >= max_pairs:
                         break
                 
-                if len(pairs) >= max_pairs_per_cluster:
-                    print(f"  Limiting cluster {cluster_id} to {max_pairs_per_cluster} pairs for evaluation")
+                if len(pairs) >= max_pairs:
+                    print(f"  Limiting cluster {cluster_id} to {len(pairs)} pairs for evaluation")
                     break
         else:
             # For small clusters, evaluate all pairs
@@ -124,19 +198,35 @@ def refine_clusters(
         # Score all pairs using the CrossEncoder's rerank method
         similarity_scores = []
         
-        # Process in batches
-        for i in range(0, len(pairs), batch_size):
-            batch_pairs = pairs[i:i+batch_size]
-            # Adapt to the CrossEncoder interface - create text pairs
-            text_pairs = []
-            for pair in batch_pairs:
-                text_pairs.append([pair[0], pair[1]])
+        print(f"DEBUG RERANKING: Created {len(pairs)} pairs for cluster {cluster_id}")
+        
+        # Use a smaller batch size for more stability
+        actual_batch_size = min(8, batch_size)  # Even smaller batch size to prevent memory issues
+        
+        # Process in batches with detailed tracking
+        print(f"DEBUG RERANKING: Evaluating {len(pairs)} pairs with batch size {actual_batch_size}")
+        for i in range(0, len(pairs), actual_batch_size):
+            batch_end = min(i + actual_batch_size, len(pairs))
+            print(f"DEBUG RERANKING: Batch {i//actual_batch_size + 1}/{(len(pairs) + actual_batch_size - 1)//actual_batch_size}: processing pairs {i+1}-{batch_end}")
+            sys.stdout.flush()  # Force output to be displayed immediately
+            try:
+                batch_pairs = pairs[i:i+actual_batch_size]
+                # Adapt to the CrossEncoder interface - create text pairs
+                text_pairs = []
+                for pair in batch_pairs:
+                    text_pairs.append([pair[0], pair[1]])
                 
-            # Use the internal sentence-transformers CrossEncoder for direct prediction
-            batch_scores = cross_encoder.model.predict(text_pairs)
-            similarity_scores.extend(batch_scores)
+                # Use the internal sentence-transformers CrossEncoder for direct prediction
+                with np.errstate(all='ignore'):  # Suppress numpy warnings
+                    batch_scores = cross_encoder.model.predict(text_pairs)
+                similarity_scores.extend(batch_scores)
+            except Exception as e:
+                print(f"Error processing batch in cluster {cluster_id}: {e}")
+                # Use a fallback score of 0.5 (neutral) for failed batches
+                similarity_scores.extend([0.5] * len(batch_pairs))
         
         # Build similarity matrix from pair scores
+        print(f"  - Building similarity matrix for {len(valid_codes)} products")
         similarity_matrix = np.zeros((len(valid_codes), len(valid_codes)))
         
         for idx, (i, j) in enumerate(pair_indices):
@@ -148,9 +238,11 @@ def refine_clusters(
         np.fill_diagonal(similarity_matrix, 1.0)
         
         # Calculate average similarity of each product to the rest of the cluster
+        print(f"  - Calculating average similarities")
         avg_similarities = similarity_matrix.mean(axis=1)
         
         # Identify products to keep (above threshold)
+        print(f"  - Identifying products to keep (threshold: {similarity_threshold})")
         keep_indices = [i for i, sim in enumerate(avg_similarities) if sim >= similarity_threshold]
         
         # If we're removing more than 30% of items, just keep the top 70%
@@ -169,8 +261,16 @@ def refine_clusters(
         # Store refined cluster
         refined_clusters[cluster_id] = refined_product_codes
         
+        cluster_end = time.time()
         if removed_count > 0:
             print(f"  Cluster {cluster_id}: Removed {removed_count} of {len(valid_codes)} products")
+        print(f"  Completed in {cluster_end - cluster_start:.2f} seconds")
+        
+        # Print overall progress
+        elapsed = time.time() - start_time
+        remaining = elapsed / cluster_count * (len(clusters) - cluster_count)
+        print(f"  Progress: {cluster_count}/{len(clusters)} clusters ({cluster_count/len(clusters)*100:.1f}%)")
+        print(f"  Elapsed: {elapsed/60:.1f} minutes, Est. remaining: {remaining/60:.1f} minutes")
     
     # Print summary
     print(f"Refinement complete:")

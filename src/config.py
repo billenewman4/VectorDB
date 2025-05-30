@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # --- Data Paths ---
-DATA_DIR = PROJECT_ROOT / "data"
+DATA_DIR = PROJECT_ROOT / "Source_data"
 ACTUALS_DATA_DIR = DATA_DIR / "Actuals"
 
 # --- Transaction Data (Actuals) ---

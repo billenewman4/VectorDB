@@ -16,9 +16,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src import config
 from src.data_processing import load_transaction_data, clean_text
-from src.abbreviation_translator import expand_abbreviations
+from src.abbreviation_translator import expand_abbreviations as expand_abbreviations_func
 
-def preprocess_text_for_clustering(text: str) -> str:
+def preprocess_text_for_clustering(text: str, expand_abbreviations: bool = True) -> str:
     """
     Enhanced preprocessing function optimized for product clustering.
     Normalizes text by expanding abbreviations, removing special characters, 
@@ -26,6 +26,7 @@ def preprocess_text_for_clustering(text: str) -> str:
     
     Args:
         text: Input text to preprocess
+        expand_abbreviations: Whether to expand abbreviations in the text
         
     Returns:
         Preprocessed text optimized for clustering
@@ -36,8 +37,9 @@ def preprocess_text_for_clustering(text: str) -> str:
     # Convert to lowercase
     text = text.lower()
     
-    # Expand abbreviations using existing function
-    text = expand_abbreviations(text)
+    # Expand abbreviations using existing function (if enabled)
+    if expand_abbreviations:
+        text = expand_abbreviations_func(text)
     
     # Remove special characters but keep numbers (unlike USDA matching)
     # Numbers are important for package sizes and weights
@@ -84,13 +86,26 @@ def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None) -> pd.Dat
     # Clean the product descriptions for clustering
     unique_products_df['clustering_description'] = unique_products_df['product_description'].apply(preprocess_text_for_clustering)
     
+    # Group products by category and save the mapping
+    from src.data_processing import group_products_by_category, save_category_products
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    print("\nGrouping products by category...")
+    category_groups = group_products_by_category(unique_products_df)
+    
+    # Save category products mapping for clustering
+    category_mapping_path = save_category_products(category_groups, output_dir)
+    if category_mapping_path:
+        print(f"Saved category-to-products mapping to {category_mapping_path}")
+    
     print("Data preparation complete.")
     print(f"Prepared {len(unique_products_df)} products for clustering.")
     
     # Display sample of prepared data
     print("\nSample of prepared data:")
-    sample_cols = ['product_code', 'product_description', 'clustering_description']
-    print(unique_products_df[sample_cols].head().to_string())
+    sample_cols = ['product_code', 'product_description', 'product_category', 'clustering_description']
+    print(unique_products_df[sample_cols[:3]].head().to_string())
     
     return unique_products_df
 

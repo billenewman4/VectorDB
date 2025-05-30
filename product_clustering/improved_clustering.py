@@ -19,19 +19,44 @@ def run_improved_clustering(data_dir: Optional[str] = None,
                            metric: str = 'euclidean',  # Using euclidean instead of cosine as HDBSCAN doesn't support cosine directly
                            min_cluster_size: int = 3,  # Lower to allow more granular clusters
                            min_samples: int = 2,  # Lower to allow more granular clusters
-                           test_mode: bool = False,
+                           cluster_selection_epsilon: float = 0.0,  # Distance threshold for cluster merging
+                           alpha: float = 1.0,  # HDBSCAN alpha parameter for point weighting
+                           cluster_selection_method: str = 'eom',  # Algorithm for cluster extraction
+                           test_mode: bool = False,  # Whether to run in test mode
                            sample_size: int = 1000,  # Sample size to use in test mode
                            use_reranking: bool = False,  # Whether to use CrossEncoder reranking
                            cross_encoder_model: str = 'cross-encoder/stsb-roberta-base',  # Model for reranking
-                           similarity_threshold: float = 0.5):  # Threshold for reranking
+                           cross_encoder_batch_size: int = 32,  # Batch size for cross-encoder inference
+                           similarity_threshold: float = 0.5,  # Threshold for reranking
+                           rerank_weight: float = 0.5,  # Weight between embeddings and cross-encoder
+                           test_clusters: int = 0,  # Number of clusters to test reranking on (0 = all clusters)
+                           min_cluster_size_for_reranking: int = 3,  # Minimum cluster size to consider for reranking
+                           use_categories: bool = True,  # Whether to cluster by category first
+                           category_exclusivity: float = 1.0,  # How strictly to keep products within categories
+                           force: bool = False,  # Whether to force regeneration of embeddings/clusters
+                           n_jobs: int = -1):  # Number of CPU cores to use (-1 for all)
     """
     Run clustering with improved parameters.
     
     Args:
         data_dir: Directory containing data files
-        metric: Distance metric to use
+        metric: Distance metric to use (euclidean, manhattan, etc.)
         min_cluster_size: Minimum size of clusters
-        min_samples: HDBSCAN min_samples parameter
+        min_samples: HDBSCAN min_samples parameter (higher = stricter clustering)
+        cluster_selection_epsilon: Distance threshold for cluster merging
+        alpha: HDBSCAN alpha parameter for point weighting
+        cluster_selection_method: Algorithm for cluster extraction ('eom' or 'leaf')
+        test_mode: Whether to run in test mode with reduced dataset
+        sample_size: Number of samples to use in test mode
+        use_reranking: Whether to use CrossEncoder reranking to refine clusters
+        cross_encoder_model: Model to use for reranking
+        cross_encoder_batch_size: Batch size for cross-encoder inference
+        similarity_threshold: Similarity threshold for reranking (higher = stricter matching)
+        rerank_weight: Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)
+        use_categories: Whether to cluster by category first
+        category_exclusivity: How strictly to keep products within categories (0=mix freely, 1=strict separation)
+        force: Whether to force regeneration of clusters
+        n_jobs: Number of CPU cores to use (-1 for all)
     """
     # Set default data directory
     if data_dir is None:
@@ -104,32 +129,134 @@ def run_improved_clustering(data_dir: Optional[str] = None,
     if len(embeddings) != len(product_codes):
         print(f"Warning: Mismatch between embeddings ({len(embeddings)}) and product codes ({len(product_codes)})")
     
-    print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+    # Check for category information to enable category-based clustering
+    category_products_path = os.path.join(data_dir, "category_products.json")
+    category_mode = use_categories and os.path.exists(category_products_path)
     
-    # Run HDBSCAN clustering
-    clusterer = hdbscan.HDBSCAN(
-        min_cluster_size=min_cluster_size,
-        min_samples=min_samples,
-        metric=metric,
-        gen_min_span_tree=True,
-        cluster_selection_method='eom'
-    )
+    # Main clustering approach
+    if category_mode:
+        print("Using category-based clustering approach")
+        print(f"Loading category products from {category_products_path}")
+        
+        # Load category-to-products mapping
+        try:
+            with open(category_products_path, 'r') as f:
+                category_products = json.load(f)
+            print(f"Loaded {len(category_products)} product categories")
+            
+            # Load product code to embedding mapping
+            product_to_embedding = {}
+            for i, code in enumerate(product_codes):
+                if i < len(embeddings):
+                    product_to_embedding[code] = embeddings[i]
+            
+            # Perform clustering within each category separately
+            clusters = defaultdict(list)
+            cluster_counter = 0
+            category_stats = {}
+            
+            for category, products in category_products.items():
+                # Filter out products not in our embeddings
+                category_products = [p for p in products if p in product_to_embedding]
+                
+                if len(category_products) < min_cluster_size:
+                    print(f"Skipping category '{category}': too few products ({len(category_products)})")
+                    continue
+                    
+                print(f"Clustering category '{category}' with {len(category_products)} products")
+                
+                # Extract embeddings for this category
+                category_embeddings = np.array([product_to_embedding[p] for p in category_products])
+                
+                # Run HDBSCAN clustering on this category
+                # Note: n_jobs parameter needs to be passed only when metric='precomputed'
+                # or when using the algorithmic core directly
+                hdbscan_params = {
+                    'min_cluster_size': min_cluster_size,
+                    'min_samples': min_samples,
+                    'metric': metric,
+                    'cluster_selection_epsilon': cluster_selection_epsilon,
+                    'alpha': alpha,
+                    'cluster_selection_method': cluster_selection_method,
+                    'gen_min_span_tree': True
+                }
+                # Only add n_jobs if using precomputed metrics
+                if metric == 'precomputed':
+                    hdbscan_params['n_jobs'] = n_jobs
+                    
+                clusterer = hdbscan.HDBSCAN(**hdbscan_params)
+                
+                # Fit the clusterer
+                category_labels = clusterer.fit_predict(category_embeddings)
+                
+                # Count clusters and noise points for this category
+                cat_clusters = len(set(category_labels)) - (1 if -1 in category_labels else 0)
+                cat_noise = list(category_labels).count(-1)
+                
+                print(f"  - {cat_clusters} clusters formed with {cat_noise} noise points")
+                category_stats[category] = {
+                    "total_products": len(category_products),
+                    "clusters": cat_clusters,
+                    "noise": cat_noise
+                }
+                
+                # Organize products into clusters
+                for i, label in enumerate(category_labels):
+                    if label >= 0:
+                        # Use category prefix for cluster names to keep them separated
+                        cluster_id = f"cluster_{category}_{cluster_counter + label}"
+                        clusters[cluster_id].append(category_products[i])
+                
+                # Update the counter for the next category
+                cluster_counter += max(category_labels) + 1 if len(category_labels) > 0 and max(category_labels) >= 0 else 0
+            
+            # Print category statistics
+            print("\nCategory clustering statistics:")
+            for category, stats in category_stats.items():
+                print(f"  - {category}: {stats['clusters']} clusters, {stats['noise']} noise points")
+                
+        except Exception as e:
+            print(f"Error in category-based clustering: {e}")
+            print("Falling back to standard clustering")
+            category_mode = False
     
-    # Fit the clusterer
-    cluster_labels = clusterer.fit_predict(embeddings)
-    
-    # Count clusters and noise points
-    n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
-    n_noise = list(cluster_labels).count(-1)
-    
-    print(f"Clustering complete: {n_clusters} clusters formed with {n_noise} noise points")
-    
-    # Organize products into clusters
-    clusters = defaultdict(list)
-    for i, label in enumerate(cluster_labels):
-        if i < len(product_codes):
-            if label >= 0:
-                clusters[f"cluster_{label}"].append(product_codes[i])
+    # Standard clustering if not using categories or if category clustering failed
+    if not category_mode:
+        print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+        
+        # Run HDBSCAN clustering
+        # Note: n_jobs parameter needs to be passed only when metric='precomputed'
+        # or when using the algorithmic core directly
+        hdbscan_params = {
+            'min_cluster_size': min_cluster_size,
+            'min_samples': min_samples,
+            'metric': metric,
+            'cluster_selection_epsilon': cluster_selection_epsilon,
+            'alpha': alpha,
+            'cluster_selection_method': cluster_selection_method,
+            'gen_min_span_tree': True
+        }
+        # Only add n_jobs if using precomputed metrics
+        if metric == 'precomputed':
+            hdbscan_params['n_jobs'] = n_jobs
+        
+        clusterer = hdbscan.HDBSCAN(**hdbscan_params)
+        
+        # Fit the clusterer
+        cluster_labels = clusterer.fit_predict(embeddings)
+        
+        # Count clusters and noise points
+        n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
+        n_noise = list(cluster_labels).count(-1)
+        
+        print(f"Clustering complete: {n_clusters} clusters formed with {n_noise} noise points")
+        
+        # Organize products into clusters
+        clusters = defaultdict(list)
+        for i, label in enumerate(cluster_labels):
+            if i < len(product_codes):
+                if label >= 0:
+                    clusters[f"cluster_{label}"].append(product_codes[i])
     
     # Save clusters to file
     clusters_path = os.path.join(output_dir, "clusters.json")
@@ -151,23 +278,44 @@ def run_improved_clustering(data_dir: Optional[str] = None,
     # Apply CrossEncoder reranking if requested
     if use_reranking:
         print("\nApplying CrossEncoder reranking to refine clusters...")
+        print("DEBUG: About to import refine_clusters module")
         from product_clustering.reranking import refine_clusters
+        print("DEBUG: Successfully imported refine_clusters module")
         
         # Path to clusters.json produced by base clustering
         clusters_path = os.path.join(output_dir, "clusters.json")
+        print(f"DEBUG: Using clusters_path: {clusters_path}")
         
         # Create a subdirectory for refined clusters
         refined_output_dir = os.path.join(output_dir, "refined")
         os.makedirs(refined_output_dir, exist_ok=True)
+        print(f"DEBUG: Created refined output directory: {refined_output_dir}")
         
         # Run refinement
-        refine_clusters(
-            clusters_path=clusters_path,
-            prepared_data_path=prepared_data_path,
-            output_dir=refined_output_dir,
-            model_name=cross_encoder_model,
-            similarity_threshold=similarity_threshold
-        )
+        print("DEBUG: About to call refine_clusters function")
+        try:
+            # In test mode, use the provided test_clusters parameter
+            # If not explicitly set but in test mode, default to 10 clusters
+            test_clusters_param = test_clusters
+            if test_mode and test_clusters_param == 0:
+                test_clusters_param = 10  # Default to 10 clusters when in test mode
+            
+            refine_clusters(
+                clusters_path=clusters_path,
+                prepared_data_path=prepared_data_path,
+                output_dir=refined_output_dir,
+                model_name=cross_encoder_model,
+                similarity_threshold=similarity_threshold,
+                batch_size=cross_encoder_batch_size,
+                rerank_weight=rerank_weight,
+                test_clusters=test_clusters_param,
+                min_cluster_size_for_reranking=min_cluster_size_for_reranking
+            )
+            print("DEBUG: Successfully completed refine_clusters function")
+        except Exception as e:
+            print(f"DEBUG: Error in refine_clusters: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
         
         print(f"CrossEncoder refinement complete. Results saved to {refined_output_dir}")
 
@@ -192,6 +340,8 @@ if __name__ == "__main__":
                         help="CrossEncoder model to use for reranking")
     parser.add_argument("--similarity_threshold", type=float, default=0.5,
                         help="Similarity threshold for CrossEncoder reranking")
+    parser.add_argument("--use_categories", action="store_true",
+                        help="Cluster products by category first (products from different categories will never be in the same cluster)")
     
     args = parser.parse_args()
     

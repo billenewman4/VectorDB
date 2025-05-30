@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def load_usda_mapping(mapping_path: str) -> Dict[str, List[str]]:
     """
-    Load the USDA to product code mapping data.
+    Load the USDA to product code mapping data from the Corrected_mapping.xlsx file.
     
     Args:
         mapping_path: Path to the mapping Excel file
@@ -32,17 +32,39 @@ def load_usda_mapping(mapping_path: str) -> Dict[str, List[str]]:
         # Load the Excel file
         df = pd.read_excel(mapping_path)
         
-        # Create mapping from standardized name to product codes
+        # Create mapping from USDA code to product codes
         mapping = {}
+        
+        # Check if we have the expected distributor columns or a simplified structure
+        distributor_columns = ['Fulton_code', 'Pritzlaff_code', 'Queen_code', 'Moesle_code', 'Anmar_code']
+        has_distributor_columns = any(col in df.columns for col in distributor_columns)
+        
         for _, row in df.iterrows():
-            std_name = row['Standardized Product Name']
-            # Convert product codes to strings and strip any whitespace
-            product_codes = [str(code).strip() for code in str(row['Product Codes']).split(';')]
+            usda_code = str(row['USDA_Code']).strip()
+            
+            # Get all product codes from either distributor columns or product_code column
+            product_codes = []
+            
+            if has_distributor_columns:
+                # Original approach with distributor columns
+                for col in distributor_columns:
+                    if pd.notna(row.get(col)) and str(row.get(col)).strip():
+                        code = str(row.get(col)).strip()
+                        # Strip the -1 or -2 suffix from product codes 
+                        if code.endswith('-1') or code.endswith('-2'):
+                            code = code.rsplit('-', 1)[0]
+                        product_codes.append(code)
+            elif 'product_code' in df.columns:
+                # Alternative approach with direct product_code column
+                if pd.notna(row.get('product_code')) and str(row.get('product_code')).strip():
+                    code = str(row.get('product_code')).strip()
+                    product_codes.append(code)
+            
             # Filter out any empty strings
             product_codes = [code for code in product_codes if code]
             
-            if std_name and product_codes:
-                mapping[std_name] = product_codes
+            if usda_code and product_codes:
+                mapping[usda_code] = product_codes
                 
         return mapping
     
@@ -156,24 +178,37 @@ def analyze_usda_grouping_alignment(
         if 'product_code' in row and 'product_description' in row:
             product_descriptions[str(row['product_code'])] = row['product_description']
     
-    # Analyze each USDA grouping
+    # Initialize result structure
     results = {
-        'grouping_analysis': [],
         'summary': {
-            'total_usda_groups': 0,
+            'total_usda_groups': len(usda_mapping),
             'fully_aligned_groups': 0,
             'partially_aligned_groups': 0,
             'misaligned_groups': 0,
             'empty_groups': 0,
-            'total_products_analyzed': 0,
+            'total_products_analyzed': 0,  # We'll count actual products
             'products_in_same_cluster': 0,
             'products_in_different_clusters': 0,
             'products_not_clustered': 0,
             'reason_no_category': 0,
             'reason_refinement': 0,
             'reason_different_cluster': 0
-        }
+        },
+        'grouping_analysis': [],  # Add this key for storing detailed group analysis
+        'groups': {}
     }
+    
+    # Count all individual products across all USDA groups
+    all_products = []
+    for usda_code, product_codes in usda_mapping.items():
+        all_products.extend(product_codes)
+    
+    # Update total products analyzed - count unique products to avoid duplicates
+    results['summary']['total_products_analyzed'] = len(set(all_products))
+    
+    print(f"Total unique products in USDA mapping: {results['summary']['total_products_analyzed']}")
+    print(f"Total products including duplicates: {len(all_products)}")
+    print(f"Number of USDA categories: {len(usda_mapping)}")
     
     print(f"Analyzing alignment for {len(usda_mapping)} USDA product groupings...")
     
@@ -236,7 +271,25 @@ def analyze_usda_grouping_alignment(
             status = "PARTIALLY_ALIGNED"
             results['summary']['partially_aligned_groups'] += 1
         else:
+            status = "MISALIGNED"
             results['summary']['misaligned_groups'] += 1
+            
+        # Update product-level summary stats - count actual products, not just groups
+        results['summary']['products_in_same_cluster'] += in_dominant_cluster
+        
+        # Count products in non-dominant clusters
+        products_in_other_clusters = 0
+        for cluster_id, products in cluster_assignments.items():
+            if cluster_id != dominant_cluster:
+                products_in_other_clusters += len(products)
+        
+        results['summary']['products_in_different_clusters'] += products_in_other_clusters
+        results['summary']['products_not_clustered'] += len(not_clustered)
+        
+        # Track reasons for non-clustering at the product level
+        results['summary']['reason_no_category'] += len(no_category_products)
+        results['summary']['reason_refinement'] += len(refinement_removed)
+        results['summary']['reason_different_cluster'] += len(different_cluster)
         
         # Record detailed information for this grouping
         grouping_info = {
@@ -295,21 +348,21 @@ def generate_usda_mapping_report(analysis_result: Dict[str, Any]) -> str:
 ## Summary
 
 - **Total USDA Groups Analyzed**: {summary['total_usda_groups']}
-  - Fully Aligned: {summary['fully_aligned_groups']} ({summary['fully_aligned_groups'] / summary['total_usda_groups'] * 100:.1f}%)
-  - Partially Aligned: {summary['partially_aligned_groups']} ({summary['partially_aligned_groups'] / summary['total_usda_groups'] * 100:.1f}%)
-  - Misaligned: {summary['misaligned_groups']} ({summary['misaligned_groups'] / summary['total_usda_groups'] * 100:.1f}%)
+  - Fully Aligned: {summary['fully_aligned_groups']} ({(summary['fully_aligned_groups'] / summary['total_usda_groups'] * 100) if summary['total_usda_groups'] > 0 else 0:.1f}%)
+  - Partially Aligned: {summary['partially_aligned_groups']} ({(summary['partially_aligned_groups'] / summary['total_usda_groups'] * 100) if summary['total_usda_groups'] > 0 else 0:.1f}%)
+  - Misaligned: {summary['misaligned_groups']} ({(summary['misaligned_groups'] / summary['total_usda_groups'] * 100) if summary['total_usda_groups'] > 0 else 0:.1f}%)
   - Empty (No products found): {summary['empty_groups']}
 
-- **Product Distribution**:
+- **Product Distribution** (Individual Products, not Groups):
   - Total Products Analyzed: {summary['total_products_analyzed']}
-  - Products in Same Cluster: {summary['products_in_same_cluster']} ({summary.get('percent_in_same_cluster', 0):.1f}%)
-  - Products in Different Clusters: {summary['products_in_different_clusters']} ({summary.get('percent_in_different_clusters', 0):.1f}%)
-  - Products Not Clustered: {summary['products_not_clustered']} ({summary.get('percent_not_clustered', 0):.1f}%)
+  - Products in Same Cluster as their Group: {summary['products_in_same_cluster']} ({(summary['products_in_same_cluster'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
+  - Products in Different Clusters: {summary['products_in_different_clusters']} ({(summary['products_in_different_clusters'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
+  - Products Not Found in Any Cluster: {summary['products_not_clustered']} ({(summary['products_not_clustered'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
 
 - **Reasons for Non-Clustering**:
-  - No Category Description: {summary['reason_no_category']} ({summary['reason_no_category'] / summary['products_not_clustered'] * 100:.1f}% of non-clustered)
-  - Thrown Out During Refinement: {summary['reason_refinement']} ({summary['reason_refinement'] / summary['products_not_clustered'] * 100:.1f}% of non-clustered)
-  - Put in Different Cluster: {summary['reason_different_cluster']} ({summary['reason_different_cluster'] / summary['products_not_clustered'] * 100:.1f}% of non-clustered)
+  - No Category Description: {summary['reason_no_category']} ({(summary['reason_no_category'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
+  - Thrown Out During Refinement: {summary['reason_refinement']} ({(summary['reason_refinement'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
+  - Put in Different Cluster: {summary['reason_different_cluster']} ({(summary['reason_different_cluster'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
 
 ## Detailed Analysis
 
@@ -402,7 +455,7 @@ def main():
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     if not args.mapping_path:
-        args.mapping_path = os.path.join(project_root, "data", "CorrectMapping", "product_mapping_semantic.xlsx")
+        args.mapping_path = os.path.join(project_root, "Source_data", "Actuals", "Corrected_mapping.xlsx")
     
     if not args.clusters_path:
         # Default to refined category clusters
