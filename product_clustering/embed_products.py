@@ -23,7 +23,8 @@ def embed_products(df: pd.DataFrame,
                   text_col: str = 'clustering_description',
                   embedding_type: str = 'sentence-transformer',
                   model_name: Optional[str] = None,
-                  batch_size: int = 100) -> Tuple[np.ndarray, List[str]]:
+                  batch_size: int = 100,
+                  normalize_embeddings: bool = True) -> Tuple[np.ndarray, List[str]]:
     """
     Generate embeddings for product descriptions using existing infrastructure.
     
@@ -33,6 +34,7 @@ def embed_products(df: pd.DataFrame,
         embedding_type: Type of embeddings to use ('sentence-transformer' or 'openai')
         model_name: Name of specific model to use
         batch_size: Batch size for embedding generation
+        normalize_embeddings: Whether to normalize embeddings to unit length
         
     Returns:
         Tuple of (embeddings array, product_codes list)
@@ -111,6 +113,17 @@ def embed_products(df: pd.DataFrame,
     
     # Convert to numpy array for clustering
     embeddings_array = np.array(embeddings)
+    
+    # Normalize embeddings to unit length if requested
+    if normalize_embeddings:
+        print("Normalizing embeddings to unit length...")
+        # Compute L2 norm (Euclidean norm) of each embedding vector
+        norms = np.linalg.norm(embeddings_array, axis=1, keepdims=True)
+        # Avoid division by zero for zero vectors
+        norms[norms == 0] = 1.0
+        # Normalize by dividing by the L2 norm
+        embeddings_array = embeddings_array / norms
+        print("Embeddings normalized successfully")
     
     print(f"Generated embeddings with shape: {embeddings_array.shape}")
     return embeddings_array, product_codes

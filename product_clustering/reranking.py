@@ -24,7 +24,8 @@ def refine_clusters(
     model_name: str = 'cross-encoder/stsb-roberta-base',
     similarity_threshold: float = 0.5,
     batch_size: int = 32,
-    max_pairs_per_cluster: int = 1000
+    max_pairs_per_cluster: int = 1000,
+    rerank_weight: float = 0.5
 ) -> Dict[str, List[str]]:
     """
     print("DEBUG RERANKING START: Function entered")
@@ -38,6 +39,7 @@ def refine_clusters(
         similarity_threshold: Minimum similarity threshold to keep product in cluster
         batch_size: Batch size for CrossEncoder predictions
         max_pairs_per_cluster: Maximum number of pairs to evaluate per cluster
+        rerank_weight: Weight between embeddings and cross-encoder (0=only embeddings, 1=only cross-encoder)
         
     Returns:
         Dictionary mapping cluster IDs to lists of product codes
