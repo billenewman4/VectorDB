@@ -474,7 +474,7 @@ def process_clusters_with_llm(
     
     return results
 
-def generate_output_csv(match_results: Dict[str, List[List[str]]], transaction_df: pd.DataFrame, output_path: str):
+def generate_output_csv(match_results: Dict[str, List[List[str]]], transaction_df: pd.DataFrame, output_path: str, append_mode: bool = True):
     """
     Generate CSV output from match results.
     
@@ -556,52 +556,68 @@ def generate_output_csv(match_results: Dict[str, List[List[str]]], transaction_d
     
     # Save to CSV - append to existing file if it exists
     import os
-    if os.path.exists(output_path):
-        # Read existing file to get current match IDs
-        existing_df = pd.read_csv(output_path)
-        
-        # Find the highest match ID number to continue the sequence
-        if not existing_df.empty and 'Match_ID' in existing_df.columns:
-            existing_ids = existing_df['Match_ID'].tolist()
-            max_id = 0
-            for id_str in existing_ids:
-                if id_str.startswith('MATCH_LLM_'):
-                    try:
-                        id_num = int(id_str.split('_')[-1])
-                        max_id = max(max_id, id_num)
-                    except ValueError:
-                        pass
+    if append_mode and os.path.exists(output_path):
+        try:
+            # Read existing file
+            existing_df = pd.read_csv(output_path)
             
-            # Update match IDs in the new data to continue the sequence
-            if max_id > 0:
-                # Create a mapping of original match IDs to new match IDs
-                match_id_mapping = {}
+            # Find the highest match ID number to continue the sequence
+            if not existing_df.empty and 'Match_ID' in existing_df.columns:
+                existing_ids = existing_df['Match_ID'].tolist()
+                max_id = 0
+                for id_str in existing_ids:
+                    if id_str.startswith('MATCH_LLM_'):
+                        try:
+                            id_num = int(id_str.split('_')[-1])
+                            max_id = max(max_id, id_num)
+                        except ValueError:
+                            pass
+                            
+                # Ensure our match groups remain consistent by organizing them first
                 next_id = max_id + 1
                 
-                # First pass: create the mapping
+                # Get unique cluster IDs in our new data
+                clusters_in_new_data = set(row['Cluster_ID'] for row in output_rows)
+                
+                # Build a dictionary to track existing match groups by cluster_id and sku_ids
+                existing_cluster_groups = {}
+                for cluster_id in clusters_in_new_data:
+                    cluster_df = existing_df[existing_df['Cluster_ID'] == cluster_id]
+                    if not cluster_df.empty:
+                        # Delete any existing entries for this cluster
+                        existing_df = existing_df[existing_df['Cluster_ID'] != cluster_id]
+                
+                # Renumber our match groups to continue the sequence
+                match_group_mapping = {}
                 for row in output_rows:
                     original_id = row['Match_ID']
-                    if original_id not in match_id_mapping:
-                        match_id_mapping[original_id] = f"MATCH_LLM_{next_id:04d}"
+                    if original_id not in match_group_mapping:
+                        match_group_mapping[original_id] = f"MATCH_LLM_{next_id:04d}"
                         next_id += 1
-                
-                # Second pass: apply the mapping
+                        
+                # Apply new IDs consistently to each match group
                 for row in output_rows:
-                    row['Match_ID'] = match_id_mapping[row['Match_ID']]
+                    row['Match_ID'] = match_group_mapping[row['Match_ID']]
+                
                 # Recreate the DataFrame with updated IDs
                 output_df = pd.DataFrame(output_rows)
-        
-        # Combine with existing data
-        combined_df = pd.concat([existing_df, output_df], ignore_index=True)
-        
-        # Remove duplicates based on SKU_ID and Match_Group_Name
-        combined_df = combined_df.drop_duplicates(subset=['SKU_ID', 'Match_Group_Name'])
-        
-        # Write the combined data
-        combined_df.to_csv(output_path, index=False)
-        print(f"\nAppended new matches to existing file: {output_path}")
+            
+            # Combine with existing data (after removing any clusters we're updating)
+            combined_df = pd.concat([existing_df, output_df], ignore_index=True)
+            
+            # Remove duplicates based on SKU_ID (keep the newest entry)
+            combined_df = combined_df.drop_duplicates(subset=['SKU_ID'], keep='last')
+            
+            # Write the combined data
+            combined_df.to_csv(output_path, index=False)
+            print(f"\nAppended new matches to existing file: {output_path}")
+        except Exception as e:
+            print(f"Error processing existing file: {str(e)}")
+            print("Creating a new file instead.")
+            output_df.to_csv(output_path, index=False)
+            print(f"\nCreated new output file: {output_path}")
     else:
-        # Create new file if it doesn't exist
+        # Create new file
         output_df.to_csv(output_path, index=False)
         print(f"\nCreated new output file: {output_path}")
     
@@ -615,27 +631,13 @@ def generate_output_csv(match_results: Dict[str, List[List[str]]], transaction_d
 
 def main():
     parser = argparse.ArgumentParser(description='Analyze product clusters to find exact matches using LLM')
-    
-    parser.add_argument('--clusters', type=str, 
-                        default='/Users/eshantarneja/Documents/Git/VectorDB/product_clustering/data/refined_clustering/refined_clusters.json',
-                        help='Path to refined_clusters.json')
-    
-    parser.add_argument('--transaction_data', type=str, 
-                        default='/Users/eshantarneja/Documents/Git/VectorDB/Source_data/Actuals/Transaction_Report_Actual.xlsx',
-                        help='Path to transaction data Excel file')
-    
-    parser.add_argument('--output', type=str, 
-                        default='/Users/eshantarneja/Documents/Git/VectorDB/product_clustering/Analysis_Scripts/llm_exact_matches.csv',
-                        help='Path to output CSV file')
-    
-    parser.add_argument('--sample_size', type=int, default=SAMPLE_SIZE,
-                        help='Number of clusters to sample for testing')
-    
-    parser.add_argument('--model', type=str, default=DEFAULT_MODEL,
-                        help='LLM model to use')
-    
-    parser.add_argument('--cluster_id', type=str,
-                        help='Specific cluster ID to test (overrides sample_size)')
+    parser.add_argument('--cluster_path', default='product_clustering/data/refined_clustering/refined_clusters.json', help='Path to JSON file with refined clusters')
+    parser.add_argument('--transaction_path', default='Source_data/Actuals/Transaction_Report_Actual.xlsx', help='Path to transaction data Excel file')
+    parser.add_argument('--output', default='product_clustering/Analysis_Scripts/llm_exact_matches.csv', help='Output path for exact matches CSV')
+    parser.add_argument('--sample_size', type=int, default=5, help='Number of clusters to sample')
+    parser.add_argument('--model', default=DEFAULT_MODEL, help='LLM model to use')
+    parser.add_argument('--cluster_id', type=str, help='Specific cluster ID to analyze (overrides sample_size)')
+    parser.add_argument('--overwrite', action='store_true', help='Overwrite existing output file instead of appending')
     
     args = parser.parse_args()
 
@@ -646,12 +648,11 @@ def main():
 
     # Load data
     logger.info("Loading cluster data...")
-    all_clusters = load_clusters(args.clusters)
-    
+    all_clusters = load_clusters(args.cluster_path)
     logger.info("Loading transaction data...")
-    transaction_df = load_transaction_data(args.transaction_data)
+    transaction_df = load_transaction_data(args.transaction_path)
     
-    if len(all_clusters) == 0 or len(transaction_df) == 0:
+    if not all_clusters or transaction_df is None:
         logger.error("Failed to load required data. Exiting.")
         return
     
@@ -675,7 +676,7 @@ def main():
     
     # Generate output
     logger.info("Generating output CSV...")
-    generate_output_csv(match_results, transaction_df, args.output)
+    generate_output_csv(match_results, transaction_df, args.output, not args.overwrite)
 
 if __name__ == "__main__":
     main()

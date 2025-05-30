@@ -171,6 +171,34 @@ python product_clustering/Analysis_Scripts/exact_match_analyzer.py \
   --output custom_output.csv
 ```
 
+### Recent Improvements
+
+#### Model Upgrade
+We've upgraded the LLM model from GPT-3.5 Turbo to GPT-4o Mini, which provides:
+- Better reasoning capabilities while remaining cost-effective
+- More nuanced understanding of product specifications
+- Improved ability to distinguish between similar but distinct products
+
+#### Enhanced Prompt Engineering
+- Added more balanced examples of matches and non-matches
+- Clarified criteria for matching, emphasizing that capitalization and punctuation differences should not prevent matches
+- Ensured company names don't bias the matching process
+
+#### Technical Improvements
+- Fixed CSV output handling to properly append new results without overwriting
+- Ensured match groups maintain consistent IDs throughout the process
+- Implemented proper deduplication to avoid redundant entries
+
+#### Results
+The improved system now finds more precise match groups:
+
+1. **Short Rib Cluster**: Found 11 matching products that are essentially the same product with different vendor codes
+
+2. **Beef Tenderloin Cluster**: Found 7 distinct match groups based on:
+   - Grade differences (Choice, Prime, Select)
+   - Preparation method (PSMO vs. SS)
+   - Size specifications (5up, 6/7up)
+
 ### Next Steps
 
 Based on our analysis results, we recommend the following next steps:
