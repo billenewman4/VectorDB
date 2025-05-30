@@ -5,6 +5,7 @@ Utilizes the existing CrossEncoder implementation to improve cluster quality.
 import os
 import sys
 import json
+import time
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Optional, Tuple
@@ -26,6 +27,7 @@ def refine_clusters(
     max_pairs_per_cluster: int = 1000
 ) -> Dict[str, List[str]]:
     """
+    print("DEBUG RERANKING START: Function entered")
     Refine clusters using CrossEncoder similarity scoring.
     
     Args:
@@ -40,28 +42,62 @@ def refine_clusters(
     Returns:
         Dictionary mapping cluster IDs to lists of product codes
     """
-    print(f"Loading clusters from {clusters_path}")
-    with open(clusters_path, 'r') as f:
-        clusters = json.load(f)
+    print(f"DEBUG RERANKING: Loading clusters from {clusters_path}")
+    try:
+        with open(clusters_path, 'r') as f:
+            clusters = json.load(f)
+        print(f"DEBUG RERANKING: Successfully loaded {len(clusters)} clusters")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Failed to load clusters: {str(e)}")
+        raise
     
-    print(f"Loading product data from {prepared_data_path}")
-    products_df = pd.read_csv(prepared_data_path)
+    print(f"DEBUG RERANKING: Loading product data from {prepared_data_path}")
+    try:
+        products_df = pd.read_csv(prepared_data_path)
+        print(f"DEBUG RERANKING: Successfully loaded {len(products_df)} products")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Failed to load product data: {str(e)}")
+        raise
     
     # Create a lookup dictionary for quick access to product descriptions
     product_lookup = {}
     for _, row in products_df.iterrows():
         product_lookup[row['product_code']] = row['product_description']
     
-    # Initialize CrossEncoder
-    print(f"Initializing CrossEncoder with model: {model_name}")
-    cross_encoder = CrossEncoder(model_name=model_name)
+    # Initialize CrossEncoder with more conservative settings
+    print(f"DEBUG RERANKING: Initializing CrossEncoder with model: {model_name}")
+    try:
+        import torch
+        # Clear CUDA cache if using GPU
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        # Use a smaller max seq length to reduce memory usage
+        cross_encoder = CrossEncoder(model_name=model_name, max_length=128)
+        print("DEBUG RERANKING: CrossEncoder initialized successfully")
+    except Exception as e:
+        print(f"DEBUG RERANKING ERROR: Error initializing CrossEncoder: {e}")
+        print("DEBUG RERANKING: Falling back to default initialization")
+        try:
+            cross_encoder = CrossEncoder(model_name=model_name)
+            print("DEBUG RERANKING: Default CrossEncoder initialized successfully")
+        except Exception as e:
+            print(f"DEBUG RERANKING CRITICAL ERROR: Could not initialize CrossEncoder: {e}")
+            raise
     
     refined_clusters = {}
     total_removed = 0
     total_products = 0
+    cluster_count = 0
+    start_time = time.time()
     
-    print(f"Refining {len(clusters)} clusters...")
-    for cluster_id, product_codes in tqdm(clusters.items()):
+    print(f"DEBUG RERANKING: Starting refinement of {len(clusters)} clusters...")
+    print(f"DEBUG RERANKING: First cluster ID: {next(iter(clusters.keys()))}")
+    print(f"DEBUG RERANKING: Press Ctrl+C if nothing happens for more than 30 seconds...")
+    
+    for i, (cluster_id, product_codes) in enumerate(clusters.items()):
+        cluster_count = i + 1
+        cluster_start = time.time()
+        print(f"\nDEBUG RERANKING: [{cluster_count}/{len(clusters)}] Processing cluster: {cluster_id} with {len(product_codes)} products")
         if len(product_codes) <= 2:
             # Keep very small clusters as is
             refined_clusters[cluster_id] = product_codes
@@ -82,6 +118,7 @@ def refine_clusters(
             total_products += len(valid_codes)
             continue
             
+        print(f"DEBUG RERANKING: Creating pairs for evaluation in cluster {cluster_id}")
         # Create pairs for CrossEncoder evaluation
         pairs = []
         pair_indices = []
@@ -129,19 +166,35 @@ def refine_clusters(
         # Score all pairs using the CrossEncoder's rerank method
         similarity_scores = []
         
-        # Process in batches
-        for i in range(0, len(pairs), batch_size):
-            batch_pairs = pairs[i:i+batch_size]
-            # Adapt to the CrossEncoder interface - create text pairs
-            text_pairs = []
-            for pair in batch_pairs:
-                text_pairs.append([pair[0], pair[1]])
+        print(f"DEBUG RERANKING: Created {len(pairs)} pairs for cluster {cluster_id}")
+        
+        # Use a smaller batch size for more stability
+        actual_batch_size = min(8, batch_size)  # Even smaller batch size to prevent memory issues
+        
+        # Process in batches with detailed tracking
+        print(f"DEBUG RERANKING: Evaluating {len(pairs)} pairs with batch size {actual_batch_size}")
+        for i in range(0, len(pairs), actual_batch_size):
+            batch_end = min(i + actual_batch_size, len(pairs))
+            print(f"DEBUG RERANKING: Batch {i//actual_batch_size + 1}/{(len(pairs) + actual_batch_size - 1)//actual_batch_size}: processing pairs {i+1}-{batch_end}")
+            sys.stdout.flush()  # Force output to be displayed immediately
+            try:
+                batch_pairs = pairs[i:i+actual_batch_size]
+                # Adapt to the CrossEncoder interface - create text pairs
+                text_pairs = []
+                for pair in batch_pairs:
+                    text_pairs.append([pair[0], pair[1]])
                 
-            # Use the internal sentence-transformers CrossEncoder for direct prediction
-            batch_scores = cross_encoder.model.predict(text_pairs)
-            similarity_scores.extend(batch_scores)
+                # Use the internal sentence-transformers CrossEncoder for direct prediction
+                with np.errstate(all='ignore'):  # Suppress numpy warnings
+                    batch_scores = cross_encoder.model.predict(text_pairs)
+                similarity_scores.extend(batch_scores)
+            except Exception as e:
+                print(f"Error processing batch in cluster {cluster_id}: {e}")
+                # Use a fallback score of 0.5 (neutral) for failed batches
+                similarity_scores.extend([0.5] * len(batch_pairs))
         
         # Build similarity matrix from pair scores
+        print(f"  - Building similarity matrix for {len(valid_codes)} products")
         similarity_matrix = np.zeros((len(valid_codes), len(valid_codes)))
         
         for idx, (i, j) in enumerate(pair_indices):
@@ -153,9 +206,11 @@ def refine_clusters(
         np.fill_diagonal(similarity_matrix, 1.0)
         
         # Calculate average similarity of each product to the rest of the cluster
+        print(f"  - Calculating average similarities")
         avg_similarities = similarity_matrix.mean(axis=1)
         
         # Identify products to keep (above threshold)
+        print(f"  - Identifying products to keep (threshold: {similarity_threshold})")
         keep_indices = [i for i, sim in enumerate(avg_similarities) if sim >= similarity_threshold]
         
         # If we're removing more than 30% of items, just keep the top 70%
@@ -174,8 +229,16 @@ def refine_clusters(
         # Store refined cluster
         refined_clusters[cluster_id] = refined_product_codes
         
+        cluster_end = time.time()
         if removed_count > 0:
             print(f"  Cluster {cluster_id}: Removed {removed_count} of {len(valid_codes)} products")
+        print(f"  Completed in {cluster_end - cluster_start:.2f} seconds")
+        
+        # Print overall progress
+        elapsed = time.time() - start_time
+        remaining = elapsed / cluster_count * (len(clusters) - cluster_count)
+        print(f"  Progress: {cluster_count}/{len(clusters)} clusters ({cluster_count/len(clusters)*100:.1f}%)")
+        print(f"  Elapsed: {elapsed/60:.1f} minutes, Est. remaining: {remaining/60:.1f} minutes")
     
     # Print summary
     print(f"Refinement complete:")

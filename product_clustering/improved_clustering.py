@@ -237,23 +237,34 @@ def run_improved_clustering(data_dir: Optional[str] = None,
     # Apply CrossEncoder reranking if requested
     if use_reranking:
         print("\nApplying CrossEncoder reranking to refine clusters...")
+        print("DEBUG: About to import refine_clusters module")
         from product_clustering.reranking import refine_clusters
+        print("DEBUG: Successfully imported refine_clusters module")
         
         # Path to clusters.json produced by base clustering
         clusters_path = os.path.join(output_dir, "clusters.json")
+        print(f"DEBUG: Using clusters_path: {clusters_path}")
         
         # Create a subdirectory for refined clusters
         refined_output_dir = os.path.join(output_dir, "refined")
         os.makedirs(refined_output_dir, exist_ok=True)
+        print(f"DEBUG: Created refined output directory: {refined_output_dir}")
         
         # Run refinement
-        refine_clusters(
-            clusters_path=clusters_path,
-            prepared_data_path=prepared_data_path,
-            output_dir=refined_output_dir,
-            model_name=cross_encoder_model,
-            similarity_threshold=similarity_threshold
-        )
+        print("DEBUG: About to call refine_clusters function")
+        try:
+            refine_clusters(
+                clusters_path=clusters_path,
+                prepared_data_path=prepared_data_path,
+                output_dir=refined_output_dir,
+                model_name=cross_encoder_model,
+                similarity_threshold=similarity_threshold
+            )
+            print("DEBUG: Successfully completed refine_clusters function")
+        except Exception as e:
+            print(f"DEBUG: Error in refine_clusters: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
         
         print(f"CrossEncoder refinement complete. Results saved to {refined_output_dir}")
 

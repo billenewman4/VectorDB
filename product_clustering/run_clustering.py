@@ -321,6 +321,7 @@ def main():
             args.rerank,
             args.cross_encoder,
             args.similarity_threshold,
+            not args.no_categories,  # This maps --no_categories flag to the use_categories parameter
             args.force
         )
     
