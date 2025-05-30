@@ -140,26 +140,27 @@ def build_inverse_cluster_map(clusters: Dict[str, List[str]]) -> Dict[str, str]:
             product_to_cluster[product] = cluster_id
     return product_to_cluster
 
-def analyze_usda_grouping_alignment(
-    clusters: Dict[str, List[str]],
-    usda_mapping: Dict[str, List[str]],
-    prepared_df: pd.DataFrame,
-    category_products: Optional[Dict[str, Dict[str, List[str]]]] = None
-) -> Dict[str, Any]:
+def analyze_usda_mapping(clusters, usda_mapping, prepared_df, category_products=None, original_clusters=None):
     """
-    Analyze how well clusters align with the expected USDA groupings.
+    Analyze how well clusters align with USDA product groupings.
     
     Args:
-        clusters: Dictionary of clusters
+        clusters: Dictionary of refined clusters (after cross-encoder)
         usda_mapping: Dictionary mapping standardized names to product codes
         prepared_df: DataFrame containing all prepared products
         category_products: Optional dictionary mapping categories to product codes
+        original_clusters: Optional dictionary of original clusters (before cross-encoder)
         
     Returns:
         Dictionary containing the analysis results
     """
-    # Build product code to cluster map for quick lookups
-    product_to_cluster = build_inverse_cluster_map(clusters)
+    # Build product code to cluster map for quick lookups (for refined clusters)
+    product_to_refined_cluster = build_inverse_cluster_map(clusters)
+    
+    # Build product code to original cluster map if available
+    product_to_original_cluster = {}
+    if original_clusters:
+        product_to_original_cluster = build_inverse_cluster_map(original_clusters)
     
     # Build product code to category map (if available)
     product_to_category = {}
@@ -178,35 +179,46 @@ def analyze_usda_grouping_alignment(
         if 'product_code' in row and 'product_description' in row:
             product_descriptions[str(row['product_code'])] = row['product_description']
     
-    # Initialize result structure
+    # Initialize result structure with enhanced diagnostics
     results = {
-        'summary': {
-            'total_usda_groups': len(usda_mapping),
-            'fully_aligned_groups': 0,
-            'partially_aligned_groups': 0,
-            'misaligned_groups': 0,
-            'empty_groups': 0,
-            'total_products_analyzed': 0,  # We'll count actual products
-            'products_in_same_cluster': 0,
-            'products_in_different_clusters': 0,
-            'products_not_clustered': 0,
-            'reason_no_category': 0,
-            'reason_refinement': 0,
-            'reason_different_cluster': 0
+        "summary": {
+            "total_usda_groups": len(usda_mapping),
+            "fully_aligned_groups": 0,
+            "partially_aligned_groups": 0,
+            "misaligned_groups": 0,
+            "empty_groups": 0,
+            "total_products_analyzed": 0,
+            "products_in_same_cluster": 0,
+            "products_in_different_clusters": 0,
+            "products_not_clustered": 0,
+            # Original reason categories (kept for backward compatibility)
+            "reason_no_category": 0,
+            "reason_refinement": 0,
+            "reason_different_cluster": 0,
+            # Enhanced diagnostic categories
+            "in_original_not_refined": 0,  # Present in original clusters but removed by refinement
+            "never_prepared": 0,          # Not in the prepared data
+            "missing_from_all_clusters": 0 # Not in any cluster stage
         },
-        'grouping_analysis': [],  # Add this key for storing detailed group analysis
-        'groups': {}
+        "grouping_analysis": [],  # Add this key for storing detailed group analysis
+        "groups": {}
     }
     
-    # Count all individual products across all USDA groups
+    # Count all individual products across all USDA groups that actually exist in our dataset
     all_products = []
+    valid_usda_products = []
+    
     for usda_code, product_codes in usda_mapping.items():
-        all_products.extend(product_codes)
+        # Only include products that exist in our prepared data
+        existing_products = [code for code in product_codes if code in product_descriptions]
+        all_products.extend(product_codes)  # All products from mapping (for debugging)
+        valid_usda_products.extend(existing_products)  # Only valid products
     
-    # Update total products analyzed - count unique products to avoid duplicates
-    results['summary']['total_products_analyzed'] = len(set(all_products))
+    # Update total products analyzed - count unique valid products to avoid duplicates
+    results['summary']['total_products_analyzed'] = len(set(valid_usda_products))
     
-    print(f"Total unique products in USDA mapping: {results['summary']['total_products_analyzed']}")
+    print(f"Total unique products in USDA mapping: {len(set(all_products))}")
+    print(f"Valid unique products in dataset: {results['summary']['total_products_analyzed']}")
     print(f"Total products including duplicates: {len(all_products)}")
     print(f"Number of USDA categories: {len(usda_mapping)}")
     
@@ -227,20 +239,36 @@ def analyze_usda_grouping_alignment(
         refinement_removed = []
         different_cluster = []
         
+        # Initialize detailed tracking categories
+        in_original_not_refined = []
+        missing_from_all_clusters = []
+        never_prepared = []
+        
         for product in existing_products:
-            if product in product_to_cluster:
-                cluster_id = product_to_cluster[product]
+            # Check if product is in refined clusters
+            if product in product_to_refined_cluster:
+                cluster_id = product_to_refined_cluster[product]
                 if cluster_id not in cluster_assignments:
                     cluster_assignments[cluster_id] = []
                 cluster_assignments[cluster_id].append(product)
             else:
+                # Product not in refined clusters, check where it was filtered out
                 not_clustered.append(product)
                 
-                # Analyze why the product wasn't clustered
-                if product not in product_to_category:
-                    no_category_products.append(product)
-                elif product_to_category.get(product, "").endswith("(noise)"):
-                    refinement_removed.append(product)
+                # Check if it was in original clusters but removed by refinement
+                if original_clusters and product in product_to_original_cluster:
+                    in_original_not_refined.append(product)
+                    refinement_removed.append(product)  # For backward compatibility
+                # Check if it was never processed into the prepared data
+                elif product not in product_descriptions:
+                    never_prepared.append(product)
+                    no_category_products.append(product)  # Map to traditional category
+                # Check if it's actually in the dataset but missing from clusters
+                # This is likely due to not having a category description
+                elif product in product_descriptions:
+                    missing_from_all_clusters.append(product)
+                    no_category_products.append(product)  # Map to traditional category
+                # If we can't determine the reason, mark as different cluster
                 else:
                     different_cluster.append(product)
         
@@ -287,9 +315,15 @@ def analyze_usda_grouping_alignment(
         results['summary']['products_not_clustered'] += len(not_clustered)
         
         # Track reasons for non-clustering at the product level
+        # Update traditional reason categories (for backward compatibility)
         results['summary']['reason_no_category'] += len(no_category_products)
         results['summary']['reason_refinement'] += len(refinement_removed)
         results['summary']['reason_different_cluster'] += len(different_cluster)
+        
+        # Update enhanced diagnostic categories
+        results['summary']['in_original_not_refined'] += len(in_original_not_refined)
+        results['summary']['never_prepared'] += len(never_prepared)
+        results['summary']['missing_from_all_clusters'] += len(missing_from_all_clusters)
         
         # Record detailed information for this grouping
         grouping_info = {
@@ -314,7 +348,7 @@ def analyze_usda_grouping_alignment(
         
         # Update summary statistics
         results['summary']['total_usda_groups'] += 1
-        results['summary']['total_products_analyzed'] += total_products
+        # These group-level metrics are aggregated for detailed analysis
         results['summary']['products_in_same_cluster'] += in_dominant_cluster
         results['summary']['products_in_different_clusters'] += (clustered_products - in_dominant_cluster)
         results['summary']['products_not_clustered'] += len(not_clustered)
@@ -322,21 +356,105 @@ def analyze_usda_grouping_alignment(
         results['summary']['reason_refinement'] += len(refinement_removed)
         results['summary']['reason_different_cluster'] += len(different_cluster)
     
-    # Calculate overall percentages
-    total_products = results['summary']['total_products_analyzed']
-    if total_products > 0:
-        results['summary']['percent_in_same_cluster'] = results['summary']['products_in_same_cluster'] / total_products * 100
-        results['summary']['percent_in_different_clusters'] = results['summary']['products_in_different_clusters'] / total_products * 100
-        results['summary']['percent_not_clustered'] = results['summary']['products_not_clustered'] / total_products * 100
+    # Track unique products in each category to avoid double-counting
+    unique_products_in_same_cluster = set()
+    unique_products_in_different_clusters = set()
+    unique_products_not_clustered = set()
+    
+    # Go through each grouping analysis to collect unique products
+    for grouping in results['grouping_analysis']:
+        # Get products in the dominant cluster
+        dominant_cluster = grouping.get('dominant_cluster')
+        if dominant_cluster and dominant_cluster in grouping['cluster_assignments']:
+            for product in grouping['cluster_assignments'][dominant_cluster]:
+                unique_products_in_same_cluster.add(product)
+        
+        # Get products in different clusters
+        for cluster_id, products in grouping['cluster_assignments'].items():
+            if cluster_id != dominant_cluster:
+                for product in products:
+                    unique_products_in_different_clusters.add(product)
+        
+        # Get non-clustered products
+        for product in grouping['not_clustered']:
+            unique_products_not_clustered.add(product)
+    
+    # Add unique product counts to summary
+    results['summary']['unique_products_in_same_cluster'] = len(unique_products_in_same_cluster)
+    results['summary']['unique_products_in_different_clusters'] = len(unique_products_in_different_clusters)
+    results['summary']['unique_products_not_clustered'] = len(unique_products_not_clustered)
     
     return results
+
+def export_detailed_csv(clusters, usda_mapping, prepared_df, output_path):
+    """
+    Export a detailed CSV file with product details, cluster assignments, and USDA codes.
+    
+    Args:
+        clusters: Dictionary mapping cluster IDs to lists of product codes
+        usda_mapping: Dictionary mapping USDA codes to lists of product codes
+        prepared_df: DataFrame with product details
+        output_path: Path to save the CSV file
+    """
+    # Import abbreviation expansion functionality
+    from src.abbreviation_translator import expand_abbreviations
+    
+    # Create inverse mappings for quick lookups
+    product_to_cluster = {}
+    for cluster_id, products in clusters.items():
+        for product in products:
+            product_to_cluster[product] = cluster_id
+    
+    # Create reverse mapping from product to USDA code
+    product_to_usda = {}
+    for usda_code, products in usda_mapping.items():
+        for product in products:
+            product_to_usda[product] = usda_code
+    
+    # Create a list to store the data
+    csv_data = []
+    
+    # Process each product in the prepared data
+    for _, row in prepared_df.iterrows():
+        if 'product_code' not in row or pd.isna(row['product_code']):
+            continue
+            
+        product_code = str(row['product_code'])
+        description = row.get('product_description', '') if not pd.isna(row.get('product_description', '')) else ''
+        company = row.get('distributor', '') if not pd.isna(row.get('distributor', '')) else ''
+        
+        # Expand abbreviations in the description
+        expanded_description = expand_abbreviations(description) if description else ''
+        
+        # Get cluster assignment
+        cluster = product_to_cluster.get(product_code, 'Not Clustered')
+        
+        # Get USDA code
+        usda_code = product_to_usda.get(product_code, 'No USDA Code')
+        
+        # Add to data list
+        csv_data.append({
+            'product_id': product_code,
+            'description': description,
+            'expanded_description': expanded_description,
+            'company': company,
+            'cluster': cluster,
+            'usda_code': usda_code
+        })
+    
+    # Convert to DataFrame and save to CSV
+    df = pd.DataFrame(csv_data)
+    df.to_csv(output_path, index=False)
+    
+    print(f"Exported {len(df)} products to {output_path}")
+    return output_path
 
 def generate_usda_mapping_report(analysis_result: Dict[str, Any]) -> str:
     """
     Generate a detailed report on USDA mapping alignment.
     
     Args:
-        analysis_result: Results from analyze_usda_grouping_alignment
+        analysis_result: Results from analyze_usda_mapping
         
     Returns:
         Markdown-formatted report
@@ -355,15 +473,15 @@ def generate_usda_mapping_report(analysis_result: Dict[str, Any]) -> str:
 
 - **Product Distribution** (Individual Products, not Groups):
   - Total Products Analyzed: {summary['total_products_analyzed']}
-  - Products in Same Cluster as their Group: {summary['products_in_same_cluster']} ({(summary['products_in_same_cluster'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
-  - Products in Different Clusters: {summary['products_in_different_clusters']} ({(summary['products_in_different_clusters'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
-  - Products Not Found in Any Cluster: {summary['products_not_clustered']} ({(summary['products_not_clustered'] / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
+  - Products in Same Cluster as their Group: {summary.get('unique_products_in_same_cluster', 0)} ({(summary.get('unique_products_in_same_cluster', 0) / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
+  - Products in Different Clusters: {summary.get('unique_products_in_different_clusters', 0)} ({(summary.get('unique_products_in_different_clusters', 0) / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
+  - Products Not Found in Any Cluster: {summary.get('unique_products_not_clustered', 0)} ({(summary.get('unique_products_not_clustered', 0) / summary['total_products_analyzed'] * 100) if summary['total_products_analyzed'] > 0 else 0:.1f}%)
 
-- **Reasons for Non-Clustering**:
-  - No Category Description: {summary['reason_no_category']} ({(summary['reason_no_category'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
-  - Thrown Out During Refinement: {summary['reason_refinement']} ({(summary['reason_refinement'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
-  - Put in Different Cluster: {summary['reason_different_cluster']} ({(summary['reason_different_cluster'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
-
+- **Reasons for Non-Clustering (Enhanced Diagnostics)**:
+  - **Found in Original Clusters, Removed by Refinement**: {summary['in_original_not_refined']} ({(summary['in_original_not_refined'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
+  - **Never Prepared for Clustering**: {summary['never_prepared']} ({(summary['never_prepared'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
+  - **Missing from All Clustering Stages**: {summary['missing_from_all_clusters']} ({(summary['missing_from_all_clusters'] / summary['products_not_clustered'] * 100) if summary['products_not_clustered'] > 0 else 0:.1f}% of non-clustered)
+  
 ## Detailed Analysis
 
 The following section provides detailed analysis for each USDA product grouping.
@@ -441,13 +559,12 @@ def main():
     parser = argparse.ArgumentParser(description="Analyze USDA mapping alignment with clusters")
     
     # Data paths
-    parser.add_argument("--clusters_path", type=str, help="Path to clusters JSON file")
-    parser.add_argument("--mapping_path", type=str, 
-                        default=os.path.join("data", "CorrectMapping", "product_mapping_semantic.xlsx"),
-                        help="Path to USDA mapping file")
-    parser.add_argument("--products_path", type=str, help="Path to prepared products CSV file")
-    parser.add_argument("--category_products_path", type=str, help="Path to category products JSON file")
-    parser.add_argument("--output_dir", type=str, help="Directory to save analysis results")
+    parser.add_argument('--clusters_path', help='Path to refined clusters JSON file')
+    parser.add_argument('--original_clusters_path', help='Path to original clusters JSON file (before refinement)')
+    parser.add_argument('--mapping_path', help='Path to USDA mapping Excel file')
+    parser.add_argument('--products_path', help='Path to prepared products CSV file')
+    parser.add_argument('--category_products_path', help='Path to category products JSON file')
+    parser.add_argument('--output_dir', help='Directory to save analysis results')
     
     args = parser.parse_args()
     
@@ -479,9 +596,16 @@ def main():
     usda_mapping = load_usda_mapping(args.mapping_path)
     print(f"Loaded {len(usda_mapping)} standardized product groupings")
     
-    print(f"Loading clusters from {args.clusters_path}...")
+    print(f"Loading refined clusters from {args.clusters_path}...")
     clusters = load_clusters(args.clusters_path)
-    print(f"Loaded {len(clusters)} clusters")
+    print(f"Loaded {len(clusters)} refined clusters")
+    
+    # Load original clusters if path provided
+    original_clusters = None
+    if args.original_clusters_path and os.path.exists(args.original_clusters_path):
+        print(f"Loading original clusters from {args.original_clusters_path}...")
+        original_clusters = load_clusters(args.original_clusters_path)
+        print(f"Loaded {len(original_clusters)} original clusters")
     
     print(f"Loading products data from {args.products_path}...")
     products_df = load_products_data(args.products_path)
@@ -493,12 +617,13 @@ def main():
         category_products = load_category_products(args.category_products_path)
         print(f"Loaded {len(category_products)} categories")
     
-    print("Analyzing USDA grouping alignment...")
-    analysis_result = analyze_usda_grouping_alignment(
+    print("Analyzing USDA grouping alignment with enhanced diagnostics...")
+    analysis_result = analyze_usda_mapping(
         clusters=clusters,
         usda_mapping=usda_mapping,
         prepared_df=products_df,
-        category_products=category_products
+        category_products=category_products,
+        original_clusters=original_clusters
     )
     
     print("Generating report...")
@@ -513,9 +638,14 @@ def main():
     results_path = os.path.join(args.output_dir, "usda_mapping_analysis.json")
     with open(results_path, 'w') as f:
         json.dump(analysis_result, f, indent=2)
+        
+    # Export detailed CSV with cluster, product_id, description, company, and USDA code
+    csv_path = os.path.join(args.output_dir, "usda_cluster_mapping.csv")
+    export_detailed_csv(clusters, usda_mapping, products_df, csv_path)
     
     print(f"Analysis complete. Report saved to {report_path}")
     print(f"Raw analysis results saved to {results_path}")
+    print(f"Detailed CSV with cluster, product_id, description, company, and USDA code saved to {csv_path}")
     
     # Provide a summary of the results
     summary = analysis_result['summary']

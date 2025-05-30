@@ -258,12 +258,17 @@ def run_improved_clustering(data_dir: Optional[str] = None,
                 if label >= 0:
                     clusters[f"cluster_{label}"].append(product_codes[i])
     
-    # Save clusters to file
+    # Save original (pre-refinement) clusters to file
+    original_clusters_path = os.path.join(output_dir, "original_clusters.json")
+    with open(original_clusters_path, 'w') as f:
+        json.dump(clusters, f, indent=2)
+    
+    # Also save as regular clusters.json for backward compatibility
     clusters_path = os.path.join(output_dir, "clusters.json")
     with open(clusters_path, 'w') as f:
         json.dump(clusters, f, indent=2)
     
-    print(f"Saved {len(clusters)} clusters to {clusters_path}")
+    print(f"Saved {len(clusters)} original clusters to {original_clusters_path}")
     
     # Calculate basic statistics
     total_clustered = sum(len(products) for products in clusters.values())

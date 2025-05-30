@@ -709,8 +709,9 @@ def generate_report(output_path: str,
         Path to the generated report
     """
     with open(output_path, 'w') as f:
-        # Title and summary
-        f.write("# Product Clustering Analysis Report\n\n")
+        # Title and summary - include refined/original in the title
+        cluster_type = "Refined" if 'refined' in output_path else "Original (Embedding-based)"
+        f.write(f"# {cluster_type} Product Clustering Analysis Report\n\n")
         
         f.write("## Summary\n\n")
         f.write(f"- Total clusters: {stats['total_clusters']}\n")
@@ -1045,7 +1046,7 @@ def run_cluster_analysis(clusters_path: str,
     
     # 6. Generate report
     print("Generating report...")
-    report_filename = f"cluster_analysis{'_refined' if refined else ''}.md"
+    report_filename = f"cluster_analysis{'_refined' if refined else '_original'}.md"
     report_path = os.path.join(output_dir, report_filename)
     
     # Special debug for any zero coherence clusters

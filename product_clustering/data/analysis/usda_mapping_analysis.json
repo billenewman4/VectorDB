@@ -1,53 +1,70 @@
 {
   "summary": {
-    "total_usda_groups": 67,
-    "fully_aligned_groups": 13,
-    "partially_aligned_groups": 0,
-    "misaligned_groups": 18,
-    "empty_groups": 5,
-    "total_products_analyzed": 67,
-    "products_in_same_cluster": 26,
-    "products_in_different_clusters": 0,
-    "products_not_clustered": 36,
-    "reason_no_category": 36,
+    "total_usda_groups": 74,
+    "fully_aligned_groups": 0,
+    "partially_aligned_groups": 2,
+    "misaligned_groups": 35,
+    "empty_groups": 0,
+    "total_products_analyzed": 142,
+    "products_in_same_cluster": 82,
+    "products_in_different_clusters": 178,
+    "products_not_clustered": 54,
+    "reason_no_category": 54,
     "reason_refinement": 0,
     "reason_different_cluster": 0,
-    "percent_in_same_cluster": 38.80597014925373,
-    "percent_in_different_clusters": 0.0,
-    "percent_not_clustered": 53.73134328358209
+    "in_original_not_refined": 0,
+    "never_prepared": 0,
+    "missing_from_all_clusters": 27,
+    "unique_products_in_same_cluster": 40,
+    "unique_products_in_different_clusters": 80,
+    "unique_products_not_clustered": 25
   },
   "grouping_analysis": [
     {
-      "standardized_name": "1",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1001",
+      "standardized_name": "Ground beef 73%",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 3,
+      "clustered_ratio": 0.75,
+      "dominant_cluster": "cluster_Beef Ground_248",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.25,
       "cluster_assignments": {
-        "cluster_1001": [
-          "19161010"
+        "cluster_Beef Ground_248": [
+          "1040948"
+        ],
+        "cluster_Beef Other_546": [
+          "190750"
+        ],
+        "cluster_Beef Main_484": [
+          "41230"
         ]
       },
-      "not_clustered": [],
+      "not_clustered": [
+        "19161010"
+      ],
       "reason_analysis": {
-        "no_category": [],
+        "no_category": [
+          "19161010"
+        ],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "2",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "standardized_name": "174 3 Loin short loin 0x1_Select",
+      "status": "PARTIALLY_ALIGNED",
+      "total_products": 2,
+      "clustered_products": 1,
+      "clustered_ratio": 0.5,
+      "dominant_cluster": "cluster_Beef Main_489",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.5,
+      "cluster_assignments": {
+        "cluster_Beef Main_489": [
+          "46000"
+        ]
+      },
       "not_clustered": [
         "15021875"
       ],
@@ -60,20 +77,32 @@
       }
     },
     {
-      "standardized_name": "3",
+      "standardized_name": "175 3 Loin strip loin 1x1_Choice",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 5,
+      "clustered_products": 3,
+      "clustered_ratio": 0.6,
+      "dominant_cluster": "cluster_Beef Loin_411",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Loin_411": [
+          "10660981"
+        ],
+        "cluster_Beef Main_492": [
+          "40460"
+        ],
+        "cluster_Beef Loin_381": [
+          "15041874"
+        ]
+      },
       "not_clustered": [
+        "144142",
         "SP131"
       ],
       "reason_analysis": {
         "no_category": [
+          "144142",
           "SP131"
         ],
         "refinement_removed": [],
@@ -81,80 +110,91 @@
       }
     },
     {
-      "standardized_name": "4",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1286",
+      "standardized_name": "174 3 Loin short loin 0x1_Choice",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Loin_400",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.2,
       "cluster_assignments": {
-        "cluster_1286": [
+        "cluster_Beef Loin_400": [
+          "10260840"
+        ],
+        "cluster_Beef Loin_373": [
+          "144012"
+        ],
+        "cluster_Beef Loin_350": [
+          "15021874"
+        ],
+        "cluster_SHORT LOIN_3138": [
           "13305416"
         ]
       },
-      "not_clustered": [],
-      "reason_analysis": {
-        "no_category": [],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "7",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
       "not_clustered": [
-        "13400201"
+        "46020"
       ],
       "reason_analysis": {
         "no_category": [
-          "13400201"
+          "46020"
         ],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "8",
+      "standardized_name": "184B 3 Loin top butt CC_Choice",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "12100514"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "12100514"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "9",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_716",
+      "total_products": 4,
+      "clustered_products": 3,
+      "clustered_ratio": 0.75,
+      "dominant_cluster": "cluster_Beef Loin_366",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.25,
       "cluster_assignments": {
-        "cluster_716": [
-          "17093574"
+        "cluster_Beef Loin_366": [
+          "1030A2GO"
+        ],
+        "cluster_Beef Loin_340": [
+          "144008"
+        ],
+        "cluster_Beef Main_464": [
+          "44200"
+        ]
+      },
+      "not_clustered": [
+        "15103563"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "15103563"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "189A 4 Loin tndrloin trmdheavy_Choice",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 4,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Loin_361",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Loin_361": [
+          "1035A2GO"
+        ],
+        "cluster_Beef Loin_360": [
+          "144053"
+        ],
+        "cluster_Beef Main_450": [
+          "40010"
+        ],
+        "cluster_Beef Loin_322": [
+          "15225723"
         ]
       },
       "not_clustered": [],
@@ -165,79 +205,209 @@
       }
     },
     {
-      "standardized_name": "10",
+      "standardized_name": "180 3 Loin strip bnls 0x1_Choice",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "11100500"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "11100500"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "11",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "11400400"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "11400400"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "12",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "11200500"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "11200500"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "13",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "total_products": 3,
+      "clustered_products": 3,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_627",
+      "dominant_cluster": "cluster_Beef Main_493",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.3333333333333333,
       "cluster_assignments": {
-        "cluster_627": [
+        "cluster_Beef Main_493": [
+          "40410"
+        ],
+        "cluster_Beef Loin_381": [
+          "15041875"
+        ],
+        "cluster_STRIP_3149": [
+          "13400201"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "112a DN Lipon Ribeye",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 3,
+      "clustered_ratio": 0.75,
+      "dominant_cluster": "cluster_Beef Rib_633",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Rib_633": [
+          "164165"
+        ],
+        "cluster_Beef Main_465": [
+          "43720"
+        ],
+        "cluster_Rib_3108": [
+          "12100514"
+        ]
+      },
+      "not_clustered": [
+        "1056A2IB"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "1056A2IB"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "112a HVY Lipon Ribeye",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 5,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Rib_682",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Rib_682": [
+          "10065864"
+        ],
+        "cluster_Beef Rib_634": [
+          "164167"
+        ],
+        "cluster_Beef Main_465": [
+          "43720"
+        ],
+        "cluster_Beef Rib_612": [
+          "17093574"
+        ],
+        "cluster_Rib_3108": [
+          "12100514"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "114 A 3 shoulder clod",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Chuck_102",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Chuck_102": [
+          "10081223"
+        ],
+        "cluster_Beef Chuck_73": [
+          "124004"
+        ],
+        "cluster_Beef Chuck_74": [
+          "13021014"
+        ],
+        "cluster_Chuck_1248": [
+          "11100500"
+        ]
+      },
+      "not_clustered": [
+        "46700"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "46700"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "114f Clod Tender (teres major)",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 4,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Chuck_92",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Chuck_92": [
+          "100743"
+        ],
+        "cluster_Beef Chuck_73": [
+          "124003"
+        ],
+        "cluster_Beef Main_480": [
+          "46450"
+        ],
+        "cluster_Chuck_1247": [
+          "11400400"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "116 A 3 chuck roll",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Chuck_117",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Chuck_117": [
+          "1087AAIB"
+        ],
+        "cluster_Beef Main_468": [
+          "42600"
+        ],
+        "cluster_Beef Chuck_119": [
+          "13081014"
+        ],
+        "cluster_Chuck_1243": [
+          "11200500"
+        ]
+      },
+      "not_clustered": [
+        "124002"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "124002"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "116g Chuck Flap",
+      "status": "PARTIALLY_ALIGNED",
+      "total_products": 3,
+      "clustered_products": 3,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Chuck_89",
+      "dominant_cluster_size": 2,
+      "dominant_cluster_ratio": 0.6666666666666666,
+      "cluster_assignments": {
+        "cluster_Beef Chuck_89": [
+          "10388NXL",
+          "120005"
+        ],
+        "cluster_Chuck_1245": [
           "11300490"
         ]
       },
@@ -249,38 +419,29 @@
       }
     },
     {
-      "standardized_name": "14",
+      "standardized_name": "120 1 brisket deckle off",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "15000500"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "15000500"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "15",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "total_products": 5,
+      "clustered_products": 5,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_611",
+      "dominant_cluster": "cluster_Beef Flank_130",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.2,
       "cluster_assignments": {
-        "cluster_611": [
-          "16280500"
+        "cluster_Beef Flank_130": [
+          "10060155"
+        ],
+        "cluster_Beef Brisket_48": [
+          "114001"
+        ],
+        "cluster_Beef Main_462": [
+          "40367"
+        ],
+        "cluster_Beef Brisket_54": [
+          "12011014"
+        ],
+        "cluster_Brisket_1010": [
+          "15000500"
         ]
       },
       "not_clustered": [],
@@ -291,20 +452,93 @@
       }
     },
     {
-      "standardized_name": "17",
+      "standardized_name": "121 C 4 Outside skirt",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Flank_208",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Flank_208": [
+          "101236"
+        ],
+        "cluster_Beef Main_456": [
+          "46671"
+        ],
+        "cluster_Beef Plate_586": [
+          "16021014"
+        ],
+        "cluster_Plate_2126": [
+          "16280500"
+        ]
+      },
       "not_clustered": [
+        "150006"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "150006"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "121 D 4 Inside skirt",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 3,
+      "clustered_ratio": 0.75,
+      "dominant_cluster": "cluster_Beef Flank_203",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Flank_203": [
+          "1014A1IB"
+        ],
+        "cluster_Beef Main_456": [
+          "46610"
+        ],
+        "cluster_Beef Plate_586": [
+          "16041014"
+        ]
+      },
+      "not_clustered": [
+        "150060"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "150060"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "123 A 3 short rib choice",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 1,
+      "clustered_ratio": 0.25,
+      "dominant_cluster": "cluster_Beef Rib_609",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Rib_609": [
+          "160003"
+        ]
+      },
+      "not_clustered": [
+        "10086",
+        "41501",
         "16300500"
       ],
       "reason_analysis": {
         "no_category": [
+          "10086",
+          "41501",
           "16300500"
         ],
         "refinement_removed": [],
@@ -312,15 +546,25 @@
       }
     },
     {
-      "standardized_name": "18",
+      "standardized_name": "130 4 chuck short rib",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 4,
+      "clustered_products": 3,
+      "clustered_ratio": 0.75,
+      "dominant_cluster": "cluster_Beef Flank_200",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Flank_200": [
+          "10151"
+        ],
+        "cluster_Beef Rib_609": [
+          "160004"
+        ],
+        "cluster_Beef Main_486": [
+          "41500"
+        ]
+      },
       "not_clustered": [
         "11310500"
       ],
@@ -333,37 +577,56 @@
       }
     },
     {
-      "standardized_name": "19",
+      "standardized_name": "167 A 4 knuckles",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Other_512",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Other_512": [
+          "194830"
+        ],
+        "cluster_Beef Main_458": [
+          "41600"
+        ],
+        "cluster_Beef Round_742": [
+          "11121014"
+        ],
+        "cluster_Round_3127": [
+          "14240500"
+        ]
+      },
       "not_clustered": [
-        "14240500"
+        "10206"
       ],
       "reason_analysis": {
         "no_category": [
-          "14240500"
+          "10206"
         ],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "20",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "standardized_name": "168 1 top round inside",
+      "status": "MISALIGNED",
+      "total_products": 3,
+      "clustered_products": 3,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_662",
+      "dominant_cluster": "cluster_Beef Round_723",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.3333333333333333,
       "cluster_assignments": {
-        "cluster_662": [
+        "cluster_Beef Round_723": [
+          "10214B"
+        ],
+        "cluster_Beef Round_696": [
+          "174171"
+        ],
+        "cluster_Round_3131": [
           "14510100"
         ]
       },
@@ -375,59 +638,29 @@
       }
     },
     {
-      "standardized_name": "21",
+      "standardized_name": "168 3 top round inside XT",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "14500500"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "14500500"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "22",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "14400500"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "14400500"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "24",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "total_products": 5,
+      "clustered_products": 5,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1286",
+      "dominant_cluster": "cluster_Beef Round_731",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.2,
       "cluster_assignments": {
-        "cluster_1286": [
-          "13301501"
+        "cluster_Beef Round_731": [
+          "1021A1IB"
+        ],
+        "cluster_Beef Round_696": [
+          "174171"
+        ],
+        "cluster_Beef Main_481": [
+          "41300"
+        ],
+        "cluster_Beef Round_743": [
+          "11193574"
+        ],
+        "cluster_Round_3129": [
+          "14500500"
         ]
       },
       "not_clustered": [],
@@ -438,41 +671,155 @@
       }
     },
     {
-      "standardized_name": "25",
+      "standardized_name": "171 B 3 Round outside round flat",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 4,
+      "clustered_products": 4,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Plate_560",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Plate_560": [
+          "154080"
+        ],
+        "cluster_Beef Main_470": [
+          "43330"
+        ],
+        "cluster_Beef Round_750": [
+          "11301014"
+        ],
+        "cluster_Round_3129": [
+          "14400500"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "171 C 3 Eye of round",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 2,
+      "clustered_ratio": 0.5,
+      "dominant_cluster": "cluster_Beef Round_713",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Round_713": [
+          "1023A2IB"
+        ],
+        "cluster_Beef Round_716": [
+          "11261014"
+        ]
+      },
       "not_clustered": [
-        "13400501"
+        "174360",
+        "45300"
       ],
       "reason_analysis": {
         "no_category": [
-          "13400501"
+          "174360",
+          "45300"
         ],
         "refinement_removed": [],
         "different_cluster": []
       }
     },
     {
-      "standardized_name": "26",
+      "standardized_name": "174 3 Short loin Choice",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Loin_373",
+      "dominant_cluster_size": 2,
+      "dominant_cluster_ratio": 0.4,
+      "cluster_assignments": {
+        "cluster_Beef Loin_396": [
+          "1026ARI"
+        ],
+        "cluster_Beef Loin_373": [
+          "144012",
+          "15023574"
+        ],
+        "cluster_SHORT LOIN_3138": [
+          "13301501"
+        ]
+      },
       "not_clustered": [
+        "46020"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "46020"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "180 3 Strip loin",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Loin_299",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Loin_299": [
+          "144010"
+        ],
+        "cluster_Beef Main_492": [
+          "40460"
+        ],
+        "cluster_Beef Loin_394": [
+          "15041014"
+        ],
+        "cluster_STRIP_3149": [
+          "13400501"
+        ]
+      },
+      "not_clustered": [
+        "1027767"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "1027767"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "184 3 Top butt bnls",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 2,
+      "clustered_ratio": 0.5,
+      "dominant_cluster": "cluster_Beef Main_464",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Main_464": [
+          "44200"
+        ],
+        "cluster_Beef Loin_339": [
+          "15103574"
+        ]
+      },
+      "not_clustered": [
+        "1030A2IB",
         "13600513"
       ],
       "reason_analysis": {
         "no_category": [
+          "1030A2IB",
           "13600513"
         ],
         "refinement_removed": [],
@@ -480,16 +827,87 @@
       }
     },
     {
-      "standardized_name": "27",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1002",
+      "standardized_name": "185 1 Ball tips",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Loin_295",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.2,
       "cluster_assignments": {
-        "cluster_1002": [
+        "cluster_Beef Loin_295": [
+          "144021"
+        ],
+        "cluster_Beef Main_460": [
+          "44300"
+        ],
+        "cluster_Beef Loin_297": [
+          "15191014"
+        ],
+        "cluster_BALL TIP / TRI TIP_1": [
+          "13800403"
+        ]
+      },
+      "not_clustered": [
+        "1030A2IB"
+      ],
+      "reason_analysis": {
+        "no_category": [
+          "1030A2IB"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "185 A 4 Bottom sirloin or \u201cflap meat\u201d",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 5,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Loin_315",
+      "dominant_cluster_size": 2,
+      "dominant_cluster_ratio": 0.4,
+      "cluster_assignments": {
+        "cluster_Beef Flank_156": [
+          "10016D"
+        ],
+        "cluster_Beef Loin_315": [
+          "140006",
+          "15183574"
+        ],
+        "cluster_Beef Main_452": [
+          "41210"
+        ],
+        "cluster_BALL TIP / TRI TIP_2": [
+          "13808000"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "185b Ball Tip",
+      "status": "MISALIGNED",
+      "total_products": 3,
+      "clustered_products": 3,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Loin_295",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.3333333333333333,
+      "cluster_assignments": {
+        "cluster_Beef Loin_295": [
+          "144021"
+        ],
+        "cluster_Beef Main_460": [
+          "44300"
+        ],
+        "cluster_BALL TIP / TRI TIP_1": [
           "13800403"
         ]
       },
@@ -501,37 +919,25 @@
       }
     },
     {
-      "standardized_name": "28",
+      "standardized_name": "189a Psmo tenderloin",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "13808000"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "13808000"
-        ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "30",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "total_products": 4,
+      "clustered_products": 4,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1099",
+      "dominant_cluster": "cluster_Beef Loin_361",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.25,
       "cluster_assignments": {
-        "cluster_1099": [
+        "cluster_Beef Loin_361": [
+          "1035A2BP"
+        ],
+        "cluster_Beef Loin_360": [
+          "144053"
+        ],
+        "cluster_Beef Main_450": [
+          "40010"
+        ],
+        "cluster_Beef Loin_359": [
           "15221014"
         ]
       },
@@ -543,16 +949,26 @@
       }
     },
     {
-      "standardized_name": "31",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "standardized_name": "193 Flank",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 5,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_1230",
-      "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Flank_230",
+      "dominant_cluster_size": 2,
+      "dominant_cluster_ratio": 0.4,
       "cluster_assignments": {
-        "cluster_1230": [
+        "cluster_Beef Flank_230": [
+          "10390544",
+          "14193574"
+        ],
+        "cluster_Beef Flank_232": [
+          "134000"
+        ],
+        "cluster_Beef Main_477": [
+          "40820"
+        ],
+        "cluster_Flank_1560": [
           "17100500"
         ]
       },
@@ -564,17 +980,57 @@
       }
     },
     {
-      "standardized_name": "32",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_791",
+      "standardized_name": "Cap & Wedge",
+      "status": "MISALIGNED",
+      "total_products": 3,
+      "clustered_products": 2,
+      "clustered_ratio": 0.6666666666666666,
+      "dominant_cluster": "cluster_Beef Flank_169",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.3333333333333333,
       "cluster_assignments": {
-        "cluster_791": [
+        "cluster_Beef Flank_169": [
+          "1060A100"
+        ],
+        "cluster_Beef Other_507": [
+          "190050"
+        ]
+      },
+      "not_clustered": [
+        "12400400"
+      ],
+      "reason_analysis": {
+        "no_category": [
           "12400400"
+        ],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "Ground beef 81%",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 5,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Beef Ground_253",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.2,
+      "cluster_assignments": {
+        "cluster_Beef Ground_253": [
+          "10416G"
+        ],
+        "cluster_Beef Other_543": [
+          "190805"
+        ],
+        "cluster_Beef Variety_854": [
+          "42300"
+        ],
+        "cluster_Beef Variety_782": [
+          "19101010"
+        ],
+        "cluster_Miscellaneous Beef_1943": [
+          "18260001"
         ]
       },
       "not_clustered": [],
@@ -585,41 +1041,29 @@
       }
     },
     {
-      "standardized_name": "33",
+      "standardized_name": "Pectoral",
       "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
-      "not_clustered": [
-        "18260001"
-      ],
-      "reason_analysis": {
-        "no_category": [
-          "18260001"
+      "total_products": 4,
+      "clustered_products": 2,
+      "clustered_ratio": 0.5,
+      "dominant_cluster": "cluster_Beef Flank_154",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Beef Flank_154": [
+          "10163XL"
         ],
-        "refinement_removed": [],
-        "different_cluster": []
-      }
-    },
-    {
-      "standardized_name": "34",
-      "status": "MISALIGNED",
-      "total_products": 1,
-      "clustered_products": 0,
-      "clustered_ratio": 0.0,
-      "dominant_cluster": null,
-      "dominant_cluster_size": 0,
-      "dominant_cluster_ratio": 0.0,
-      "cluster_assignments": {},
+        "cluster_Beef Chuck_68": [
+          "120006"
+        ]
+      },
       "not_clustered": [
+        "41950",
         "11910000"
       ],
       "reason_analysis": {
         "no_category": [
+          "41950",
           "11910000"
         ],
         "refinement_removed": [],
@@ -627,16 +1071,55 @@
       }
     },
     {
-      "standardized_name": "36",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
+      "standardized_name": "1/4 trim boneless Pork butt VAC",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 4,
       "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_902",
+      "dominant_cluster": "cluster_Pork Shoulder_2439",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.25,
       "cluster_assignments": {
-        "cluster_902": [
+        "cluster_Pork Shoulder_2439": [
+          "13034IN"
+        ],
+        "cluster_Pork Butt_2162": [
+          "260003"
+        ],
+        "cluster_Pork Main_2322": [
+          "20080"
+        ],
+        "cluster_Pork Butt_2165": [
+          "46091010"
+        ]
+      },
+      "not_clustered": [],
+      "reason_analysis": {
+        "no_category": [],
+        "refinement_removed": [],
+        "different_cluster": []
+      }
+    },
+    {
+      "standardized_name": "Trimmed pork sparerib MED",
+      "status": "MISALIGNED",
+      "total_products": 4,
+      "clustered_products": 4,
+      "clustered_ratio": 1.0,
+      "dominant_cluster": "cluster_Pork Rib_2380",
+      "dominant_cluster_size": 1,
+      "dominant_cluster_ratio": 0.25,
+      "cluster_assignments": {
+        "cluster_Pork Rib_2380": [
+          "250015"
+        ],
+        "cluster_Pork Main_2326": [
+          "20167"
+        ],
+        "cluster_Pork Sparerib_2471": [
+          "45011010"
+        ],
+        "cluster_Pork Ribs_2396": [
           "32200201"
         ]
       },
@@ -648,22 +1131,35 @@
       }
     },
     {
-      "standardized_name": "37",
-      "status": "FULLY_ALIGNED",
-      "total_products": 1,
-      "clustered_products": 1,
-      "clustered_ratio": 1.0,
-      "dominant_cluster": "cluster_655",
+      "standardized_name": "109E 1 Rib ribeye lip-on bn-in_Choice",
+      "status": "MISALIGNED",
+      "total_products": 5,
+      "clustered_products": 4,
+      "clustered_ratio": 0.8,
+      "dominant_cluster": "cluster_Beef Rib_677",
       "dominant_cluster_size": 1,
-      "dominant_cluster_ratio": 1.0,
+      "dominant_cluster_ratio": 0.2,
       "cluster_assignments": {
-        "cluster_655": [
-          "12101514"
+        "cluster_Beef Rib_677": [
+          "1003A2GO"
+        ],
+        "cluster_Beef Rib_633": [
+          "164165"
+        ],
+        "cluster_Beef Main_465": [
+          "43720"
+        ],
+        "cluster_Beef Rib_610": [
+          "17111874"
         ]
       },
-      "not_clustered": [],
+      "not_clustered": [
+        "12101514"
+      ],
       "reason_analysis": {
-        "no_category": [],
+        "no_category": [
+          "12101514"
+        ],
         "refinement_removed": [],
         "different_cluster": []
       }

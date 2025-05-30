@@ -52,13 +52,22 @@ def preprocess_text_for_clustering(text: str, expand_abbreviations: bool = True)
 
 
 
-def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None, 
+                               use_category_descriptions: bool = True,
+                               normalize_text: bool = True,
+                               expand_abbreviations: bool = True) -> pd.DataFrame:
     """
     Prepare transaction data for product clustering.
     
     Args:
         df_raw: Optional raw transaction DataFrame. If None, data will be loaded
                 from the default location specified in config.
+        use_category_descriptions: Whether to use category descriptions in clustering.
+                If False, products without category descriptions will not be filtered out.
+        normalize_text: Whether to apply text normalization to product descriptions.
+                If False, raw product descriptions will be used for clustering.
+        expand_abbreviations: Whether to expand common abbreviations (e.g. 'oz' to 'ounce')
+                during text normalization. Only applies when normalize_text is True.
                 
     Returns:
         DataFrame with products prepared for clustering
@@ -75,7 +84,7 @@ def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None) -> pd.Dat
     # Process transaction data using existing pipeline
     # This gives us unique product descriptions and their associated product codes
     from src.data_processing import process_transaction_data
-    unique_products_df = process_transaction_data(df_raw)
+    unique_products_df = process_transaction_data(df_raw, filter_no_category=use_category_descriptions)
     
     if unique_products_df is None or len(unique_products_df) == 0:
         print("Error: No products found after processing")
@@ -83,8 +92,15 @@ def prepare_data_for_clustering(df_raw: Optional[pd.DataFrame] = None) -> pd.Dat
     
     print(f"Found {len(unique_products_df)} unique products.")
     
-    # Clean the product descriptions for clustering
-    unique_products_df['clustering_description'] = unique_products_df['product_description'].apply(preprocess_text_for_clustering)
+    # Clean the product descriptions for clustering (if normalization is enabled)
+    if normalize_text:
+        print("Normalizing text descriptions...")
+        unique_products_df['clustering_description'] = unique_products_df['product_description'].apply(
+            lambda text: preprocess_text_for_clustering(text, expand_abbreviations=expand_abbreviations)
+        )
+    else:
+        print("Using raw product descriptions without normalization...")
+        unique_products_df['clustering_description'] = unique_products_df['product_description']
     
     # Group products by category and save the mapping
     from src.data_processing import group_products_by_category, save_category_products

@@ -196,19 +196,13 @@ def refine_clusters(
         candidates = [{"text": pair[1]} for pair in pairs]
         
         # Score all pairs using the CrossEncoder's rerank method
-        similarity_scores = []
-        
-        print(f"DEBUG RERANKING: Created {len(pairs)} pairs for cluster {cluster_id}")
-        
+        similarity_scores = []        
         # Use a smaller batch size for more stability
         actual_batch_size = min(8, batch_size)  # Even smaller batch size to prevent memory issues
         
         # Process in batches with detailed tracking
-        print(f"DEBUG RERANKING: Evaluating {len(pairs)} pairs with batch size {actual_batch_size}")
         for i in range(0, len(pairs), actual_batch_size):
             batch_end = min(i + actual_batch_size, len(pairs))
-            print(f"DEBUG RERANKING: Batch {i//actual_batch_size + 1}/{(len(pairs) + actual_batch_size - 1)//actual_batch_size}: processing pairs {i+1}-{batch_end}")
-            sys.stdout.flush()  # Force output to be displayed immediately
             try:
                 batch_pairs = pairs[i:i+actual_batch_size]
                 # Adapt to the CrossEncoder interface - create text pairs

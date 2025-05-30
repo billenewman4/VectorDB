@@ -10,15 +10,16 @@ import re
 
 def get_abbreviation_map():
     """
-    Returns a dictionary mapping meat cut abbreviations to their full descriptions.
+    Returns a dictionary mapping common food-related abbreviations to their full descriptions.
     
     Returns:
         dict: A dictionary of abbreviation-to-description mappings.
     """
     return {
-        # Format: 'abbreviation': 'full description'
+        # Meat cut abbreviations
         'Bn-in': 'Bone in',
         'Bnls': 'Boneless',
+        'Bnl': 'Boneless',
         'Cntr Cut': 'Center Cut',
         'Cov': 'Cover',
         'Dkle': 'Deckle',
@@ -54,12 +55,72 @@ def get_abbreviation_map():
         'Tri Tip': 'Triangle Tip',
         'Trmd': 'Trimmed',
         'Untrmd': 'Untrimmed',
+        
+        # Packaging and measurement abbreviations
+        'oz': 'ounce',
+        '#': 'pound',
+        'lb': 'pound',
+        'lbs': 'pounds',
+        'gal': 'gallon',
+        'qt': 'quart',
+        'pt': 'pint',
+        'fl oz': 'fluid ounce',
+        'pkg': 'package',
+        'pkgs': 'packages',
+        'cnt': 'container',
+        'ea': 'each',
+        'pcs': 'pieces',
+        'pc': 'piece',
+        'ct': 'count',
+        'cs': 'case',
+        'dz': 'dozen',
+        
+        # Food preparation abbreviations
+        'chk': 'chicken',
+        'chx': 'chicken',
+        'ckn': 'chicken',
+        'ck': 'chicken',
+        'tur': 'turkey',
+        'bf': 'beef',
+        'pk': 'pork',
+        'vl': 'veal',
+        'lmb': 'lamb',
+        'veg': 'vegetable',
+        'vegt': 'vegetable',
+        'vgts': 'vegetables',
+        'tom': 'tomato',
+        'toms': 'tomatoes',
+        'pot': 'potato',
+        'pots': 'potatoes',
+        'chs': 'cheese',
+        'chdr': 'cheddar',
+        'mozz': 'mozzarella',
+        'org': 'organic',
+        'nat': 'natural',
+        'whl': 'whole',
+        'slc': 'slice',
+        'slcs': 'slices',
+        'slcd': 'sliced',
+        'pud': 'peeled and deveined',
+        't/off': 'tail off',
+        'ez': 'easy',
+        'wht': 'white',
+        'grn': 'green',
+        'blk': 'black',
+        'brn': 'brown',
+        'med': 'medium',
+        'lg': 'large',
+        'sm': 'small',
+        'xl': 'extra large',
+        'xsm': 'extra small',
+        'kc': 'Kansas City',
+        'ny': 'New York',
     }
 
 
 def expand_abbreviations(text):
     """
-    Expands meat cut abbreviations in the given text to their full descriptions.
+    Expands common food-related abbreviations in the given text to their full descriptions.
     
     Args:
         text (str): The text containing potential abbreviations.
@@ -77,10 +138,23 @@ def expand_abbreviations(text):
     sorted_abbrevs = sorted(abbrev_map.keys(), key=len, reverse=True)
     
     result = text
+    
+    # First pass: Handle measurement abbreviations that often appear within terms (no word boundaries)
+    measurement_abbrevs = ['oz', '#', 'lb', 'lbs', 'gal', 'qt', 'pt', 'ea', 'ct', 'cs', 'dz', 'pcs', 'pc']
     for abbrev in sorted_abbrevs:
-        # Use word boundaries to ensure we're replacing whole words/phrases
-        pattern = r'\b' + re.escape(abbrev) + r'\b'
-        result = re.sub(pattern, abbrev_map[abbrev], result)
+        if abbrev in measurement_abbrevs:
+            # For measurements, also match when they're attached to numbers (e.g., "10oz")
+            # Use lookahead/lookbehind to ensure we don't replace within other words
+            pattern = r'(?i)(\d+)' + re.escape(abbrev) + r'(?![a-zA-Z])'
+            replacement = r'\1 ' + abbrev_map[abbrev]
+            result = re.sub(pattern, replacement, result)
+    
+    # Second pass: Handle all other abbreviations using word boundaries
+    for abbrev in sorted_abbrevs:
+        if abbrev not in measurement_abbrevs:  # Skip those already processed
+            # Use word boundaries to ensure we're replacing whole words/phrases
+            pattern = r'(?i)\b' + re.escape(abbrev) + r'\b'
+            result = re.sub(pattern, abbrev_map[abbrev], result)
     
     return result
 
