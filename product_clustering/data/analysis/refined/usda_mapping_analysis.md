@@ -15,9 +15,9 @@
   - Products Not Found in Any Cluster: 25 (17.6%)
 
 - **Reasons for Non-Clustering (Enhanced Diagnostics)**:
-  - **Found in Original Clusters, Removed by Refinement**: 2 (3.7% of non-clustered)
+  - **Found in Original Clusters, Removed by Refinement**: 9 (16.7% of non-clustered)
   - **Never Prepared for Clustering**: 0 (0.0% of non-clustered)
-  - **Missing from All Clustering Stages**: 25 (46.3% of non-clustered)
+  - **Missing from All Clustering Stages**: 18 (33.3% of non-clustered)
   
 ## Detailed Analysis
 
@@ -39,7 +39,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 2 products
+- Thrown Out During Refinement: 2 products
 
 #### 2. 174 3 Loin short loin 0x1_Choice
 
@@ -87,7 +87,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- Thrown Out During Refinement: 1 products
+- No Category Description: 1 products
 
 #### 5. 116 A 3 chuck roll
 
@@ -152,7 +152,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 1 products
+- Thrown Out During Refinement: 1 products
 
 #### 9. 168 3 top round inside XT
 
@@ -273,7 +273,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 1 products
+- Thrown Out During Refinement: 1 products
 
 #### 17. Ground beef 73%
 
@@ -377,7 +377,8 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 3 products
+- No Category Description: 2 products
+- Thrown Out During Refinement: 1 products
 
 #### 24. 130 4 chuck short rib
 
@@ -465,7 +466,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 2 products
+- Thrown Out During Refinement: 2 products
 
 #### 30. 1/4 trim boneless Pork butt VAC
 
@@ -542,7 +543,7 @@ The following section provides detailed analysis for each USDA product grouping.
 
 **Non-Clustered Products**:
 
-- No Category Description: 1 products
+- Thrown Out During Refinement: 1 products
 
 #### 36. 116g Chuck Flap
 

@@ -223,6 +223,10 @@ def run_improved_clustering(data_dir: Optional[str] = None,
     # Standard clustering if not using categories or if category clustering failed
     if not category_mode:
         print(f"Running HDBSCAN clustering on {len(embeddings)} products...")
+        print(f"HDBSCAN Parameters: min_cluster_size={min_cluster_size}, min_samples={min_samples}, epsilon={cluster_selection_epsilon}, alpha={alpha}")
+        
+        import time
+        start_time = time.time()
         
         # Run HDBSCAN clustering
         # Note: n_jobs parameter needs to be passed only when metric='precomputed'
@@ -239,11 +243,34 @@ def run_improved_clustering(data_dir: Optional[str] = None,
         # Only add n_jobs if using precomputed metrics
         if metric == 'precomputed':
             hdbscan_params['n_jobs'] = n_jobs
+        else:
+            print(f"Using {os.cpu_count()} CPU cores for processing")
+        
+        print("Starting HDBSCAN clustering - this may take several minutes...")
+        print("Step 1/4: Building minimum spanning tree...")
         
         clusterer = hdbscan.HDBSCAN(**hdbscan_params)
         
         # Fit the clusterer
+        print("Step 2/4: Computing distances and constructing tree...")
+        step2_time = time.time()
+        
+        # Inject a custom fit_predict method that reports progress
+        original_fit_predict = clusterer.fit_predict
+        
+        def fit_predict_with_progress(X):
+            print(f"Step 3/4: Extracting clusters... (Started at {time.strftime('%H:%M:%S')})")            
+            result = original_fit_predict(X)
+            print(f"Step 4/4: Finalizing clusters... (Elapsed time: {time.time() - step2_time:.1f}s)")
+            return result
+            
+        clusterer.fit_predict = fit_predict_with_progress
+        
+        # Actually run the clustering
         cluster_labels = clusterer.fit_predict(embeddings)
+        total_time = time.time() - start_time
+        print(f"HDBSCAN clustering completed in {total_time:.1f} seconds ({total_time/60:.1f} minutes)")
+        
         
         # Count clusters and noise points
         n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)

@@ -9,12 +9,12 @@
     "products_in_same_cluster": 82,
     "products_in_different_clusters": 178,
     "products_not_clustered": 54,
-    "reason_no_category": 50,
-    "reason_refinement": 4,
+    "reason_no_category": 36,
+    "reason_refinement": 18,
     "reason_different_cluster": 0,
-    "in_original_not_refined": 2,
+    "in_original_not_refined": 9,
     "never_prepared": 0,
-    "missing_from_all_clusters": 25,
+    "missing_from_all_clusters": 18,
     "unique_products_in_same_cluster": 40,
     "unique_products_in_different_clusters": 80,
     "unique_products_not_clustered": 25
@@ -101,11 +101,11 @@
         "SP131"
       ],
       "reason_analysis": {
-        "no_category": [
+        "no_category": [],
+        "refinement_removed": [
           "144142",
           "SP131"
         ],
-        "refinement_removed": [],
         "different_cluster": []
       }
     },
@@ -322,10 +322,10 @@
         "46700"
       ],
       "reason_analysis": {
-        "no_category": [],
-        "refinement_removed": [
+        "no_category": [
           "46700"
         ],
+        "refinement_removed": [],
         "different_cluster": []
       }
     },
@@ -537,11 +537,12 @@
       ],
       "reason_analysis": {
         "no_category": [
-          "10086",
           "41501",
           "16300500"
         ],
-        "refinement_removed": [],
+        "refinement_removed": [
+          "10086"
+        ],
         "different_cluster": []
       }
     },
@@ -603,10 +604,10 @@
         "10206"
       ],
       "reason_analysis": {
-        "no_category": [
+        "no_category": [],
+        "refinement_removed": [
           "10206"
         ],
-        "refinement_removed": [],
         "different_cluster": []
       }
     },
@@ -1001,10 +1002,10 @@
         "12400400"
       ],
       "reason_analysis": {
-        "no_category": [
+        "no_category": [],
+        "refinement_removed": [
           "12400400"
         ],
-        "refinement_removed": [],
         "different_cluster": []
       }
     },
@@ -1063,11 +1064,11 @@
         "11910000"
       ],
       "reason_analysis": {
-        "no_category": [
+        "no_category": [],
+        "refinement_removed": [
           "41950",
           "11910000"
         ],
-        "refinement_removed": [],
         "different_cluster": []
       }
     },
@@ -1158,10 +1159,10 @@
         "12101514"
       ],
       "reason_analysis": {
-        "no_category": [
+        "no_category": [],
+        "refinement_removed": [
           "12101514"
         ],
-        "refinement_removed": [],
         "different_cluster": []
       }
     }

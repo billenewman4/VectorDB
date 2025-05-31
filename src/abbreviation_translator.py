@@ -6,7 +6,10 @@ into their full descriptions to improve product description clarity.
 """
 
 import re
+import logging
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_abbreviation_map():
     """
@@ -99,6 +102,87 @@ def get_abbreviation_map():
         'nat': 'natural',
         'whl': 'whole',
         'slc': 'slice',
+        
+        # ===== MEAT INDUSTRY SPECIFIC ABBREVIATIONS =====
+        
+        # Meat Grade Terminology
+        'ch': 'choice',
+        'cho': 'choice',
+        'chce': 'choice',
+        'sel': 'select',
+        'prm': 'prime',
+        'pr': 'prime',
+        
+        # Bone-related Terminology
+        'bny': 'bone-in',
+        'bi': 'bone-in',
+        'bn': 'bone',
+        'bn-in': 'bone-in',
+        'bnls': 'boneless',
+        'bnlss': 'boneless',
+        'bnl': 'boneless',
+        'bonlss': 'boneless',
+        
+        # Cut Style Terminology
+        'lip on': 'lip-on',
+        'lip-on': 'lip-on',
+        'tip on': 'lip-on',  # Standardizing 'tip on' to 'lip-on'
+        'tipon': 'lip-on',  # Standardizing 'tipon' to 'lip-on'
+        'roll-off': 'roll off',
+        'roll off': 'roll off',
+        'necked': 'neck off',
+        'neckoff': 'neck off',
+        'neck-off': 'neck off',
+        'deckle off': 'deckle off',
+        'dkle off': 'deckle off',
+        
+        # Cut Names and Variations
+        'rib eye': 'ribeye',
+        'rib-eye': 'ribeye',
+        'rbeye': 'ribeye',
+        'rbey': 'ribeye',
+        'rby': 'ribeye',
+        'ribeye': 'ribeye',
+        'r eye': 'ribeye',
+        'hvw': 'heavy weight',
+        'hvw upon': 'heavy weight ribeye',
+        'hvy': 'heavy weight',
+        'hvy upon': 'heavy weight ribeye',
+        'hw': 'heavy weight',
+        
+        'chuck roll': 'chuck roll',
+        'chuck clod': 'shoulder clod',
+        'shoulder clod': 'shoulder clod',
+        'clod': 'shoulder clod',
+        'clod xt': 'shoulder clod',
+        'chuck flat': 'chuck flat',
+        
+        'brisket flat': 'brisket flat',
+        'brisket at code': 'brisket',
+        'brisket deckle off': 'brisket deckle off',
+        
+        'outside skirt': 'outside skirt',
+        'outside skrt': 'outside skirt',
+        'skrt': 'skirt',
+        
+        'teres major': 'teres major',
+        
+        # Regional/Source Indicators - Standardized
+        'creekstone': 'creekstone',
+        'angus': 'angus',
+        'oma': 'omaha',
+        'flat/nose off': 'flat nose off',
+        'flat/nose-off': 'flat nose off',
+        'nebraska': 'nebraska',
+        'neb': 'nebraska',
+        
+        # Processing Codes - normalize to standardize
+        '1/4': 'quarter',
+        
+        # State/Form Indicators
+        'frzn': 'frozen',
+        'frz': 'frozen',
+        'fr': 'fresh',
         'slcs': 'slices',
         'slcd': 'sliced',
         'pud': 'peeled and deveined',
@@ -120,7 +204,8 @@ def get_abbreviation_map():
 
 def expand_abbreviations(text):
     """
-    Expands common food-related abbreviations in the given text to their full descriptions.
+    Expands common food-related abbreviations in the given text to their full descriptions,
+    with special handling for meat industry terminology.
     
     Args:
         text (str): The text containing potential abbreviations.
@@ -130,21 +215,55 @@ def expand_abbreviations(text):
     """
     if not text or not isinstance(text, str):
         return text
-        
+    
+    # Lowercase for better matching    
+    result = text.lower()
+    
+    # Log original text for debugging
+    logging.debug(f"Expanding abbreviations in: {text}")
+    
+    # Get abbreviation mapping
     abbrev_map = get_abbreviation_map()
     
     # Sort abbreviations by length (longest first) to prevent partial matches
     # For example, "Bone in" should be processed before "Bone"
     sorted_abbrevs = sorted(abbrev_map.keys(), key=len, reverse=True)
     
-    result = text
+    # Special handling for multi-part meat industry terms that may be separated by punctuation
+    # Example: "tip on" vs "tip-on" vs "tipon"
+    meat_terms = [
+        (r'tip[\-\s]*on', 'lip-on'),
+        (r'lip[\-\s]*on', 'lip-on'),
+        (r'bone[\-\s]*in', 'bone-in'),
+        (r'rib[\-\s]*eye', 'ribeye'),
+        (r'roll[\-\s]*off', 'roll off'),
+        (r'neck[\-\s]*off', 'neck off'),
+        (r'deckle[\-\s]*off', 'deckle off'),
+        (r'flat[\-\s/]*nose[\-\s]*off', 'flat nose off'),
+        (r'heavy[\-\s]*weight', 'heavy weight'),
+        (r'(outside|outer)[\-\s]*skirt', 'outside skirt'),
+        (r'chuck[\-\s]*roll', 'chuck roll'),
+        (r'chuck[\-\s]*clod', 'shoulder clod'),
+        (r'shoulder[\-\s]*clod', 'shoulder clod'),
+        (r'clod[\-\s]*xt', 'shoulder clod'),
+        (r'chuck[\-\s]*flat', 'chuck flat'),
+        (r'brisket[\-\s]*flat', 'brisket flat'),
+        (r'brisket[\-\s]*at[\-\s]*code', 'brisket'),
+        (r'brisket[\-\s]*deckle[\-\s]*off', 'brisket deckle off'),
+        (r'teres[\-\s]*major', 'teres major'),
+        (r'usda[\-\s]*(\d+[a-z]*)', r'usda \1')
+    ]
+    
+    # Apply meat-specific patterns first
+    for pattern, replacement in meat_terms:
+        result = re.sub(r'\b' + pattern + r'\b', replacement, result, flags=re.IGNORECASE)
     
     # First pass: Handle measurement abbreviations that often appear within terms (no word boundaries)
     measurement_abbrevs = ['oz', '#', 'lb', 'lbs', 'gal', 'qt', 'pt', 'ea', 'ct', 'cs', 'dz', 'pcs', 'pc']
     for abbrev in sorted_abbrevs:
         if abbrev in measurement_abbrevs:
             # For measurements, also match when they're attached to numbers (e.g., "10oz")
-            # Use lookahead/lookbehind to ensure we don't replace within other words
+            # Use lookahead to ensure we don't replace within other words
             pattern = r'(?i)(\d+)' + re.escape(abbrev) + r'(?![a-zA-Z])'
             replacement = r'\1 ' + abbrev_map[abbrev]
             result = re.sub(pattern, replacement, result)
@@ -155,6 +274,19 @@ def expand_abbreviations(text):
             # Use word boundaries to ensure we're replacing whole words/phrases
             pattern = r'(?i)\b' + re.escape(abbrev) + r'\b'
             result = re.sub(pattern, abbrev_map[abbrev], result)
+    
+    # Final pass: Special handling for codes in parentheses that often indicate grades
+    # For example: (ch), (ui), (uj)
+    result = re.sub(r'\(ch\)', '(choice)', result, flags=re.IGNORECASE)
+    result = re.sub(r'\(ui\)', '(usda inspection)', result, flags=re.IGNORECASE)
+    result = re.sub(r'\(uj\)', '(usda inspection)', result, flags=re.IGNORECASE)
+    
+    # Clean up any double spaces created during replacements
+    result = re.sub(r'\s+', ' ', result).strip()
+    
+    # Log the result for debugging
+    if result != text.lower():
+        logging.debug(f"Expanded to: {result}")
     
     return result
 
