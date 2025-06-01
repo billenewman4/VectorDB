@@ -36,6 +36,10 @@
   - min_cluster_size=3 (for more granular clusters)
   - min_samples=2 (for more focused product groupings)
   - Added test mode capability for rapid parameter tuning
+- Created flexible clustering configurations in max_inclusion_config.json:
+  - Granular clusters: min_cluster_size=3, min_samples=2 (default)
+  - Balanced clusters: min_cluster_size=6, min_samples=2, epsilon=1.0, alpha=0.4
+  - Maximum inclusion: min_cluster_size=10, min_samples=1, epsilon=1.5, alpha=0.5
 - Implemented helper functions to analyze cluster statistics
 
 ### 2.4 Outlier Handling [Done]
@@ -59,42 +63,270 @@
 - Generate cluster_size_hist.png for distribution visualization
 - Create a simple HTML visualization of largest clusters
 
+### 2.7 Domain-Specific Terminology Handling [Done]
+- Enhanced abbreviation_translator.py with comprehensive meat industry abbreviations
+- Added multi-stage pattern recognition for standardizing meat terminology
+- Implemented specialized handling for:
+  - Cut variations (ribeye, rib-eye, rib eye)
+  - Preparation terms (lip-on, tip-on)
+  - Grade indicators (ch, choice, select, prime)
+  - USDA code standardization (116A 3, 120 1, etc.)
+  - Regional/source indicators (nebraska, omaha, angus)
+- Standardized potentially conflicting terms to improve embedding similarity
+
 ## 3. Implementation Details
 
 ### 3.1 Directory Structure
 ```
 product_clustering/
-├── README.md           # quick start + CLI flags
-├── clustering.py       # main HDBSCAN implementation
-├── evaluation.py       # evaluation and spot-check tools
-├── visualization.py    # simple visualization tools
-└── requirements.txt    # Add hdbscan, matplotlib to existing
+├── README.md                # quick start + CLI flags
+├── clustering.py            # main HDBSCAN implementation
+├── improved_clustering.py   # enhanced clustering with flexible parameters
+├── max_inclusion_config.json # configuration for USDA-aligned clustering
+├── run_clustering.py        # unified interface for all clustering steps
+├── evaluation.py            # evaluation and spot-check tools
+├── cluster_analyzer_usda.py # analysis of USDA code alignment
+├── visualization.py         # simple visualization tools
+└── requirements.txt         # Add hdbscan, matplotlib to existing
 ```
 
-## 4. Future Enhancements (Post-MVP)
+## 4. Current Status and Future Enhancements
 
-### 4.1 Cross-Encoder Re-Ranking [Done]
-- Leverage existing CrossEncoder implementation
-- Apply to validate and refine cluster boundaries
-- Use for post-clustering refinement
+### 4.1 Completed Enhancements
+- **Cross-Encoder Re-Ranking** [Done]
+  - Leveraged existing CrossEncoder implementation
+  - Applied to validate and refine cluster boundaries
+  - Used for post-clustering refinement
+- **USDA Alignment Analysis** [Done]
+  - Implemented detailed analysis of cluster alignment with USDA groupings
+  - Created metrics for fully aligned, partially aligned, and misaligned groups
+  - Developed diagnostic tools to identify causes of misalignment
+- **Flexible Clustering Configurations** [Done]
+  - Created multiple parameter presets for different use cases
+  - Implemented easy configuration switching
+  - Documented tradeoffs between precision and USDA alignment
+- **Meat Industry Terminology Standardization** [Done]
+  - Enhanced abbreviation handling for meat-specific terms
+  - Improved standardization of cut variations and grade indicators
+  - Added pattern-based recognition for special terminology
 
-### 4.2 Graph + Community Detection 
-- Convert embeddings to a similarity graph
-- Apply community detection algorithms (Louvain/Leiden)
-- Control cluster granularity with resolution parameter
+### 4.2 Current Focus
+- **LLM Integration for Cluster Refinement**
+  - Exploring use of LLMs to evaluate and refine cluster quality
+  - Using GPT-3.5/4 to analyze clusters for semantic coherence
+  - Developing prompts to identify improvement opportunities
+- **Gross Profit Level Analysis**
+  - Analyzing clusters for consistency in gross profit levels
+  - Identifying opportunities for pricing optimization
+  - Flagging inconsistencies for business review
 
-### 4.3 Hierarchical Clustering 
-- Implement cluster splitting for large clusters
-- Create hierarchical representation of product categories
+### 4.3 Future Enhancements
+- **Graph + Community Detection**
+  - Convert embeddings to a similarity graph
+  - Apply community detection algorithms (Louvain/Leiden)
+  - Control cluster granularity with resolution parameter
+- **Incremental Updates**
+  - Develop a pipeline for adding new products to existing clusters
+  - Implement HDBSCAN's approximate_predict method
+  - Periodically re-cluster to maintain quality
+- **Dashboard & Cluster Analysis**
+  - Create a simple Streamlit dashboard for cluster exploration
+  - Track cluster metrics over time
 
-### 4.4 Incremental Updates 
-- Develop a pipeline for adding new products to existing clusters
-- Implement HDBSCAN's approximate_predict method
-- Periodically re-cluster to maintain quality
+## 5. Hierarchical Multi-Level Clustering Implementation Plan
 
-### 4.5 Dashboard & Cluster Analysis 
-- Create a simple Streamlit dashboard for cluster exploration
-- Track cluster metrics over time
+### 5.1 Overview
+Implement a progressive, hierarchical clustering approach that groups products at multiple levels of granularity, starting with broad categories (e.g., meat, fish, vegetables) and progressively refining to more specific groups (e.g., beef → ground beef → frozen ground beef).
+
+### 5.2 Implementation Steps
+
+#### Phase 1: Core Architecture [Week 1]
+
+1. **Create Hierarchical Configuration Structure**
+   - Develop a JSON configuration format for defining multiple clustering levels
+   - For each level, specify clustering parameters (min_cluster_size, min_samples, epsilon, etc.) in a seperate config file that can be easily maniupualted
+   - Define progression rules between levels
+   ```json
+   {
+     "levels": [
+       {
+         "level": 1,
+         "name": "broad_categories",
+         "min_cluster_size": 50,
+         "min_samples": 1,
+         "epsilon": 1.5,
+         "alpha": 0.5
+       },
+       {
+         "level": 2,
+         "name": "product_types",
+         "min_cluster_size": 20,
+         "min_samples": 2,
+         "epsilon": 1.0,
+         "alpha": 0.4
+       },
+       {
+         "level": 3,
+         "name": "specific_products",
+         "min_cluster_size": 6,
+         "min_samples": 2,
+         "epsilon": 0.5,
+         "alpha": 0.35
+       },
+       {
+         "level": 4,
+         "name": "variants",
+         "min_cluster_size": 3,
+         "min_samples": 2,
+         "epsilon": 0.25,
+         "alpha": 0.3
+       }
+     ]
+   }
+   ```
+
+2. **Modify improved_clustering.py to Support Multi-Level Processing**
+   - Extend the existing HDBSCAN implementation to process clusters at each level
+   - Create a new run_hierarchical_clustering function that takes the configuration as input
+   - Reuse the existing clustering code with parameterization for each level
+
+3. **Design Cluster Storage Structure**
+   - Create a hierarchical JSON format to store multi-level clusters
+   - Implement parent-child relationships between clusters at different levels
+   ```json
+   {
+     "level_1": {
+       "cluster_1": {
+         "name": "Meat",
+         "products": [...],
+         "children": ["level_2_cluster_1", "level_2_cluster_2"]
+       }
+     },
+     "level_2": {
+       "cluster_1": {
+         "name": "Beef",
+         "parent": "level_1_cluster_1",
+         "products": [...],
+         "children": ["level_3_cluster_1"]
+       }
+     }
+   }
+   ```
+
+#### Phase 2: Clustering Implementation [Week 2]
+
+4. **Implement Level 1 Clustering (Broad Categories)**
+   - Use the maximum inclusion configuration (min_cluster_size=50, min_samples=1, epsilon=1.5)
+   - Target highest-level categories (meat, fish, produce, etc.)
+   - Utilize the all-mpnet-base-v2 embedding model for optimal semantic understanding
+   - Store results in the hierarchical format
+
+5. **Implement Sub-Clustering for Each Level 1 Cluster**
+   - For each level 1 cluster, extract its products
+   - Apply level 2 clustering parameters to create subclusters
+   - Maintain parent-child relationships in the output structure
+   - Example: Meat → Beef, Pork, Poultry, etc.
+
+6. **Create Progressive Refinement Logic**
+   - Build a function to recursively process each level
+   ```python
+   def cluster_at_level(products, level_config, parent_id=None):
+       # Apply clustering using the level-specific parameters
+       clusters = run_improved_clustering(
+           products, 
+           min_cluster_size=level_config['min_cluster_size'],
+           min_samples=level_config['min_samples'],
+           epsilon=level_config['epsilon'],
+           alpha=level_config['alpha']
+       )
+       
+       # Store clusters with parent reference
+       cluster_data = {
+           f"{level_config['name']}_{i}": {
+               "parent": parent_id,
+               "products": cluster_products,
+               "children": []
+           } for i, cluster_products in enumerate(clusters)
+       }
+       
+       return cluster_data
+   ```
+
+7. **Implement Stopping Criteria**
+   - Define rules for when to stop sub-clustering (min cluster size, max depth)
+   - Handle edge cases where clusters can't be further divided
+
+#### Phase 3: Analysis and Visualization [Week 3]
+
+8. **Create Multi-Level Cluster Analysis Tools**
+   - Extend current analysis tools to evaluate hierarchical clusters
+   - Measure coherence at each level
+   - Calculate coverage statistics across the hierarchy
+
+9. **Implement Hierarchical Visualization**
+   - Create tools to visualize the cluster hierarchy (tree structure)
+   - Enable drill-down from broader to more specific categories
+   - Example output format: interactive HTML with expandable tree nodes
+
+10. **Add USDA Mapping Analysis for Hierarchical Clusters**
+    - Extend existing USDA analysis to evaluate alignment at each level
+    - Determine at which level USDA codes are most consistently grouped
+    - Generate reports on hierarchical USDA alignment
+
+#### Phase 4: Integration and Optimization [Week 4]
+
+11. **Integrate with Existing Pipelines**
+    - Modify run_clustering.py to support hierarchical mode
+    - Add command-line parameters for hierarchical clustering
+    - Create a unified interface for both flat and hierarchical clustering
+
+12. **Performance Optimization**
+    - Implement caching for embeddings to avoid recalculation
+    - Add parallel processing for sub-clustering operations
+    - Optimize memory usage for large product sets
+
+13. **Documentation and Examples**
+    - Update README with hierarchical clustering documentation
+    - Create example notebooks showing hierarchical analysis
+    - Document configuration options for different use cases
+
+### 5.3 Technical Approach
+
+#### Reusing Existing Components
+
+1. **Embedding Generation**
+   - Continue using the all-mpnet-base-v2 model that has proven effective
+   - Reuse existing embedding pipeline without modification
+
+2. **Clustering Core**
+   - Leverage improved_clustering.py's optimized HDBSCAN implementation
+   - Apply different parameter sets at each hierarchical level
+
+3. **Analysis Tools**
+   - Extend current analysis scripts to handle hierarchical data
+   - Maintain the same quality metrics but apply them at each level
+
+#### New Components to Develop
+
+1. **hierarchical_clustering.py**
+   - Core implementation of the multi-level clustering algorithm
+   - Manages progression between levels and maintains hierarchy
+
+2. **hierarchical_config.json**
+   - Configuration for multiple clustering levels
+   - Parameters for each level's granularity
+
+3. **hierarchical_visualization.py**
+   - Tools to visualize and navigate the cluster hierarchy
+   - Interactive exploration of clusters at different levels
+
+### 5.4 Expected Outcomes
+
+- A comprehensive hierarchical clustering of products from broad categories to specific variants
+- Improved alignment with natural product taxonomies (e.g., USDA classification)
+- Better support for both broad category analysis and specific product comparison
+- Enhanced visualization tools that allow exploration at multiple granularity levels
+- More meaningful clusters that align with business understanding of product relationships
 - Visualize embeddings with dimensionality reduction
 
 ## 5. Parameter Configuration

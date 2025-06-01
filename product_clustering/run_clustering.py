@@ -37,6 +37,12 @@ import time
 from typing import Optional, Dict, Any
 import json
 
+# For direct script execution - add parent directory to path
+if __name__ == "__main__":
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if parent_dir not in sys.path:
+        sys.path.insert(0, parent_dir)
+
 # Local module for interactive input
 from product_clustering.interactive_input import (
     get_yes_no_input,
@@ -77,23 +83,18 @@ def run_data_preparation(data_dir: Optional[str] = None,
         return output_path
     
     print("Running data preparation...")
-    # Call the function to prepare data for clustering
-    prepared_data = prepare_data_for_clustering()
+    # Call the function to prepare data for clustering with the specified parameters
+    prepared_data = prepare_data_for_clustering(
+        use_category_descriptions=use_category_descriptions,
+        normalize_text=normalize_text,
+        expand_abbreviations=expand_abbreviations
+    )
     
     # Create the output directory if it doesn't exist
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
-    # Modify the clustering description based on options
-    if not use_category_descriptions:
-        print("Excluding category descriptions from clustering...")
-        # Remove category information from clustering description if requested
-        prepared_data['clustering_description'] = prepared_data['product_description']
-        # Re-apply normalization if needed
-        if normalize_text:
-            from product_clustering.data_prep import preprocess_text_for_clustering
-            prepared_data['clustering_description'] = prepared_data['clustering_description'].apply(
-                lambda x: preprocess_text_for_clustering(x, expand_abbreviations=expand_abbreviations)
-            )
+    # Note: Category descriptions and text normalization are now handled directly 
+    # in the prepare_data_for_clustering function with the parameters we passed
     
     # Save the prepared data
     prepared_data.to_csv(output_path, index=False)
@@ -309,13 +310,14 @@ def run_analysis(data_dir: Optional[str] = None,
                  llm_model: str = "gpt-3.5-turbo",
                  cluster_size_threshold: int = 5,
                  price_variation_threshold: float = 0.2,
-                 detailed_output: bool = False):
+                 detailed_output: bool = False,
+                 always_analyze_both: bool = True):
     """
     Run various analysis steps on clustering results.
     
     Args:
         data_dir: Directory containing clustering results
-        refined: Whether to analyze refined clusters
+        refined: Whether to analyze refined clusters if only one can be analyzed
         run_basic_analysis: Whether to run basic cluster statistics analysis
         run_margin_analysis: Whether to analyze price/margin variations within clusters
         run_usda_analysis: Whether to analyze USDA mapping alignment
@@ -324,6 +326,7 @@ def run_analysis(data_dir: Optional[str] = None,
         cluster_size_threshold: Minimum cluster size for detailed analysis
         price_variation_threshold: Threshold for identifying significant price variations
         detailed_output: Whether to generate detailed analysis output
+        always_analyze_both: Whether to always analyze both original and refined clusters when both exist
     
     Returns:
         Dictionary of paths to the generated analysis files
@@ -334,35 +337,58 @@ def run_analysis(data_dir: Optional[str] = None,
     if data_dir is None:
         data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     
-    # Determine the path to clusters based on whether we're using refined clusters
-    if refined:
-        clusters_path = os.path.join(data_dir, "refined_clusters", "refined_clusters.json")
-        if not os.path.exists(clusters_path):
-            print(f"Refined clusters not found at {clusters_path}")
-            print("Run clustering with reranking first or use --refined=False")
-            return None
-    else:
-        clusters_path = os.path.join(data_dir, "improved_clustering", "clusters.json")
-        if not os.path.exists(clusters_path):
-            print(f"Clusters not found at {clusters_path}")
-            print("Run clustering first")
-            return None
+    # Define paths for both refined and original clusters
+    refined_clusters_path = os.path.join(data_dir, "improved_clustering", "refined", "refined_clusters.json")
+    original_clusters_path = os.path.join(data_dir, "improved_clustering", "original_clusters.json")
+    
+    # Check which cluster files exist
+    refined_exists = os.path.exists(refined_clusters_path)
+    original_exists = os.path.exists(original_clusters_path)
+    
+    # Determine which clusters to analyze based on what exists and user preferences
+    analyze_original = original_exists and (always_analyze_both or not refined_exists or not refined)
+    analyze_refined = refined_exists and (always_analyze_both or not original_exists or refined)
+    
+    if not analyze_original and not analyze_refined:
+        print("No clusters found to analyze. Run clustering first.")
+        return None
+    
+    # Primary clusters path (used for features that only analyze one set of clusters)
+    clusters_path = refined_clusters_path if refined and refined_exists else original_clusters_path
     
     # Create a dictionary to store output paths
     analysis_paths = {}
     
     # Run the basic cluster analysis
     if run_basic_analysis:
-        print(f"Running basic analysis on {'refined ' if refined else ''}clusters...")
-        # Note: run_cluster_analysis does not accept 'detailed' or 'min_cluster_size' parameters
-        # so we will just use the parameters it does accept
-        output_path = run_cluster_analysis(
-            clusters_path=clusters_path,
-            data_dir=data_dir,
-            refined=refined
-        )
-        analysis_paths['basic'] = output_path
-        print(f"Basic analysis complete. Results saved to {output_path}")
+        if analyze_original:
+            # Analyze the original (embedding-based) clusters
+            print("Running basic analysis on original (embedding-based) clusters...")
+            original_output_path = run_cluster_analysis(
+                clusters_path=original_clusters_path,
+                data_dir=data_dir,
+                refined=False,  # Mark as not refined
+                output_dir=os.path.join(data_dir, "analysis", "original_clusters")
+            )
+            analysis_paths['basic_original'] = original_output_path
+            print(f"Original clusters analysis complete. Results saved to {original_output_path}")
+        
+        if analyze_refined:
+            # Analyze the refined clusters
+            print("Running basic analysis on refined (cross-encoder) clusters...")
+            refined_output_path = run_cluster_analysis(
+                clusters_path=refined_clusters_path,
+                data_dir=data_dir,
+                refined=True,
+                output_dir=os.path.join(data_dir, "analysis", "refined_clusters")
+            )
+            analysis_paths['basic_refined'] = refined_output_path
+            print(f"Refined clusters analysis complete. Results saved to {refined_output_path}")
+            
+        # Make sure we have run at least one analysis
+        if not analyze_original and not analyze_refined:
+            print("No clusters available for basic analysis")
+            return None
     
     # Run margin analysis if requested
     if run_margin_analysis:
@@ -393,54 +419,78 @@ def run_analysis(data_dir: Optional[str] = None,
     if run_usda_analysis:
         try:
             print("Running USDA mapping analysis...")
-            from product_clustering.analyze_usda_mapping import analyze_usda_grouping_alignment, generate_usda_mapping_report
-            
-            usda_analysis_path = os.path.join(data_dir, "analysis", "usda_mapping_analysis.md")
-            os.makedirs(os.path.dirname(usda_analysis_path), exist_ok=True)
-            
-            # Run the USDA mapping analysis using the analyze_usda_mapping module
-            usda_output_path = os.path.join(data_dir, "analysis", "usda_mapping_analysis.md")
-            
-            # Use the command-line tool for convenience
+            from product_clustering.analyze_usda_mapping import analyze_usda_mapping, generate_usda_mapping_report
             import subprocess
-            cmd = [
-                "python3", 
-                os.path.join(os.path.dirname(os.path.abspath(__file__)), "analyze_usda_mapping.py"),
-                f"--clusters_path={clusters_path}",
-                f"--output_dir={os.path.join(data_dir, 'analysis')}"
-            ]
-            subprocess.run(cmd)
             
-            analysis_paths['usda'] = usda_output_path
-            print(f"USDA mapping analysis complete. Results saved to {usda_output_path}")
+            # Create output directories
+            analysis_dir = os.path.join(data_dir, "analysis")
+            os.makedirs(analysis_dir, exist_ok=True)
+            
+            # Always analyze both original and refined clusters when available
+            if analyze_original and analyze_refined:
+                # Both original and refined clusters exist, run comparative analysis
+                print("Running comparative USDA mapping analysis on both original and refined clusters...")
+                
+                # Run analysis on refined clusters with original clusters for reference
+                refined_usda_output_path = os.path.join(analysis_dir, "refined_usda_mapping_analysis.md")
+                cmd = [
+                    "python3", 
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "analyze_usda_mapping.py"),
+                    f"--clusters_path={refined_clusters_path}",
+                    f"--original_clusters_path={original_clusters_path}",
+                    f"--output_dir={os.path.join(analysis_dir, 'refined')}"
+                ]
+                subprocess.run(cmd)
+                analysis_paths['usda_refined'] = refined_usda_output_path
+                print(f"Refined clusters USDA mapping analysis complete. Results saved to {refined_usda_output_path}")
+                
+                # Also run analysis on original clusters to compare performance
+                original_usda_output_path = os.path.join(analysis_dir, "original_usda_mapping_analysis.md")
+                cmd = [
+                    "python3", 
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "analyze_usda_mapping.py"),
+                    f"--clusters_path={original_clusters_path}",
+                    f"--output_dir={os.path.join(analysis_dir, 'original')}"
+                ]
+                subprocess.run(cmd)
+                analysis_paths['usda_original'] = original_usda_output_path
+                print(f"Original clusters USDA mapping analysis complete. Results saved to {original_usda_output_path}")
+                
+            elif analyze_refined:
+                # Only refined clusters exist
+                print("Running USDA mapping analysis on refined clusters...")
+                usda_output_path = os.path.join(analysis_dir, "usda_mapping_analysis.md")
+                cmd = [
+                    "python3", 
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "analyze_usda_mapping.py"),
+                    f"--clusters_path={refined_clusters_path}",
+                    f"--output_dir={analysis_dir}"
+                ]
+                subprocess.run(cmd)
+                analysis_paths['usda'] = usda_output_path
+                print(f"USDA mapping analysis complete. Results saved to {usda_output_path}")
+                
+            elif analyze_original:
+                # Only original clusters exist
+                print("Running USDA mapping analysis on original clusters...")
+                usda_output_path = os.path.join(analysis_dir, "usda_mapping_analysis.md")
+                cmd = [
+                    "python3", 
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "analyze_usda_mapping.py"),
+                    f"--clusters_path={original_clusters_path}",
+                    f"--output_dir={analysis_dir}"
+                ]
+                subprocess.run(cmd)
+                analysis_paths['usda'] = usda_output_path
+                print(f"USDA mapping analysis complete. Results saved to {usda_output_path}")
+                
         except Exception as e:
             print(f"Error running USDA mapping analysis: {e}")
+            print(f"Exception details: {str(e)}")
+            import traceback
+            traceback.print_exc()
     
-    # Run LLM analysis if requested
-    if run_llm_analysis:
-        try:
-            print(f"Running LLM analysis using {llm_model}...")
-            
-            # Check if the cluster_analyzer_llm module exists
-            llm_module_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cluster_analyzer_llm.py")
-            if os.path.exists(llm_module_path):
-                spec = importlib.util.spec_from_file_location("cluster_analyzer_llm", llm_module_path)
-                llm_module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(llm_module)
-                
-                llm_output_path = llm_module.analyze_clusters_with_llm(
-                    clusters_path=clusters_path,
-                    data_dir=data_dir,
-                    model_name=llm_model,
-                    min_cluster_size=cluster_size_threshold
-                )
-                
-                analysis_paths['llm'] = llm_output_path
-                print(f"LLM analysis complete. Results saved to {llm_output_path}")
-            else:
-                print("LLM analysis module not found. Skipping LLM analysis.")
-        except Exception as e:
-            print(f"Error running LLM analysis: {e}")
+    # LLM analysis has been removed as analyze_clusters_with_llm function doesn't exist
     
     return analysis_paths
 

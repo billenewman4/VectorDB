@@ -5,6 +5,7 @@ import os
 import json
 from collections import defaultdict
 from src.abbreviation_translator import expand_abbreviations
+from typing import Optional
 
 def clean_text(text):
     """Basic text cleaning: lowercase, strip whitespace."""
@@ -205,17 +206,30 @@ def _process_single_inventory_file(file_path, distributor_prefix=None):
         print(f"Error processing inventory file {file_path}: {e}")
         return {}
 
-def process_transaction_data(df_raw):
+def process_transaction_data(df_raw: Optional[pd.DataFrame] = None, 
+                           code_col: str = None, 
+                           desc_col: str = None,
+                           filter_no_category: bool = True) -> pd.DataFrame:
     """
-    Processes the raw transaction data to extract unique product descriptions 
-    and their associated product codes. Now includes category mapping from inventory data.
+    Process transaction data to extract unique product descriptions.
+    
+    Args:
+        df: Transaction DataFrame. If None, data will be loaded.
+        code_col: Column name for product codes. If None, uses config value.
+        desc_col: Column name for product descriptions. If None, uses config value.
+        filter_no_category: Whether to filter out products without category data.
+            
+    Returns:
+        DataFrame with unique product descriptions and their codes.
     """
     if df_raw is None:
         print("No raw data to process.")
         return None
 
-    code_col = config.TRANSACTION_PRODUCT_CODE_COL
-    desc_col = config.TRANSACTION_DESC_COL
+    if code_col is None:
+        code_col = config.TRANSACTION_PRODUCT_CODE_COL
+    if desc_col is None:
+        desc_col = config.TRANSACTION_DESC_COL
 
     print(f"Processing data using columns: Code='{code_col}', Description='{desc_col}'")
 
@@ -266,12 +280,14 @@ def process_transaction_data(df_raw):
         lambda code: product_categories.get(code, None)
     )
     
-    # Filter out products without a valid category
+    # Filter out products without a valid category only if requested
     initial_count = len(unique_products_df)
-    unique_products_df = unique_products_df.dropna(subset=['product_category'])
-    filtered_count = initial_count - len(unique_products_df)
-    print(f"Filtered out {filtered_count} products without valid category descriptions")
-    
+    if filter_no_category:
+        unique_products_df = unique_products_df.dropna(subset=['product_category'])
+        filtered_count = initial_count - len(unique_products_df)
+        print(f"Filtered out {filtered_count} products without valid category descriptions")
+    else:
+        print(f"Keeping all {initial_count} products regardless of category information")
     
     # Count products per category
     category_counts = unique_products_df['product_category'].value_counts()

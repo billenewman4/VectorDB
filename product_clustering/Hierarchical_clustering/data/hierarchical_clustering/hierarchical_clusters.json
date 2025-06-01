@@ -1,0 +1,1251 @@
+{
+  "level_1": {
+    "broad_categories_5": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "1480415",
+        "14025144",
+        "19320006",
+        "68888800",
+        "17882041",
+        "97295740",
+        "1361465",
+        "180150",
+        "1834215Z",
+        "20472",
+        "13964889",
+        "13976347"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 12,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_9": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "13420314",
+        "13641503",
+        "44233570",
+        "161121",
+        "1130416",
+        "13490410",
+        "44201060",
+        "53610400",
+        "44701010",
+        "13066073",
+        "13610410",
+        "13024",
+        "13101604",
+        "33718014",
+        "10154",
+        "44001980",
+        "240160",
+        "13004103",
+        "1006871",
+        "13651401",
+        "53448244",
+        "44262090",
+        "132171",
+        "12130405",
+        "10067956",
+        "10517132",
+        "144087",
+        "82074610",
+        "34676565",
+        "240088",
+        "13140I",
+        "11321405",
+        "410051",
+        "13301",
+        "13101410",
+        "10548013",
+        "13801410",
+        "410066",
+        "34232655",
+        "1304245Z",
+        "10169749",
+        "44132030",
+        "1033A2BP",
+        "13610606",
+        "13039I3",
+        "10075015",
+        "33770140",
+        "13035",
+        "240087",
+        "620054",
+        "11321404",
+        "10540C5",
+        "141030",
+        "240078",
+        "13209E1",
+        "10169750",
+        "13209305",
+        "167050",
+        "144168",
+        "10144985",
+        "142060",
+        "220816",
+        "144072",
+        "174050",
+        "13045A",
+        "620068",
+        "10517133",
+        "10540049",
+        "103333",
+        "10660936",
+        "140121",
+        "1311908",
+        "1355693",
+        "742019",
+        "250051",
+        "12131415",
+        "13430518",
+        "13170206",
+        "140980",
+        "1037210",
+        "420040",
+        "82005930",
+        "144062",
+        "13055574",
+        "1301801",
+        "52142001",
+        "132218",
+        "103337",
+        "290050",
+        "91245630",
+        "10517177",
+        "13420518",
+        "20592",
+        "1006512",
+        "1319543",
+        "240076",
+        "33018220",
+        "22240",
+        "10600581",
+        "13123026",
+        "132091",
+        "140333",
+        "1006753",
+        "220187",
+        "12130606",
+        "13195310",
+        "11310406",
+        "32790030",
+        "13194993",
+        "10517102",
+        "131771",
+        "12130112",
+        "13017971",
+        "13320618",
+        "1355726",
+        "20002",
+        "19550006",
+        "130359",
+        "141081",
+        "144042",
+        "13208689",
+        "13420610"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 122,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_4": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "13860320",
+        "82321060",
+        "SP425",
+        "22114",
+        "13874BS",
+        "13810",
+        "13830",
+        "1380280",
+        "37312104",
+        "13887D",
+        "290259",
+        "1382162",
+        "1380283"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 13,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_3": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "74264759",
+        "21226",
+        "74005829",
+        "74139989",
+        "74299980",
+        "74524759",
+        "78362999",
+        "21224",
+        "74195829",
+        "71133",
+        "80608000",
+        "74704759",
+        "74939980",
+        "74064419",
+        "74559989",
+        "78384369",
+        "74304759",
+        "74551260",
+        "21258",
+        "72993",
+        "72451",
+        "74044360",
+        "71910",
+        "74191109",
+        "21245",
+        "21201B",
+        "71900",
+        "21201A",
+        "537452"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 29,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_6": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "17870FMC",
+        "17515B00",
+        "1785700",
+        "17854A",
+        "17861013",
+        "1786535",
+        "23220008",
+        "16175374",
+        "17081541",
+        "310636",
+        "10230",
+        "1784992",
+        "178451",
+        "17097K",
+        "23245580",
+        "17065K3",
+        "17017K01",
+        "360388",
+        "1620719",
+        "17051001",
+        "17857022",
+        "23015254",
+        "16223PC",
+        "23705012",
+        "1700121Y",
+        "23705000",
+        "13198895",
+        "1700605",
+        "17885",
+        "17849024",
+        "10030",
+        "17864016",
+        "17842",
+        "390007",
+        "23120004",
+        "1701588",
+        "17857300",
+        "17845016",
+        "24565400",
+        "360389",
+        "17854010",
+        "56001180",
+        "17857096",
+        "17876867",
+        "17861061",
+        "17861015",
+        "16142PC",
+        "17873L",
+        "23110007",
+        "55001290",
+        "16175378",
+        "100031",
+        "17001C",
+        "17857983",
+        "24555600",
+        "21112100",
+        "1786409",
+        "17051",
+        "17041K",
+        "170861",
+        "17864045",
+        "17820"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 62,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_8": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "SP1029",
+        "42210",
+        "128018",
+        "97545850",
+        "SP1101",
+        "190142",
+        "207900020",
+        "18110621",
+        "190856",
+        "18100631",
+        "18110051",
+        "57310621",
+        "18110631",
+        "450105",
+        "30152",
+        "18105031",
+        "18208416",
+        "10500041",
+        "54735790",
+        "34095",
+        "18200012",
+        "190084",
+        "18180090",
+        "193001",
+        "97495850"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 25,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_0": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "80590012",
+        "22303",
+        "94254890",
+        "22ND015",
+        "22199",
+        "94194890",
+        "45700",
+        "31526",
+        "22PC07",
+        "195003",
+        "80557015",
+        "220831"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 12,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_2": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "76065372",
+        "76159989",
+        "76011459",
+        "78795829",
+        "78344360",
+        "21067",
+        "79185829",
+        "2106458",
+        "540350",
+        "76055372",
+        "76035239",
+        "80900010",
+        "70119980"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 13,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_7": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "15211",
+        "15204",
+        "1502010",
+        "15004032",
+        "152308",
+        "1500898",
+        "15230",
+        "15008B",
+        "15218",
+        "15234",
+        "20002070",
+        "1500880",
+        "15238",
+        "20045060",
+        "15201"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 15,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    },
+    "broad_categories_1": {
+      "level": 1,
+      "parent": null,
+      "products": [
+        "16021010",
+        "46600",
+        "16021874",
+        "10127005",
+        "10599201",
+        "1014A1IB",
+        "10599180",
+        "16043575",
+        "16290100",
+        "10599210",
+        "10161516",
+        "10234544"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 12,
+        "parameters": {
+          "min_cluster_size": 10,
+          "min_samples": 3,
+          "epsilon": 1200.0,
+          "alpha": 8e-05
+        }
+      }
+    }
+  },
+  "level_2": {
+    "broad_product_types_0": {
+      "level": 2,
+      "parent": "broad_categories_1",
+      "products": [
+        "16021010",
+        "1014A1IB",
+        "16043575"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_2": {
+      "level": 2,
+      "parent": "broad_categories_1",
+      "products": [
+        "10127005",
+        "10234544"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_3": {
+      "level": 2,
+      "parent": "broad_categories_1",
+      "products": [
+        "10599201",
+        "10599180",
+        "10599210"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_1": {
+      "level": 2,
+      "parent": "broad_categories_1",
+      "products": [
+        "46600",
+        "16290100"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_24": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "13420314",
+        "13430518",
+        "13420518",
+        "13320618",
+        "13420610"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 5,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_23": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "13641503",
+        "13610410",
+        "13610606"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_10": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "17861015",
+        "100031"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_22": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "161121",
+        "167050"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_14": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "17097K",
+        "17065K3",
+        "17041K"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_19": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "13066073",
+        "1304245Z"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_27": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "13101604",
+        "141081"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_17": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "33718014",
+        "33770140"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_18": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "240160",
+        "240088",
+        "240076"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_15": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "1701588",
+        "17051"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_21": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "12130405",
+        "12130606"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_4": {
+      "level": 2,
+      "parent": "broad_categories_8",
+      "products": [
+        "SP1029",
+        "128018",
+        "190856",
+        "193001"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 4,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_13": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "1784992",
+        "17849024"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_7": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "1785700",
+        "17857022",
+        "17857300",
+        "17857096",
+        "17857983"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 5,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_8": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "1700121Y",
+        "1700605",
+        "17001C"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_5": {
+      "level": 2,
+      "parent": "broad_categories_8",
+      "products": [
+        "18110621",
+        "18100631",
+        "18110051",
+        "18110631",
+        "18105031",
+        "18180090"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 6,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_11": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "1786535",
+        "56001180"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_28": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "13101410",
+        "140333"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_9": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "16175374",
+        "1620719",
+        "16223PC",
+        "16142PC",
+        "16175378"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 5,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_25": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "141030",
+        "144168",
+        "140121"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_12": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "17854A",
+        "17873L"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_26": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "142060",
+        "144072",
+        "144062"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_20": {
+      "level": 2,
+      "parent": "broad_categories_9",
+      "products": [
+        "1355693",
+        "13055574"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_16": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "17017K01",
+        "17051001"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    },
+    "broad_product_types_6": {
+      "level": 2,
+      "parent": "broad_categories_6",
+      "products": [
+        "24565400",
+        "24555600"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 150.0,
+          "alpha": 0.0001
+        }
+      }
+    }
+  },
+  "level_3": {
+    "broad_categories_specific_products_0": {
+      "level": 3,
+      "parent": "broad_categories_1",
+      "products": [
+        "16021874",
+        "10161516"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "refined_by_cross_encoder": true,
+          "cross_encoder_model": "cross-encoder/ms-marco-MiniLM-L-12-v2",
+          "cross_encoder_threshold": 0.3
+        }
+      }
+    },
+    "broad_specific_products_6": {
+      "level": 3,
+      "parent": "broad_categories_9",
+      "products": [
+        "250051",
+        "82005930"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_4": {
+      "level": 3,
+      "parent": "broad_categories_9",
+      "products": [
+        "10144985",
+        "1006512"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_5": {
+      "level": 3,
+      "parent": "broad_categories_9",
+      "products": [
+        "1130416",
+        "420040",
+        "52142001"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_2": {
+      "level": 3,
+      "parent": "broad_categories_3",
+      "products": [
+        "21224",
+        "74044360",
+        "21201B"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_8": {
+      "level": 3,
+      "parent": "broad_categories_9",
+      "products": [
+        "13301",
+        "132218",
+        "33018220"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 3,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_3": {
+      "level": 3,
+      "parent": "broad_product_types_5",
+      "products": [
+        "18110621",
+        "18100631",
+        "18110051",
+        "18110631",
+        "18105031",
+        "18180090"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 6,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_1": {
+      "level": 3,
+      "parent": "broad_categories_2",
+      "products": [
+        "79185829",
+        "70119980"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_9": {
+      "level": 3,
+      "parent": "broad_product_types_1",
+      "products": [
+        "17885",
+        "17861061"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_7": {
+      "level": 3,
+      "parent": "broad_categories_9",
+      "products": [
+        "132171",
+        "13045A",
+        "91245630",
+        "130359"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 4,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "broad_specific_products_0": {
+      "level": 3,
+      "parent": "broad_categories_2",
+      "products": [
+        "76159989",
+        "21067"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "min_cluster_size": 2,
+          "min_samples": 1,
+          "epsilon": 60.0,
+          "alpha": 0.001
+        }
+      }
+    },
+    "product_types_specific_products_0": {
+      "level": 3,
+      "parent": "broad_product_types_20",
+      "products": [
+        "1355693",
+        "13055574"
+      ],
+      "children": [],
+      "metadata": {
+        "cluster_size": 2,
+        "parameters": {
+          "refined_by_cross_encoder": true,
+          "cross_encoder_model": "cross-encoder/ms-marco-MiniLM-L-12-v2",
+          "cross_encoder_threshold": 0.3
+        }
+      }
+    }
+  }
+}

@@ -45,9 +45,19 @@ Transaction Data → Data Cleaning → Abbreviation Translation → Vector Embed
 
 ### Clustering Enhancements
 - **Simplified Data Preparation**: Removed attribute extraction, using normalized product descriptions directly
-- **Granular Clustering Parameters**: Optimized min_cluster_size=3 and min_samples=2 for more focused product groups
+- **Flexible Clustering Parameters**: Multiple parameter configurations available:
+  - Granular clusters (min_cluster_size=3, min_samples=2) for focused product groups
+  - Balanced clusters (min_cluster_size=6, min_samples=2, epsilon=1.0) for USDA alignment with reasonable sizes
+  - Maximum inclusion clusters (min_cluster_size=10, min_samples=1, epsilon=1.5) for keeping USDA groups together
 - **Test Mode**: Added capability to run on data subsets for faster parameter tuning
 - **CrossEncoder Refinement**: Implemented pairwise similarity refinement to improve cluster coherence
+
+### Meat Industry-Specific Terminology Handling
+- **Enhanced Abbreviation Dictionary**: Comprehensive mapping of meat industry abbreviations
+- **Standardized Cut Terminology**: Unified variations like 'tip-on'/'lip-on', 'ribeye'/'rib eye'
+- **Grade Normalization**: Standardized grade indicators like 'ch', 'cho', 'choice'
+- **USDA Code Recognition**: Properly normalized codes like '116A', '120 1', '121 C'
+- **Pattern-Based Recognition**: Multi-stage processing to handle hyphenated terms and special patterns
 
 ### USDA Code Mapping Fixes
 - **Improved Normalization Logic**: Disabled potentially problematic normalization patterns
