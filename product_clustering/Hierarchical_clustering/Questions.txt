@@ -1,0 +1,61 @@
+1. Duplicate-Looking Rows that Were Not Split Into Separate Sub-clusters
+
+Original prompt (condensed):
+
+“How are these not further sub-clustered given they have the exact same descriptions?”
+
+Improved prompt:
+
+Context
+We run a two-level clustering pipeline on product SKUs. At the top level (broad_categories_100) we group by generic product families; at a second level (broad_specific_products_* or broad_variants_*) we expect SKUs with identical titles/descriptions to separate into finer sub-clusters.
+
+Problem Statement
+The two SKUs below share an identical canonical description but were left in the same top-level cluster without being further split.
+
+Cluster_ID  : broad_categories_100
+SKU         : 41803900 | turkeys 14/16 - 1 hd/cs | Whole Turkeys | turkeys 14/16 - 1 hd/cs
+SKU         : 41801401 | turkeys 14/16 - 4 hd/cs | Whole Turkeys | turkeys 14/16 - 4 hd/cs
+
+Your Task
+	1.	Explain ​why the model might have failed to create distinct sub-clusters (e.g., pre-processing decisions, token weighting, insufficient n-gram resolution).
+	2.	Suggest specific alterations—data preprocessing steps, embedding tweaks, distance-threshold adjustments, or post-processing heuristics—that would force identical-or-near-identical product strings into their own variant-level clusters.
+	3.	Output your reasoning and recommended parameter changes in structured JSON:
+
+{
+  "root_cause": "...",
+  "recommended_changes": [
+    {"component": "tokenization", "proposal": "..."},
+    {"component": "distance_threshold", "proposal": "..."},
+    ...
+  ]
+}
+
+
+
+⸻
+
+2. Sub-clusters That Are Identical to Their Parent Cluster (No Real Granularity)
+
+Original prompt (condensed):
+
+“Something seems wrong with our clustering mechanism b/c these sub-clusters are just equal to the bigger cluster.”
+
+Improved prompt:
+
+Context
+Expected hierarchy:
+broad_categories_XXX → broad_specific_products_YY → broad_variants_ZZ
+
+Dataset Rows Exhibiting the Issue
+
+broad_categories_116 | broad_specific_products_42 | broad_variants_8 | 250682  | hot dog sinai ab skl6-1 2/5 pound 064
+broad_categories_116 | broad_specific_products_42 | broad_variants_8 | 250682  | hot dog sinai ab skl6-1 2/5 pound 064-z
+broad_categories_116 | broad_specific_products_42 | broad_variants_8 | 22095N3 | hot dog sinai ab skl8-1 2/5 pound 065-z
+
+Notice that broad_variants_8 contains all SKUs that are already together in broad_specific_products_42, providing no additional separation.
+
+Your Task
+	1.	Detect whether the variant-level clustering threshold is too permissive or if a tie-breaker step is missing.
+	2.	Determine if extra features—e.g., size codes (064, 065), trailing “-z” modifiers, pack sizes (“2/5 pound”)—should trigger variant splits.
+	3.	Recommend a revised rule set or algorithmic tweak so that broad_variants delivers finer granularity (e.g., broad_variants_8a, 8b, 8c).
+	4.	Return your diagnosis and a bullet-point remediation plan; include pseudo-code if algorithm changes are involved.

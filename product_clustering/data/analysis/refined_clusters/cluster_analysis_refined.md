@@ -2,23 +2,23 @@
 
 ## Summary
 
-- Total clusters: 3674
-- Total products in clusters: 10112 out of 14174 total products (71.3%)
-- Average cluster size: 2.92
+- Total clusters: 3975
+- Total products in clusters: 9907 out of 14174 total products (69.9%)
+- Average cluster size: 2.64
 - Median cluster size: 2.0
-- Cluster size range: 2 to 24
-- Average coherence score: 0.882
-- Median coherence score: 0.903
+- Cluster size range: 2 to 12
+- Average coherence score: 0.892
+- Median coherence score: 0.914
 
 ## Cluster Size Distribution
 
 | Size Range | Count | Percentage |
 |------------|-------|------------|
-| 1-3 | 2928 | 79.7% |
-| 4-5 | 511 | 13.9% |
-| 6-10 | 198 | 5.4% |
-| 11-20 | 33 | 0.9% |
-| 21-50 | 4 | 0.1% |
+| 1-3 | 3367 | 84.7% |
+| 4-5 | 498 | 12.5% |
+| 6-10 | 106 | 2.7% |
+| 11-20 | 4 | 0.1% |
+| 21-50 | 0 | 0.0% |
 | 51-100 | 0 | 0.0% |
 | 101-∞ | 0 | 0.0% |
 
@@ -27,426 +27,247 @@
 | Coherence Range | Count | Percentage | Description |
 |-----------------|-------|------------|-------------|
 | 0.0 - 0.4 | 8 | 0.2% | Low |
-| 0.4 - 0.6 | 45 | 1.2% | Moderate |
-| 0.6 - 0.8 | 728 | 19.8% | Good |
-| 0.8 - 1.0 | 2568 | 69.9% | Excellent |
+| 0.4 - 0.6 | 41 | 1.0% | Moderate |
+| 0.6 - 0.8 | 627 | 15.8% | Good |
+| 0.8 - 1.0 | 3002 | 75.5% | Excellent |
 
 ## Potentially Mixed Clusters
 
-Found 10 potentially mixed clusters.
+Found 6 potentially mixed clusters.
 
-### Mixed Cluster 1: cluster_Baking_41
-
-- Size: 7 products
-- Coherence: 0.670
-- Common terms: SABRITAS, CHICOS, CHEETOS, DORITOS
-
-Sample products:
-
-- 95405: sabritas adobadas chicas 60/60gr
-- 95404: sabritas doritos grande 25/155gr
-- 95400: sabritas cheetos bola chicos 60/46g
-- 95401: sabritas tostitos salsa verde 60/62
-- 95402: sabritas doritos nacho chicos 60/62
-
-### Mixed Cluster 2: cluster_Beef Main_476
-
-- Size: 12 products
-- Coherence: 0.663
-- Common terms: BEEF, ANGUS, GOLD, HALAL, XT
-
-Sample products:
-
-- 45303: beef angus gold eye of round
-- 46703: beef angus gold xt shoulder clod quarter"
-- 42620: beef chuck roll xt star ranch angus
-- 41603: beef angus gold knuckle
-- 42604: beef angus gold chuck roll halal
-
-### Mixed Cluster 3: cluster_Beef Round_728
+### Mixed Cluster 1: cluster_Beef Round_785
 
 - Size: 5 products
-- Coherence: 0.640
-- Common terms: FLAT, BOTTOM, ROUND, CHOICE, AURORA
+- Coherence: 0.673
+- Common terms: TRI, TIP, CHOICE, AURORA, BLACK
 
 Sample products:
 
-- 11303793: flat bottom round, black m. (ch_angus)
-- 11303352: flat bottom round, swift (c_angus)
-- 11303694: flat bottom round, aurora (choice)
-- 11303693: flat bottom round, aurora (choice-angus)
-- 11303354: flat bottom round, swift (choice)
+- 15203694: tri-tip, aurora (choice)
+- 15203574: tri-tip, ibp (choice)
+- 15201590: tri-tip, mex fertres
+- 15203794: tri-tip, black mountain (choice)
+- 15209984: tri-tip, (choice)
 
-### Mixed Cluster 4: cluster_Beef Round_745
+### Mixed Cluster 2: cluster_Eggroll_1701
 
 - Size: 5 products
-- Coherence: 0.679
-- Common terms: INSIDE, ROUND, XT, CHOICE, GREATEROMAHA
+- Coherence: 0.689
+- Common terms: WONTON, WRAPPER, THICK, GOLDEN, BOWL
 
 Sample products:
 
-- 11193574: inside round xt, ibp (choice)
-- 11191004: inside round xt, greateromaha (choice)
-- 11173575: inside round xt, ibp (select)
-- 11191054: inside round xt, afg (choice)
-- 111910040: inside round xt, greateromaha halal (choice)
+- 25220: wonton wrapper -regular*baily* blue
+- 24241: wonton wrapper for boil-golden bowl
+- 24150: thick wonton wrapper *golden bowl* green
+- 25230: wonton wrapper - regular (yellow)
+- 24140: wonton wrapper -thick *baily*
 
-### Mixed Cluster 5: cluster_Chuck_1249
-
-- Size: 6 products
-- Coherence: 0.692
-- Common terms: SHOULDER, BEEF, CLOD, TENDERLOIN, CHOICE
-
-Sample products:
-
-- 11100400: beef chuck rolls/ clods prime
-- 11400400: beef shoulder shoulder clod Tenderloin choice
-- 11400200: beef shoulder shoulder clod Tenderloin nr
-- 11110401: beef chuck clods choice cut 1/2 inch
-- 11100300: beef shoulder shoulder clod select
-
-### Mixed Cluster 6: cluster_Deli Meat Pork_1489
-
-- Size: 24 products
-- Coherence: 0.565
-- Common terms: HAM, HAMS, SMOKED, POUND, S
-
-Sample products:
-
-- 740226: spring hill smoked pit hams-2 piece
-- 741123: spring hill smoked half hams-12/2.5-3 pound
-- 740082: smithfield brown sugar hams quarter
-- 744848: hormel natural juice hams-4/8 pound
-- 743024: thumann`s virginia style ham-8 pound box
-
-### Mixed Cluster 7: cluster_Duck_1537
+### Mixed Cluster 3: cluster_Other Dry Goods_2199
 
 - Size: 5 products
-- Coherence: 0.675
-- Common terms: DUCK, BUDDHIST, ON, POUND, H
-
-Sample products:
-
-- 11015: duck - h/on f/on 5.0 pound buddhist Cover
-- 11210: duck - h/on buddhist duck i/p 6.0 pound
-- 11018: 6 pound duck buddhist wog blue* 144-001
-- 11016: duck - head on feet on buddhist 4.5
-- 11014: 4.5 pound duck buddhist (h/o f/o) blue
-
-### Mixed Cluster 8: cluster_Goat_1608
-
-- Size: 5 products
-- Coherence: 0.697
-- Common terms: GOAT, CUT, IN, WAY, BONE
-
-Sample products:
-
-- 430156: 6way goat cut 1.5in bone-in
-- 430406: goat 6 way cut 40#cs
-- 30520: goat - 6 way cut skinless 40#ave.
-- 12001B: goat whole-6way -cut 1.5 in
-- 430151: goat leg cut 1.5in cubes
-
-### Mixed Cluster 9: cluster_Other Dry Goods_1993
-
-- Size: 5 products
-- Coherence: 0.696
+- Coherence: 0.684
 - Common terms: BRATWURST, SEASONING, BLOODY, MARY, NF
 
 Sample products:
 
-- 86720: bratwurst bloody mary seasoning nf
+- 86602: bratwurst seasoning cosentino`s
 - 86710: cajun bratwurst seasoning ro01220
 - 86610: bratwurst fiesta cheddar seasoning
+- 86720: bratwurst bloody mary seasoning nf
 - 86620: bratwurst parmesan garlic seasoning
-- 86602: bratwurst seasoning cosentino`s
 
-### Mixed Cluster 10: cluster_Other Variety_2080
+### Mixed Cluster 4: cluster_Other Variety_2289
 
 - Size: 5 products
-- Coherence: 0.690
+- Coherence: 0.678
+- Common terms: MAMBO, POUND, GREEN, PEAS, VEGETABLES
+
+Sample products:
+
+- 96374740: sancocho vegetables for stew, mambo 6x2 pound
+- 96284740: mixed vegetables, 5way, mambo 6x2 pound
+- 96364740: gandules/green pigeon peas, mambo 12x14z
+- 96324740: beans baby lima, mambo (6x2 pound)
+- 96304740: green peas, mambo (6x2 pound)
+
+### Mixed Cluster 5: cluster_Other Variety_2283
+
+- Size: 5 products
+- Coherence: 0.636
 - Common terms: ROGER, WOOD, POUND, LUMBERJACK, BEEF
 
 Sample products:
 
-- 97876895: hot lumberjack saus8/1.5 pound)roger wood
-- 97875895: polish lumberjack saus8/1.5 pound)roger wood
-- 97878895: beef smkd saus8/1.5 pound)roger wood
-- 97873895: meal rdy sliced smk saus(8/14 ounce)roger wood
 - 97877895: lumberjacksmkd saus8/1.5 pound)roger wood
+- 97878895: beef smkd saus8/1.5 pound)roger wood
+- 97875895: polish lumberjack saus8/1.5 pound)roger wood
+- 97873895: meal rdy sliced smk saus(8/14 ounce)roger wood
+- 97876895: hot lumberjack saus8/1.5 pound)roger wood
+
+### Mixed Cluster 6: cluster_Pork Butt_2364
+
+- Size: 5 products
+- Coherence: 0.695
+- Common terms: BUTT, VP, BONE, IN, QUARTER
+
+Sample products:
+
+- 46091980: butt boneless vp, pork, smithfield #70659
+- 46081060: butt bone-in quarter", indiana vp, #05008
+- 46081980: butt bone-in quarter", smithfield vp #86793
+- 46084150: butt bone-in quarter" vp, hylife
+- 46091060: butt boneless indiana vp #05205
 
 
 ## Sample Clusters
 
 ### Small Size Clusters
 
-#### Cluster cluster_Beef Variety_856
+#### Cluster cluster_SHORT LOIN_3422
 
-- Size: 5 products
-- Coherence: 0.864
+- Size: 2 products
+- Coherence: 0.987
 
 Products:
 
-- 42300: ground beef fine 80%
-- 42370: ground beef coarse 80%
-- 42300: ground beef fine 80%
-- 19111020: ground beef, 80% coarse grd national
-- 19711020: ground beef, 90/10 fine grd national
+- 13319624: beef loin t-bone prime dry aged 24 ounce
+- 13319642: beef loin t-bone prime dry aged 42 ounce
 
-#### Cluster cluster_Beef Variety_785
+#### Cluster cluster_Seafood Shrimp_3644
 
-- Size: 3 products
+- Size: 2 products
+- Coherence: 0.907
+
+Products:
+
+- 74045809: shrimp, brd bfly 16/20 count happy s(6/2 pound)
+- 74567809: shrimp,rpdton(16-20 count) happy s (5/2 pound)
+
+#### Cluster cluster_Seafood Swai_3719
+
+- Size: 2 products
+- Coherence: 0.993
+
+Products:
+
+- 79234360: swai, fil 5-9 ounce, ivp rtl panamei (10/2 pound)
+- 79134360: swai, fil 5-9 ounce, ivp rtl panamei (20/1 pound)
+
+### Medium Size Clusters
+
+#### Cluster cluster_Rib_3381
+
+- Size: 6 products
+- Coherence: 0.834
+
+Products:
+
+- 12350101: beef ribeye rolls 10 ounce
+- 12370068: beef ribeye rolls 6 up
+- 12350110: beef ribeye rolls ute 10 up
+- 12350141: beef ribeye rolls ute 4/1
+- 12350180: beef ribeye rolls ute 8 up
+- 12350118: beef ribeye rolls ute sliced 1/8 "
+
+#### Cluster cluster_Beef Loin_431
+
+- Size: 6 products
+- Coherence: 0.981
+
+Products:
+
+- 144189: filet bone-in, choice 18 ounce
+- 144129: filet bone-in, choice, 12 ounce
+- 144149: filet bone-in, choice, 14 ounce
+- 144159: filet bone-in, choice, 15 ounce
+- 144169: filet bone-in, choice, 16 ounce
+- 144249: filet bone-in, choice, 24 ounce
+
+#### Cluster cluster_Cheese_1178
+
+- Size: 7 products
 - Coherence: 0.790
 
 Products:
 
-- 10371050: regular tripe, greenbay-afg (#60)
-- 10381050: regular tripe fresh Cover, afg
-- 10371050: regular tripe, greenbay-afg (#60)
-
-#### Cluster cluster_Seafood Octopus_3258
-
-- Size: 4 products
-- Coherence: 0.954
-
-Products:
-
-- 2105410: octopus whole 1-2 count 30 pound-z indo
-- 21054W: octopus whole 2-4 count 30 pound-z indo
-- 21054A: octopus whole 4-6 count indo 30 pound-z
-- 21054O: octopus whole 6 up 30 pound-z indo
-
-### Medium Size Clusters
-
-#### Cluster cluster_Pork Variety_2567
-
-- Size: 9 products
-- Coherence: 0.851
-
-Products:
-
-- 43251060: belli skin on 12/14, pork, indiana
-- 43004770: belli skin on trimmed, pork, orviande
-- 43005650: belli skin on trimmed, pork, seara
-- 43005500: belli skin on trimmed, pork, skiba
-- 43004820: belli skin on, pork, animex
-- 43004510: belli skin on, pork, aurora
-- 43005490: belli skin on, pork, costa brava
-- 43005170: belli skin on, pork, goodvalley
-- 43005200: belli skin on, pork, westfort
-
-#### Cluster cluster_Beef Variety & Misc_885
-
-- Size: 11 products
-- Coherence: 0.912
-
-Products:
-
-- 1047NRVZ: beef feet-z whole *__ 25 pound
-- 104710: beef feet-z whole ame 50 pound
-- 1047AU: beef feet-z whole aur 55 pound
-- 10467602: beef feet-z whole fpl 60 pound
-- 10467899: beef feet-z whole gus 70 pound
-- 10467603: beef feet-z whole ibb 25 pound
-- 1046NRIB: beef feet-z whole ibp 25 pound
-- 10470012: beef feet-z whole natural 30 pound
-- 1046NRIE: beef feet-z whole omaha 24 pound
-- 1046NRI1: beef feet-z whole omaha-hal 24 pound
-- 1046NRI2: beef feet-z whole swi 25 pound
-
-#### Cluster cluster_Beef Loin_445
-
-- Size: 6 products
-- Coherence: 0.986
-
-Products:
-
-- 141100: strip steak New York, prime, 10 ounce
-- 141104: strip steak New York, prime, 12 ounce
-- 141140: strip steak New York, prime, 14 ounce
-- 141160: strip steak New York, prime, 16 ounce
-- 141180: strip steak New York, prime, 18 ounce
-- 141181: strip steak New York, prime, 20 ounce
-
-### Large Size Clusters
-
-#### Cluster cluster_Beef Loin_367
-
-- Size: 23 products
-- Coherence: 0.786
-
-Products:
-
-- 1035A212: beef loin tend psmo 5+ cab ibp
-- 1035A215: beef loin tend psmo 5+ cab omaha
-- 10357012: beef loin tend psmo 5+ choice *__
-- 1035A2AU: beef loin tend psmo 5+ choice aur
-- 1035A2B5: beef loin tend psmo 5+ choice blm
-- 10350457: beef loin tend psmo 5+ choice exc
-- 1035A2BP: beef loin tend psmo 5+ choice ibp d4087ah
-- 1035A2GO: beef loin tend psmo 5+ choice omaha
-- 1035A2G1: beef loin tend psmo 5+ choice omaha-hal
-- 1035A2B7: beef loin tend psmo 5+ choice upi
-- 1035A2B3: beef loin tend psmo 5+ choice was
-- 1035A2B1: beef loin tend psmo 5+ choice-aaa sth
-- 10350010: beef loin tend psmo 5+ me suk
-- 1036862: beef loin tend psmo 5+ nr fmc 6p
-- 10357748: beef loin tend psmo 5+ prime crk
-- 1035A3GO: beef loin tend psmo 5+ prime omaha
-- 10356030: beef loin tend psmo 5+ prime omaha-hal
-- 10350349: beef loin tend psmo 5+ se omaha-hal
-- 10350452: beef loin tend psmo misc select-aa exc
-- 10357022: beef loin tend psmo-#2 choice ibp
-- 10357015: beef loin tend psmo-#2 ibp
-- 10357026: beef loin tend psmo-#2 se ibp
-- 10311293: beef loin tend psmo-z 5+ choice-gf wgf
-
-#### Cluster cluster_Deli Meat Pork_1489
-
-- Size: 24 products
-- Coherence: 0.565
-
-Products:
-
-- 741123: spring hill smoked half hams-12/2.5-3 pound
-- 743024: thumann`s virginia style ham-8 pound box
-- 748457: hillshire ultra thin honey ham-9/9 ounce
-- 740226: spring hill smoked pit hams-2 piece
-- 744848: hormel natural juice hams-4/8 pound
-- 740414: hillshire sliced ham-6/2 pound
-- 740205: daily`s smoked pit hams-1 piece
-- 740224: w.creek smoked pit hams-2 piece box
-- 740680: briar street smoked ham - 2 piece box
-- 741054: thumann`s deluxe low sodium ham-9 pound
-- 741483: hillshire hearthstone hams-2 piece box
-- 744075: thumann`s mortadella w/pistachio
-- 741727: smithfied smoked heartland ham
-- 740082: smithfield brown sugar hams quarter
-- 744005: thumann`s bologna-long
-- 741285: thumann`s hot ham-7.5 pound
-- 741612: farmland boneless ham steaks-12/1 pound
-- 745123: 3/8" diced ham-riverside
-- 742320: jamestown smoked half hams
-- 749321: thumann`s taylor pork roll
-- 740888: alexander hornung b-in half hams-50 pound
-- 620081: cook`s smoked 3x3 ham portions
-- 746680: metro applewood honey ham-2/8 pound
-- 740225: gordon smoked pit hams-2 piece box
-
-#### Cluster cluster_Beef Ground_289
-
-- Size: 16 products
-- Coherence: 0.988
-
-Products:
-
-- 10516014: beef pat 100% -z Round-st 2-1 10 pound
-- 10516: beef pat 100%-z Round-st 2-1 5 pound
-- 10516720: beef pat 100%-z Round-st 3-1 10 pound
-- 10540C5: beef pat 100%-z Round-st 3-1 5 pound
-- 10544070: beef pat 100%-z Round-st 4-1 10 pound
-- 10544A1: beef pat 100%-z Round-st 4-1 5 pound
-- 10544012: beef pat 100%-z Round-st 5-1 10 pound
-- 10544011: beef pat 100%-z Round-st 5-1 5 pound
-- 10516: beef pat 100%-z Round-st 2-1 5 pound
-- 10516720: beef pat 100%-z Round-st 3-1 10 pound
-- 10540C5: beef pat 100%-z Round-st 3-1 5 pound
-- 10544070: beef pat 100%-z Round-st 4-1 10 pound
-- 10544A1: beef pat 100%-z Round-st 4-1 5 pound
-- 10544012: beef pat 100%-z Round-st 5-1 10 pound
-- 10544011: beef pat 100%-z Round-st 5-1 5 pound
-- 10544A19: beef pat 100%-z prime Round-st 4-1 5 pound
+- 40443000: cheese queso cotija grated
+- 40443004: cheese queso cotija grated 12/1 pound
+- 40442398: cheese queso enchilado sup 4/5 pound
+- 82302: cheese queso fresco 1/21 pound
+- 83310: cheese queso fresco 1/9 pound
+- 40442410: cheese queso fresco elv 4/5 pound
+- 40442391: cheese queso fresco sup 4/5 pound
 
 ### High Coherence Clusters
 
-#### Cluster cluster_Pork Hams_2203
+#### Cluster cluster_Frozen Foods_1740
 
 - Size: 2 products
-- Coherence: 0.832
+- Coherence: 0.935
 
 Products:
 
-- SP235: ham buffet*
-- 34116509: pork ham buffet off the bone
+- 17873M: chkn diced fc brd 10 pound-z
+- 178732: chkn diced fc brd bb5253 10 pound-z
 
-#### Cluster cluster_Deli Meat Charcuterie_1441
+#### Cluster cluster_Poultry Breast_2920
 
 - Size: 3 products
-- Coherence: 0.929
+- Coherence: 0.951
 
 Products:
 
-- 22PA40H: capicola citt hot 4/4.5 pound
-- 22PC07: capicola thm-z hot 4/4.5 pound
-- 22PC07: capicola thm-z hot 4/4.5 pound
+- 17415A: chicken br son bfly .fmc 4/10 pound
+- 17415: chicken br son bfly .fmc-10 pound
+- 170124: chicken br son bfly .t/i fmc 4/10 pound
 
-#### Cluster cluster_Deli Meat Turkey_1502
+#### Cluster cluster_Beef Variety_953
 
-- Size: 4 products
-- Coherence: 0.801
+- Size: 2 products
+- Coherence: 0.997
 
 Products:
 
-- 183PE64: trky or br mit gl-46502 2/9 pound
-- 183PE64Z: trky or br mit-z gldl-46502 2/9 pound
-- 18107: trky or br nor silv-skl 60216 2/9 pound
-- 181811: trky or br nor-z-sig brw 60003 2/9 pound
+- 19241050: ground beef, 73%, afg (8/10 pound)
+- 19001050: ground beef, 81%, afg (8/10 pound)
 
 ### Medium Coherence Clusters
 
-#### Cluster cluster_Misc. Items_1868
+#### Cluster cluster_Pork Sausage_2636
 
 - Size: 2 products
-- Coherence: 0.729
+- Coherence: 0.761
 
 Products:
 
-- 4667: chep palletts
-- 123: ship on chep palletts
+- 38141911: sausage andouille cajun pork atk-2/1
+- 38140001: sausage andouille pork/bf2/1 amylu 11"
 
-#### Cluster cluster_Other Dry Goods_1992
+#### Cluster cluster_Duck_1695
 
-- Size: 2 products
-- Coherence: 0.750
-
-Products:
-
-- 90271139: food base chicken buillon 20 pound
-- 90271135: food base powder chicken base 30 pound swiss
-
-#### Cluster cluster_Beef,Pork-Sausage,Smok_946
-
-- Size: 2 products
-- Coherence: 0.778
+- Size: 3 products
+- Coherence: 0.661
 
 Products:
 
-- 623856: riverside octoberfest brat
-- 625464: riverside brat w/beer
+- 11020: duck feet bone-in
+- 42390000: duck leg confit bone-in 8 lb case
+- 42224000: duck legs-36 layer bone-in
+
+#### Cluster cluster_Deli Meat Beef_1566
+
+- Size: 2 products
+- Coherence: 0.760
+
+Products:
+
+- 729390: brickman ckd roast beef top round
+- 729795: italian roast beef top round
 
 ### Low Coherence Clusters
 
-#### Cluster cluster_Chicken-Sausage,Smoked_1236
-
-- Size: 2 products
-- Coherence: 0.514
-
-Products:
-
-- 613408: smithfield smkd trky saus 12/12 oz
-- 611952: jennie o sweet ital trky saus 8/19.52 oz
-
-#### Cluster cluster_Misc/Specialty_1906
-
-- Size: 2 products
-- Coherence: 0.564
-
-Products:
-
-- 903001: minh buffalo chicken egg roll-300/1 ounce
-- 901343: tortino orange chix pizza rolls-9/24.46
-
-#### Cluster cluster_Misc. Items_1884
+#### Cluster cluster_Misc. Items_2070
 
 - Size: 2 products
 - Coherence: 0.589
@@ -455,4 +276,24 @@ Products:
 
 - 22421000: chicken brakebush breast fillet
 - SP341: chicken breast tempura 10 pound
+
+#### Cluster cluster_Non Product_2152
+
+- Size: 2 products
+- Coherence: 0.343
+
+Products:
+
+- 999998: pritzlaff 50 pound box bundle
+- 999025: sweet rice-25 pound
+
+#### Cluster cluster_Canned Goods_1133
+
+- Size: 2 products
+- Coherence: 0.541
+
+Products:
+
+- 24993: crushed tomatoes 6/5
+- 83620: sliced mushroom 6/5 *vesin*
 

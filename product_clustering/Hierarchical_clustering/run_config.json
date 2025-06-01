@@ -1,0 +1,66 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "name": "broad_categories",
+      "min_cluster_size": 10,
+      "min_samples": 3,
+      "epsilon": 1200.0,
+      "alpha": 0.00008,
+      "metric": "euclidean",
+      "cluster_selection_method": "eom",
+      "no_categories": true
+    },
+    {
+      "level": 2,
+      "name": "product_types",
+      "min_cluster_size": 2,
+      "min_samples": 1,
+      "epsilon": 150.0,
+      "alpha": 0.0001,
+      "metric": "euclidean",
+      "cluster_selection_method": "leaf",
+      "no_categories": true
+    },
+    {
+      "level": 3,
+      "name": "specific_products",
+      "min_cluster_size": 2,
+      "min_samples": 1,
+      "epsilon": 60.0,
+      "alpha": 0.001,
+      "metric": "euclidean",
+      "cluster_selection_method": "leaf",
+      "no_categories": true
+    },
+    {
+      "level": 4,
+      "name": "variants",
+      "min_cluster_size": 2,
+      "min_samples": 1,
+      "epsilon": 20.0,
+      "alpha": 0.005,
+      "metric": "euclidean",
+      "cluster_selection_method": "leaf",
+      "no_categories": true
+    }
+  ],
+  "global_settings": {
+    "n_jobs": -1,
+    "embedding_model": "all-mpnet-base-v2",
+    "force": true,
+    "use_cross_encoder": true,
+    "cross_encoder_model": "cross-encoder/ms-marco-MiniLM-L-12-v2",
+    "cross_encoder_batch_size": 32,
+    "cross_encoder_threshold": 0.3,
+    "min_products_for_refinement": 3
+  },
+  "progression_rules": {
+    "min_products_to_proceed": 2,
+    "min_coherence_threshold": 0.85,
+    "enable_cohesion_check": false,
+    "large_cluster_threshold": 15,
+    "std_similarity_threshold": 0.95,
+    "min_similarity_threshold": 0.001
+  }
+}

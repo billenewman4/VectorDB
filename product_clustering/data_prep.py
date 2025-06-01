@@ -41,10 +41,6 @@ def preprocess_text_for_clustering(text: str, expand_abbreviations: bool = True)
     if expand_abbreviations:
         text = expand_abbreviations_func(text)
     
-    # Remove special characters but keep numbers (unlike USDA matching)
-    # Numbers are important for package sizes and weights
-    text = re.sub(r'[^a-z0-9\s]', ' ', text)
-    
     # Standardize white space
     text = re.sub(r'\\s+', ' ', text).strip()
     
