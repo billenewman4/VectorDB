@@ -1,0 +1,174 @@
+# Hierarchical Clustering Pipeline Configuration
+# This config file allows fine-grained control over all pipeline components
+
+# Data preparation configuration
+data_preparation:
+  # Input paths
+  data_path: "/Users/billnewman/Desktop/GitHub/VectorDB/Source_data/Actuals/Transaction_Report_Actual.xlsx"
+  embeddings_path: "/Users/billnewman/Desktop/GitHub/VectorDB/Clean_Code/output/embeddings/product_embeddings.npz"
+
+  # Whether to use category descriptions for filtering and organizing products during data refinement/cleaning.
+  # Set to false to ignore product categories entirely in the data prep pipeline.
+  use_category_descriptions: false
+  
+  # Test mode settings
+  test_mode: false
+  test_samples: 200
+  
+  # Data filtering options
+  filter_products: false
+  min_description_length: 10
+  exclude_categories: []
+  include_categories: []
+
+# Embedding configuration
+embedding:
+  # Model settings
+  model_name: "all-mpnet-base-v2"  # Using the upgraded model from memory
+  cache_embeddings: true
+  embeddings_path: "./Clean_Code/output/embeddings/product_embeddings.npz"
+  embedding_batch_size: 32
+  embedding_dimension: 768
+  
+  # Preprocessing options
+  normalize: true
+  normalize_method: "l2"  # Options: l1, l2, max
+  remove_outliers: false
+  outlier_method: "zscore"  # Options: zscore, iqr, isolation_forest
+  outlier_threshold: 3.0
+  reduce_dimensions: false
+  dimension_reduction_method: "pca"  # Options: pca, umap, tsne
+  target_dimensions: 100
+
+# Clustering configuration
+clustering:
+  # General clustering settings
+  algorithm: "hdbscan"  # Options: hdbscan, kmeans, agglomerative
+  metric: "cosine"  # Options: cosine, euclidean, manhattan
+  prediction_data: true
+  
+  # Default settings applied to all levels unless overridden
+  default:
+    min_cluster_size: 2  # Reduced for small sample test
+    min_samples: 1  # Reduced for small sample test
+    cluster_selection_method: "eom"  # Options: eom, leaf
+    cluster_selection_epsilon: 0.0
+  
+  # Level-specific settings
+  levels: 3  # Number of hierarchical levels
+  level_configs:
+    # Level 1 configuration
+    1:
+      use_cross_encoder: false
+      min_cluster_size: 2  # Reduced for small sample test
+      min_samples: 1  # Reduced for small sample test
+      cluster_selection_method: "eom"
+      refine_after_clustering: true
+      refinement_method: "borderline"
+    
+    # Level 2 configuration
+    2:
+      use_cross_encoder: false
+      min_cluster_size: 2  # Reduced for small sample test
+      min_samples: 1  # Reduced for small sample test
+      cluster_selection_method: "eom"
+      refine_after_clustering: true
+      refinement_method: "borderline"
+    
+    # Level 3 configuration
+    3:
+      use_cross_encoder: false
+      min_cluster_size: 2  # Reduced for small sample test
+      min_samples: 1  # Reduced for small sample test
+      cluster_selection_method: "eom"
+      refine_after_clustering: true
+      refinement_method: "borderline"
+
+# Cross-encoder refinement configuration
+cross_encoder:
+  # Model settings
+  model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  use_refinement: true
+  batch_size: 32
+  device: null  # null for auto-detection, or "cpu", "cuda", "cuda:0", etc.
+  
+  # Refinement method settings
+  refinement_method: "borderline"  # Options: borderline, coherence, full
+  embedding_weight: 0.7
+  cross_encoder_weight: 0.3
+  confidence_threshold: 0.6
+  borderline_percentile: 20
+  max_borderline_points: 100
+  
+  # Optimization settings
+  cache_similarities: true
+  similarity_cache_dir: "similarity_cache"
+
+# Analysis and evaluation configuration
+evaluation:
+  compute_metrics: true
+  analyze_clusters: true
+  
+  # Metrics to compute
+  metrics:
+    silhouette_score: true
+    davies_bouldin_score: true
+    calinski_harabasz_score: true
+    v_measure: false
+    homogeneity: false
+    completeness: false
+  
+  # Cluster analysis
+  min_clusters_to_analyze: 5
+  max_clusters_to_analyze: 20
+  analyze_top_terms: true
+  num_top_terms: 10
+
+# Visualization configuration
+visualization:
+  create_visualizations: true
+  method: "umap"  # Options: tsne, umap, pca
+  dims: 2  # Options: 2, 3
+  figsize: [12, 8]
+  save_plots: true
+  
+  # UMAP specific settings (if method is umap)
+  umap:
+    n_neighbors: 15
+    min_dist: 0.1
+    metric: "cosine"
+  
+  # t-SNE specific settings (if method is tsne)
+  tsne:
+    perplexity: 30
+    learning_rate: 200
+    iterations: 1000
+  
+  # Plot styling
+  plot_style: "seaborn-v0_8-whitegrid"  # matplotlib style
+  noise_alpha: 0.3
+  cluster_alpha: 0.7
+  use_colormap: "tab20"  # matplotlib colormap
+  
+  # 3D visualization settings (if dims=3)
+  azimuth: 235
+  elevation: 30
+
+# Output configuration
+output:
+  save_results: true
+  output_dir: "hierarchical_clustering_results"
+  timestamp_directories: true
+  save_model: false
+  
+  # Export formats
+  export_csv: true
+  export_json: true
+  export_pickle: false
+  
+  # Result details
+  save_embeddings: false
+  save_refined_embeddings: false
+  save_hierarchical_data: true
+  save_cluster_metadata: true
+  generate_html_report: false

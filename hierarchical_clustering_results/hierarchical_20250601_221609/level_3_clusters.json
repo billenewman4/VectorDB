@@ -1,0 +1,12 @@
+{
+  "clusters": [],
+  "statistics": {
+    "num_clusters": 0,
+    "points_assigned": 0,
+    "noise_points": 10,
+    "noise_percentage": 100.0,
+    "clustering_method": "embedding",
+    "refined": false
+  },
+  "parent_clusters": {}
+}
