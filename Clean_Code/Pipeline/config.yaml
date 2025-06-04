@@ -4,7 +4,7 @@
 # Data preparation configuration
 data_preparation:
   # Input paths
-  data_path: "/Users/billnewman/Desktop/GitHub/VectorDB/Source_data/Actuals/Transaction_Report_Actual.xlsx"
+  data_path: "/Users/billnewman/Desktop/GitHub/VectorDB/Source_data/Actuals/Transaction_Report_Actual_bcStk.xlsx"
   embeddings_path: "/Users/billnewman/Desktop/GitHub/VectorDB/Clean_Code/output/embeddings/product_embeddings.npz"
 
   # Whether to use category descriptions for filtering and organizing products during data refinement/cleaning.
@@ -57,29 +57,31 @@ clustering:
   # Level-specific settings
   levels: 3  # Number of hierarchical levels
   level_configs:
-    # Level 1 configuration
+    # Level 1 configuration - USING K-MEANS FOR ZERO NOISE
     1:
-      use_cross_encoder: false
-      min_cluster_size: 2  # Reduced for small sample test
-      min_samples: 1  # Reduced for small sample test
-      cluster_selection_method: "eom"
-      refine_after_clustering: true
-      refinement_method: "borderline"
+      # Use K-means for Level 1 instead of HDBSCAN
+      clustering_method: "kmeans"
+      n_clusters: 8          # Target 8 broad, top-level clusters
+      init: "k-means++"      # Smart initialization
+      n_init: 10            # Try multiple initializations
+      max_iter: 300         # Allow algorithm to converge fully
+      # No refinement needed as K-means assigns all points
+      refine_after_clustering: false
     
-    # Level 2 configuration
+    # Level 2 configuration - medium granularity
     2:
       use_cross_encoder: false
-      min_cluster_size: 2  # Reduced for small sample test
-      min_samples: 1  # Reduced for small sample test
+      min_cluster_size: 5   # Medium granularity
+      min_samples: 3        # Medium sensitivity
       cluster_selection_method: "eom"
       refine_after_clustering: true
       refinement_method: "borderline"
     
-    # Level 3 configuration
+    # Level 3 configuration - keep fine-grained clusters
     3:
       use_cross_encoder: false
-      min_cluster_size: 2  # Reduced for small sample test
-      min_samples: 1  # Reduced for small sample test
+      min_cluster_size: 3  # Your original optimized value
+      min_samples: 2       # Your original optimized value
       cluster_selection_method: "eom"
       refine_after_clustering: true
       refinement_method: "borderline"

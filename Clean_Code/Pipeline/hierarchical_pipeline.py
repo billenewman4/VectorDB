@@ -34,6 +34,7 @@ class NumpyEncoder(json.JSONEncoder):
             return bool(obj)
         return super(NumpyEncoder, self).default(obj)
 from Clustering.Embedding.hdbscan_clusterer import HdbscanClusterer
+from Clustering.Embedding.kmeans_clusterer import KMeansClusterer
 from Clustering.Processing.embedding_preprocessing import EmbeddingPreprocessor
 from Clustering.Analytics.visualization import ClusterVisualizer
 from Clustering.Analytics.evaluation import ClusterEvaluator
@@ -170,7 +171,7 @@ class HierarchicalClusteringPipeline:
             else:
                 default[key] = value
     
-    def _initialize_clusterer(self, level: int) -> HdbscanClusterer:
+    def _initialize_clusterer(self, level: int) -> Union[HdbscanClusterer, KMeansClusterer]:
         """
         Initialize a clusterer for the specified level using level-specific configuration.
         
@@ -178,29 +179,55 @@ class HierarchicalClusteringPipeline:
             level: Hierarchical level
             
         Returns:
-            Initialized clusterer
+            Initialized clusterer (HDBSCAN or KMeans)
         """
         # Get level-specific configuration if available
         level_config = self.config["level_configs"].get(level, {})
         
-        # Get parameters with level-specific overrides
-        min_cluster_size = level_config.get("min_cluster_size", self.config["embedding"]["min_cluster_size"])
-        min_samples = level_config.get("min_samples", self.config["embedding"]["min_samples"])
-        metric = level_config.get("metric", self.config["embedding"]["metric"])
-        cluster_selection_method = level_config.get(
-            "cluster_selection_method", 
-            self.config["embedding"]["cluster_selection_method"]
-        )
-        prediction_data = level_config.get("prediction_data", self.config["embedding"]["prediction_data"])
+        # Get clustering method (HDBSCAN by default)
+        clustering_method = level_config.get("clustering_method", "hdbscan").lower()
         
-        # Create HDBSCAN clusterer with level-specific parameters
-        return HdbscanClusterer(
-            min_cluster_size=min_cluster_size,
-            min_samples=min_samples,
-            metric=metric,
-            cluster_selection_method=cluster_selection_method,
-            prediction_data=prediction_data
-        )
+        if clustering_method == "kmeans":
+            # Get KMeans-specific parameters
+            n_clusters = level_config.get("n_clusters", 8)
+            init = level_config.get("init", "k-means++")
+            n_init = level_config.get("n_init", 10)
+            max_iter = level_config.get("max_iter", 300)
+            
+            # Create KMeans clusterer
+            logger.info(f"Using KMeans clustering for level {level} with {n_clusters} clusters")
+            return KMeansClusterer(
+                n_clusters=n_clusters,
+                init=init,
+                n_init=n_init,
+                max_iter=max_iter
+            )
+        else:
+            # Get HDBSCAN parameters
+            min_cluster_size = level_config.get("min_cluster_size", self.config["embedding"]["min_cluster_size"])
+            min_samples = level_config.get("min_samples", self.config["embedding"]["min_samples"])
+            metric = level_config.get("metric", self.config["embedding"]["metric"])
+            cluster_selection_method = level_config.get(
+                "cluster_selection_method", 
+                self.config["embedding"]["cluster_selection_method"]
+            )
+            prediction_data = level_config.get("prediction_data", self.config["embedding"]["prediction_data"])
+            
+            # Additional optional parameters
+            epsilon = level_config.get("cluster_selection_epsilon", 0.0)
+            allow_single_cluster = level_config.get("allow_single_cluster", False)
+            
+            # Create HDBSCAN clusterer with level-specific parameters
+            logger.info(f"Using HDBSCAN clustering for level {level} with min_cluster_size={min_cluster_size}")
+            return HdbscanClusterer(
+                min_cluster_size=min_cluster_size,
+                min_samples=min_samples,
+                metric=metric,
+                cluster_selection_method=cluster_selection_method,
+                cluster_selection_epsilon=epsilon,
+                allow_single_cluster=allow_single_cluster,
+                prediction_data=prediction_data
+            )
     
     def _initialize_cross_encoder_refiner(self, reranker: Any) -> Optional[ClusterRefiner]:
         """
@@ -334,7 +361,7 @@ class HierarchicalClusteringPipeline:
         
         # Step 3: Save results
         if self.config["output"]["save_results"]:
-            self._save_results(hierarchy_results, output_dir, texts, metadata)
+            self._save_results(hierarchy_results, output_dir, texts, processed_vectors, metadata)
         
         # Step 4: Create visualizations
         if self.config["visualization"]["create_visualizations"]:
@@ -402,8 +429,11 @@ class HierarchicalClusteringPipeline:
                 cluster_membership[label] = []
             cluster_membership[label].append(i)
         
-        # Optional: Refine level 1 with cross-encoder
-        if self.cross_encoder_refiner is not None:
+        # Optional: Refine level 1 with cross-encoder if enabled for this level
+        level_1_config = self.config["level_configs"].get(1, {})
+        refine_level_1 = level_1_config.get("refine_after_clustering", self.config["cross_encoder"]["use_refinement"])
+        
+        if self.cross_encoder_refiner is not None and refine_level_1:
             logger.info("Refining Level 1 clusters with cross-encoder...")
             refine_start_time = time.time()
             refined_labels, refined_clusters, _ = self.cross_encoder_refiner.refine_clusters(
@@ -418,6 +448,9 @@ class HierarchicalClusteringPipeline:
             level_1_results["labels"] = refined_labels
             level_1_results["clusters"] = refined_clusters
             hierarchy_results["levels"][1] = level_1_results
+        else:
+            logger.info("Skipping Level 1 refinement (disabled in configuration)")
+
         
         # Initialize clustering path tracking for each point
         for i in range(len(texts)):
@@ -821,6 +854,7 @@ class HierarchicalClusteringPipeline:
                      hierarchy_results: Dict[str, Any],
                      output_dir: str,
                      texts: List[str],
+                     processed_vectors: np.ndarray,
                      metadata: Optional[List[Dict[str, Any]]] = None):
         """
         Save hierarchical clustering results to files.
@@ -865,19 +899,38 @@ class HierarchicalClusteringPipeline:
         for level, level_results in hierarchy_results["levels"].items():
             # Convert cluster information to a serializable format
             serializable_clusters = []
-            for cluster in level_results["clusters"]:
-                serializable_cluster = {
-                    "id": int(cluster["id"]),
-                    "size": int(cluster["size"]),
-                    "members": [int(m) for m in cluster["members"]],
-                    "centroid": cluster["centroid"].tolist() if isinstance(cluster["centroid"], np.ndarray) else cluster["centroid"],
-                }
-                
-                # Add parent ID if available
-                if "parent_id" in cluster:
-                    serializable_cluster["parent_id"] = int(cluster["parent_id"])
+            
+            # Handle different cluster representations (K-means vs HDBSCAN)
+            # For K-means: clusters is a dictionary with integer keys
+            # For HDBSCAN: clusters is a list of dictionaries with 'id', 'members', etc.
+            if isinstance(level_results["clusters"], dict):
+                # K-means style clusters (dict with integer keys)
+                for cluster_id, members in level_results["clusters"].items():
+                    # For K-means, calculate centroid as mean of member vectors
+                    centroid = np.mean([processed_vectors[m] for m in members], axis=0) if len(members) > 0 else None
                     
-                serializable_clusters.append(serializable_cluster)
+                    serializable_cluster = {
+                        "id": int(cluster_id),
+                        "size": len(members),
+                        "members": [int(m) for m in members],
+                        "centroid": centroid.tolist() if isinstance(centroid, np.ndarray) else centroid,
+                    }
+                    serializable_clusters.append(serializable_cluster)
+            else:
+                # HDBSCAN style clusters (list of dictionaries)
+                for cluster in level_results["clusters"]:
+                    serializable_cluster = {
+                        "id": int(cluster["id"]),
+                        "size": int(cluster["size"]) if "size" in cluster else len(cluster["members"]),
+                        "members": [int(m) for m in cluster["members"]],
+                        "centroid": cluster["centroid"].tolist() if isinstance(cluster["centroid"], np.ndarray) else cluster["centroid"],
+                    }
+                    
+                    # Add parent ID if available
+                    if "parent_id" in cluster:
+                        serializable_cluster["parent_id"] = int(cluster["parent_id"])
+                        
+                    serializable_clusters.append(serializable_cluster)
             
             # Save level results
             level_data = {
